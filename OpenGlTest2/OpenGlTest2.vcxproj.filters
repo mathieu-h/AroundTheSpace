@@ -81,10 +81,10 @@
     <ClInclude Include="verticesTiangle.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="OculusManagerApp.h">
+    <ClInclude Include="OculusApp.h">
       <Filter>Header Files\Oculus</Filter>
     </ClInclude>
-    <ClInclude Include="OculusApp.h">
+    <ClInclude Include="OculusManagerApp.h">
       <Filter>Header Files\Oculus</Filter>
     </ClInclude>
   </ItemGroup>
@@ -134,10 +134,10 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OculusManagerApp.cpp">
+    <ClCompile Include="OculusApp.cpp">
       <Filter>Source Files\Oculus</Filter>
     </ClCompile>
-    <ClCompile Include="OculusApp.cpp">
+    <ClCompile Include="OculusManagerApp.cpp">
       <Filter>Source Files\Oculus</Filter>
     </ClCompile>
   </ItemGroup>
