@@ -92,6 +92,8 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="MouvementSystem.h" />
+    <ClInclude Include="noiseutils.h" />
+    <ClInclude Include="Planet.h" />
     <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderData.h" />
@@ -112,6 +114,8 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="MouvementSystem.cpp" />
+    <ClCompile Include="noiseutils.cpp" />
+    <ClCompile Include="Planet.cpp" />
     <ClCompile Include="ResourcesManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderData.cpp" />

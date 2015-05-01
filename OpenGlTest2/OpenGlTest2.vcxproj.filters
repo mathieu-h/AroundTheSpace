@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\fred">
+      <UniqueIdentifier>{9f71790a-ef4b-46b2-aac3-9a70b40d1641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\fred">
+      <UniqueIdentifier>{0a5d2352-2c89-4aac-930c-31fed224c14a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -75,6 +81,12 @@
     <ClInclude Include="verticesTiangle.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Planet.h">
+      <Filter>Header Files\fred</Filter>
+    </ClInclude>
+    <ClInclude Include="noiseutils.h">
+      <Filter>Header Files\fred</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -121,6 +133,12 @@
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Planet.cpp">
+      <Filter>Source Files\fred</Filter>
+    </ClCompile>
+    <ClCompile Include="noiseutils.cpp">
+      <Filter>Source Files\fred</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
