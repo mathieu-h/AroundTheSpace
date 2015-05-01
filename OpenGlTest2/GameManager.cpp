@@ -32,7 +32,7 @@ void GameManager::runGameLoop()
 		deltaTime += (currentTime - lastime)*Updates_Per_Second;
 		lastime = currentTime;
 
-		while (deltaTime>= 1.0f) {
+		while (deltaTime >= 1.0f) {
 
 			_running = !glfwWindowShouldClose(_window);
 
@@ -41,12 +41,24 @@ void GameManager::runGameLoop()
 			--deltaTime;
 		}
 
-	
+
 
 		_render->render(_scene->getChildren());
 	}
 }
+/*
+void GameManager::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode){
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
+		glfwSetWindowShouldClose(window, GL_TRUE);
+	}
+}
+*/
 
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode){
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
+		glfwSetWindowShouldClose(window, GL_TRUE);
+	}
+}
 
 GameManager& GameManager::getGameManager()
 {
@@ -55,7 +67,6 @@ GameManager& GameManager::getGameManager()
 	if (gamemanager == NULL) {
 
 		glfwInit();
-
 		glfwWindowHint(GLFW_DEPTH_BITS, 24);
 		glfwWindowHint(GLFW_RED_BITS, 8);
 		glfwWindowHint(GLFW_BLUE_BITS, 8);
@@ -65,7 +76,7 @@ GameManager& GameManager::getGameManager()
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 		GLFWwindow* window = glfwCreateWindow(1024, 720, "Fps", NULL, NULL);
 		glfwMakeContextCurrent(window);
-
+		glfwSetKeyCallback(window, key_callback);
 		GLenum error = glewInit();
 
 		gamemanager = new GameManager(true);

@@ -37,6 +37,7 @@ public:
 
 	static GameManager& getGameManager();
 	void runGameLoop();
+	//void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 	void destroyGameMangaer();
 };
