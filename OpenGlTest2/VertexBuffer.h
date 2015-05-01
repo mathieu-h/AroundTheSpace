@@ -7,6 +7,9 @@
 #include "ShaderInterface.h"
 #include "ShaderData.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class VertexBuffer
 {
@@ -20,13 +23,14 @@ private :
 	GLsizei _stride;
 	GLvoid *_positionOffset;
 	GLvoid *_normalOffset;
+	GLvoid *_textureCoordOffset;
 
 public:
 	GLuint getVertexBuffer();
 	ShaderInterface* get_Shader();
 	ShaderData* get_shaderData();
 
-	VertexBuffer(const GLvoid *data, GLsizeiptr size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid*positionOffset, GLvoid *normalOffset);
+	VertexBuffer(const GLvoid *data, GLsizeiptr size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid*positionOffset, GLvoid *normalOffset, GLvoid* textureCoordOffset);
 	~VertexBuffer();
 
 	void configureVertexAttributes();

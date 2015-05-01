@@ -54,13 +54,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\Libs\glfw-3.1.1.bin.WIN32\include;..\Libs\freeglut\include;..\Libs\OculusSDK\LibOVR\Src;..\Libs\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libs\glfw-3.1.1.bin.WIN32\include;..\Libs\freeglut\include;..\Libs\OculusSDK\LibOVR\Src;..\Libs\glm;E:\2nd semestre\AroundTheSpace\Libs\SOIL\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\Libs\freeglut\lib;..\Libs\glew-1.12.0\bin\Release\Win32;..\Libs\OculusSDK\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libnoise.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libnoise.lib;glew32s.lib;glfw3.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -88,16 +88,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraSystem.h" />
+    <ClInclude Include="CubeQuadTex.h" />
     <ClInclude Include="CubeVertices.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="MouvementSystem.h" />
-    <ClInclude Include="OculusApp.h" />
-    <ClInclude Include="OculusManagerApp.h" />
-    <ClInclude Include="ResourcesManager.h" />
+    <ClInclude Include="noiseutils.h" />
+    <ClInclude Include="Planet.h" />    <ClInclude Include="OculusApp.h" />
+    <ClInclude Include="OculusManagerApp.h" />    <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderData.h" />
     <ClInclude Include="TriangleVertices.h" />
+    <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="ShaderInterface.h" />
@@ -114,9 +116,9 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="MouvementSystem.cpp" />
-    <ClCompile Include="OculusApp.cpp" />
-    <ClCompile Include="OculusManagerApp.cpp" />
-    <ClCompile Include="ResourcesManager.cpp" />
+    <ClCompile Include="noiseutils.cpp" />
+    <ClCompile Include="Planet.cpp" />    <ClCompile Include="OculusApp.cpp" />
+    <ClCompile Include="OculusManagerApp.cpp" />    <ClCompile Include="ResourcesManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderData.cpp" />
     <ClCompile Include="Triangle01.cpp" />
@@ -127,6 +129,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Vector4.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />

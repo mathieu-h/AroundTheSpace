@@ -9,6 +9,7 @@
 #ifndef simpleFPSVertex_DATA
 #define simpleFPSVertex_DATA
 #include "Vector3.h"
+#include "Vector2.h"
 
 typedef struct {
 
@@ -22,6 +23,13 @@ typedef struct {
 	Vector3 normalCoordinates;
 
 } VertexDataPN;
+
+typedef struct {
+
+	Vector3 positionCoordinates;
+	Vector2 textureCoordinates;
+
+} VertexDataPT;
 
 #endif
 
