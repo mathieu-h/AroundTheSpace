@@ -13,13 +13,17 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Oculus">
+    <Filter Include="Source Files\fred">
+      <UniqueIdentifier>{9f71790a-ef4b-46b2-aac3-9a70b40d1641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\fred">
+      <UniqueIdentifier>{0a5d2352-2c89-4aac-930c-31fed224c14a}</UniqueIdentifier>
+    </Filter>    <Filter Include="Source Files\Oculus">
       <UniqueIdentifier>{b38bc084-c5e0-4bd2-a3e2-114b3c94bee0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Oculus">
       <UniqueIdentifier>{10de5eea-9e07-4198-a754-7b77d6e8f484}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
+    </Filter>  </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
@@ -92,8 +96,12 @@
     </ClInclude>
     <ClInclude Include="Vector2.h">
       <Filter>Header Files</Filter>
+    </ClInclude>    <ClInclude Include="Planet.h">
+      <Filter>Header Files\fred</Filter>
     </ClInclude>
-  </ItemGroup>
+    <ClInclude Include="noiseutils.h">
+      <Filter>Header Files\fred</Filter>
+    </ClInclude>  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
@@ -140,6 +148,12 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Planet.cpp">
+      <Filter>Source Files\fred</Filter>
+    </ClCompile>
+    <ClCompile Include="noiseutils.cpp">
+      <Filter>Source Files\fred</Filter>
+    </ClCompile>
     <ClCompile Include="OculusApp.cpp">
       <Filter>Source Files\Oculus</Filter>
     </ClCompile>
@@ -148,6 +162,5 @@
     </ClCompile>
     <ClCompile Include="Vector2.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
+    </ClCompile>  </ItemGroup>
 </Project>
