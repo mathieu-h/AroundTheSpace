@@ -4,6 +4,8 @@
 #include "ShaderInterface.h"
 #include "VertexBuffer.h"
 
+#include <SOIL.h>
+
 #ifndef _SimpleFps_ResourcesManager
 #define _SimpleFps_ResourcesManager
 
@@ -26,7 +28,6 @@ private:
 	GLuint textureObj;
 
 	ShaderData* _shaderData;
-	ShaderData* _shaderData2;
 
 	
 };

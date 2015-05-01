@@ -87,6 +87,12 @@
     <ClInclude Include="OculusManagerApp.h">
       <Filter>Header Files\Oculus</Filter>
     </ClInclude>
+    <ClInclude Include="CubeQuadTex.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -139,6 +145,9 @@
     </ClCompile>
     <ClCompile Include="OculusManagerApp.cpp">
       <Filter>Source Files\Oculus</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

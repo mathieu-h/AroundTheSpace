@@ -9,18 +9,19 @@ Scene::Scene()
 
 	ResourcesManager* resources = &ResourcesManager::getResourcesManager();
 
-	Entity* _entity = new Entity((resources->getVertexBufferArray()->at(2)), makeVector3(0.0f, 0.0f, 00.0f));
-	Entity* _entity2 = new Entity((resources->getVertexBufferArray()->at(3)), makeVector3(0.0f, 0.0f, 00.0f));
+	Entity* _entity = new Entity((resources->getVertexBufferArray()->at(2)), makeVector3(0.0f, 0.0f, 0.0f));
+	Entity* _entity2 = new Entity((resources->getVertexBufferArray()->at(3)), makeVector3(0.0f, 0.0f, 0.0f));
+	//Entity* _entity2 = new Entity((resources->getVertexBufferArray()->at(0)), makeVector3(0.0f, 0.0f, 0.0f));
 	//_entity->set_rotation(makeVector3(90.0f, 0.0f, 0.0f));
 	_entity->set_rotationVelocity(makeVector3(1.0f, 1.0f, 1.0f));
-	_entity2->set_rotationVelocity(makeVector3(1.0f, 1.0f, 1.0f));
-	//_entity2->set_scale(makeVector3(1.0f, 1.0f, 1.0f));
+	//_entity2->set_rotationVelocity(makeVector3(1.0f, 1.0f, 1.0f));
+	_entity2->set_scale(makeVector3(1.1f, 1.1f, 1.1f));
 
 	/*for (int i = 0; i < 100000; ++i)
 	{
-		Entity* _entity3 = new Entity((resources->getVertexBufferArray()->at(2)), makeVector3(cos(i * 0.05f), -sin(i * 0.05f),i * 0.05f));
-		_entity3->set_rotationVelocity(makeVector3(1.0f, 1.0f, 1.0f));
-		children->push_back(_entity3);
+	Entity* _entity3 = new Entity((resources->getVertexBufferArray()->at(2)), makeVector3(cos(i * 0.05f), -sin(i * 0.05f),i * 0.05f));
+	_entity3->set_rotationVelocity(makeVector3(1.0f, 1.0f, 1.0f));
+	children->push_back(_entity3);
 	}*/
 
 	children->push_back(_entity);
