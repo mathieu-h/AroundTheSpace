@@ -8,6 +8,7 @@
 
 #ifndef simpleFPSVertex_DATA
 #define simpleFPSVertex_DATA
+
 #include "Vector3.h"
 #include "Vector2.h"
 
@@ -38,6 +39,10 @@ typedef struct {
 	Vector2 textureCoordinates;
 
 } VertexDataPNT;
+
+typedef struct {
+	GLuint i;
+} IndiceArray;
 
 #endif
 
