@@ -12,11 +12,11 @@ class Scene
 private:
 
 	std::vector<Entity *> *children;
-
+	std::vector<Entity *> *lights;
 public:
 
 	std::vector<Entity *> * getChildren();
-
+	std::vector<Entity *> *getLights();
 	Scene();
 	~Scene();
 };

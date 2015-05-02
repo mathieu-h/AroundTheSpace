@@ -43,7 +43,7 @@ void GameManager::runGameLoop()
 
 
 
-		_render->render(_scene->getChildren());
+		_render->render(_scene->getChildren(), _scene->getLights());
 	}
 }
 /*

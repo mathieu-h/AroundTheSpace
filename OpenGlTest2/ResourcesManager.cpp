@@ -21,46 +21,12 @@ ResourcesManager::ResourcesManager()
 
 
 	_vertexBufferArray = new std::vector<VertexBuffer*>();
-	/*VertexBuffer* _vertexBuff = new VertexBuffer(vertices, sizeof(vertices), GL_TRIANGLES, 3, sizeof(GLfloat) * 3, _shaderArray->at(0), _shaderData, NULL, NULL, NULL);
-	_vertexBufferArray->push_back(_vertexBuff);*/
 
-	/*VertexBuffer* _cubevertexBuff = new VertexBuffer(verticesCube, sizeof(verticesCube), GL_TRIANGLES, 36, sizeof(VertexDataPN), _shaderArray->at(1), _shaderData, (GLvoid*)(offsetof(VertexDataPN, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPN, normalCoordinates)), NULL, NULL);
-	_vertexBufferArray->push_back(_cubevertexBuff);
-
-
-	VertexBuffer* _vertexBuffTriangle = new VertexBuffer(verticesTriangle, sizeof(verticesTriangle), GL_TRIANGLES, 12, sizeof(GLfloat) * 3, _shaderArray->at(0), _shaderData, NULL, NULL, NULL, NULL);
-	_vertexBufferArray->push_back(_vertexBuffTriangle);*/
-
-	/*VertexBuffer* _vertexBuffTriangle2 = new VertexBuffer(verticesTriangle, sizeof(verticesTriangle), GL_LINE_LOOP, 12, sizeof(GLfloat) * 3, _shaderArray->at(0), _shaderData, NULL, NULL, NULL);
-	_vertexBufferArray->push_back(_vertexBuffTriangle2);*/
-
-	/*VertexBuffer* _vertexBufftext = new VertexBuffer(verticesCubeQuad, sizeof(verticesCubeQuad), GL_TRIANGLES, 36, sizeof(VertexDataPT), _shaderArray->at(2), _shaderData, (GLvoid*)(offsetof(VertexDataPT, positionCoordinates)), NULL, (GLvoid*)(offsetof(VertexDataPT, textureCoordinates)), indices);
-	_vertexBufferArray->push_back(_vertexBufftext);*/
-
-	/*VertexBuffer* _vertexBufftext2 = new VertexBuffer(verticesCubeQuad, sizeof(verticesCubeQuad), GL_LINE_LOOP, 36, sizeof(VertexDataPT), _shaderArray->at(2), _shaderData, (GLvoid*)(offsetof(VertexDataPT, positionCoordinates)), NULL, (GLvoid*)(offsetof(VertexDataPT, textureCoordinates)), indices);
-	_vertexBufferArray->push_back(_vertexBufftext2);*/
-
-	VertexBuffer* _vertexBufftext2 = new VertexBuffer(verticesCubeWithTexture, sizeof(verticesCubeWithTexture), GL_TRIANGLES, 36, sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), true);
+	VertexBuffer* _vertexBufftext2 = new VertexBuffer(verticesCubeWithTexture, sizeof(verticesCubeWithTexture), GL_TRIANGLES, 36, sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), true, "SplatterLong0079_S.jpg");
 	_vertexBufferArray->push_back(_vertexBufftext2);
 
-	/*VertexBuffer* _vertexBufftext3 = new VertexBuffer(verticesCubeWithTexture, sizeof(verticesCubeWithTexture), GL_TRIANGLES, 36, sizeof(VertexDataPNT), _shaderArray->at(2), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), indices);
-	_vertexBufferArray->push_back(_vertexBufftext3);*/
-
-	GLuint texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture); // All upcoming GL_TEXTURE_2D operations now have effect on this texture object
-	// Set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// Set texture wrapping to GL_REPEAT (usually basic wrapping method)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// Set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// Load image, create texture and generate mipmaps
-	int width, height;
-	unsigned char* image = SOIL_load_image("SplatterLong0079_S.jpg", &width, &height, 0, SOIL_LOAD_RGB);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	SOIL_free_image_data(image);
+	VertexBuffer* _vertexBufftext3 = new VertexBuffer(verticesCubeWithTexture, sizeof(verticesCubeWithTexture), GL_TRIANGLES, 36, sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), true, "OrnamentsHeads0036_S.jpg");
+	_vertexBufferArray->push_back(_vertexBufftext3);
 }
 
 

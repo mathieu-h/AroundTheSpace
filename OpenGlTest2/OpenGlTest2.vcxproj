@@ -150,6 +150,9 @@
     <None Include="VertexShader.fs" />
     <None Include="VertexShaderTexture.vs" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="OrnamentsHeads0036_S.jpg" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
