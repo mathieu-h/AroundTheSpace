@@ -129,11 +129,16 @@
     <ClInclude Include="TriangleVertices.h">
       <Filter>Header Files\DataStructs</Filter>
     </ClInclude>
-<ClInclude Include="indices.h">
+    <ClInclude Include="indices.h">
       <Filter>Header Files\DataStructs</Filter>
-    </ClInclude><ClInclude Include="ovr.h">
+    </ClInclude>
+    <ClInclude Include="ovr.h">
       <Filter>Header Files\Oculus</Filter>
-    </ClInclude>  </ItemGroup>
+    </ClInclude>
+    <ClInclude Include="glfw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
