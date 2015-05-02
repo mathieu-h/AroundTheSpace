@@ -129,14 +129,16 @@
     <ClInclude Include="TriangleVertices.h">
       <Filter>Header Files\DataStructs</Filter>
     </ClInclude>
-    <ClInclude Include="indices.h">
-      <Filter>Header Files\DataStructs</Filter>
-    </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="ovr.h">
       <Filter>Header Files\Oculus</Filter>
     </ClInclude>
     <ClInclude Include="glfw.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Oculus</Filter>
+=======
+    <ClInclude Include="indices.h">
+      <Filter>Header Files\DataStructs</Filter>
+>>>>>>> origin/Valentin
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -220,10 +222,5 @@
     <None Include="SimpleLightShader.fsh">
       <Filter>Resource Files</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="OrnamentsHeads0036_S.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
 </Project>
