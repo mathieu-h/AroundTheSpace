@@ -20,7 +20,7 @@ typedef struct {
 typedef struct {
 
 	Vector3 positionCoordinates;
-	Vector3 normalCoordinates;
+	
 
 } VertexDataPN;
 
@@ -30,6 +30,14 @@ typedef struct {
 	Vector2 textureCoordinates;
 
 } VertexDataPT;
+
+typedef struct {
+
+	Vector3 positionCoordinates;
+	Vector3 normalCoordinates;
+	Vector2 textureCoordinates;
+
+} VertexDataPNT;
 
 #endif
 

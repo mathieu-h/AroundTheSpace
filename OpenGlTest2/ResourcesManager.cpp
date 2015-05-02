@@ -24,22 +24,27 @@ ResourcesManager::ResourcesManager()
 	/*VertexBuffer* _vertexBuff = new VertexBuffer(vertices, sizeof(vertices), GL_TRIANGLES, 3, sizeof(GLfloat) * 3, _shaderArray->at(0), _shaderData, NULL, NULL, NULL);
 	_vertexBufferArray->push_back(_vertexBuff);*/
 
-	VertexBuffer* _cubevertexBuff = new VertexBuffer(verticesCube, sizeof(verticesCube), GL_TRIANGLES, 36, sizeof(VertexDataPN), _shaderArray->at(1), _shaderData, (GLvoid*)(offsetof(VertexDataPN, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPN, normalCoordinates)), NULL, NULL);
+	/*VertexBuffer* _cubevertexBuff = new VertexBuffer(verticesCube, sizeof(verticesCube), GL_TRIANGLES, 36, sizeof(VertexDataPN), _shaderArray->at(1), _shaderData, (GLvoid*)(offsetof(VertexDataPN, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPN, normalCoordinates)), NULL, NULL);
 	_vertexBufferArray->push_back(_cubevertexBuff);
 
 
 	VertexBuffer* _vertexBuffTriangle = new VertexBuffer(verticesTriangle, sizeof(verticesTriangle), GL_TRIANGLES, 12, sizeof(GLfloat) * 3, _shaderArray->at(0), _shaderData, NULL, NULL, NULL, NULL);
-	_vertexBufferArray->push_back(_vertexBuffTriangle);
+	_vertexBufferArray->push_back(_vertexBuffTriangle);*/
 
 	/*VertexBuffer* _vertexBuffTriangle2 = new VertexBuffer(verticesTriangle, sizeof(verticesTriangle), GL_LINE_LOOP, 12, sizeof(GLfloat) * 3, _shaderArray->at(0), _shaderData, NULL, NULL, NULL);
 	_vertexBufferArray->push_back(_vertexBuffTriangle2);*/
 
-	VertexBuffer* _vertexBufftext = new VertexBuffer(verticesCubeQuad, sizeof(verticesCubeQuad), GL_TRIANGLES, 36, sizeof(VertexDataPT), _shaderArray->at(2), _shaderData, (GLvoid*)(offsetof(VertexDataPT, positionCoordinates)), NULL, (GLvoid*)(offsetof(VertexDataPT, textureCoordinates)), indices);
-	_vertexBufferArray->push_back(_vertexBufftext);
+	/*VertexBuffer* _vertexBufftext = new VertexBuffer(verticesCubeQuad, sizeof(verticesCubeQuad), GL_TRIANGLES, 36, sizeof(VertexDataPT), _shaderArray->at(2), _shaderData, (GLvoid*)(offsetof(VertexDataPT, positionCoordinates)), NULL, (GLvoid*)(offsetof(VertexDataPT, textureCoordinates)), indices);
+	_vertexBufferArray->push_back(_vertexBufftext);*/
 
-	VertexBuffer* _vertexBufftext2 = new VertexBuffer(verticesCubeQuad, sizeof(verticesCubeQuad), GL_LINE_LOOP, 36, sizeof(VertexDataPT), _shaderArray->at(2), _shaderData, (GLvoid*)(offsetof(VertexDataPT, positionCoordinates)), NULL, (GLvoid*)(offsetof(VertexDataPT, textureCoordinates)), indices);
+	/*VertexBuffer* _vertexBufftext2 = new VertexBuffer(verticesCubeQuad, sizeof(verticesCubeQuad), GL_LINE_LOOP, 36, sizeof(VertexDataPT), _shaderArray->at(2), _shaderData, (GLvoid*)(offsetof(VertexDataPT, positionCoordinates)), NULL, (GLvoid*)(offsetof(VertexDataPT, textureCoordinates)), indices);
+	_vertexBufferArray->push_back(_vertexBufftext2);*/
+
+	VertexBuffer* _vertexBufftext2 = new VertexBuffer(verticesCubeWithTexture, sizeof(verticesCubeWithTexture), GL_TRIANGLES, 36, sizeof(VertexDataPNT), _shaderArray->at(2), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), indices);
 	_vertexBufferArray->push_back(_vertexBufftext2);
 
+	VertexBuffer* _vertexBufftext3 = new VertexBuffer(verticesCubeWithTexture, sizeof(verticesCubeWithTexture), GL_LINE_LOOP, 36, sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), indices);
+	_vertexBufferArray->push_back(_vertexBufftext3);
 
 	GLuint texture;
 	glGenTextures(1, &texture);

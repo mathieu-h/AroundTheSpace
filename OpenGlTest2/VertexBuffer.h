@@ -16,6 +16,7 @@ class VertexBuffer
 private :
 	GLuint _vertexBufferID;
 	GLuint _vexterArrayID;
+	GLuint _elementBufferObjectID;
 	ShaderInterface* _shader;
 	ShaderData *_shaderData;
 
@@ -31,7 +32,7 @@ public:
 	ShaderInterface* get_Shader();
 	ShaderData* get_shaderData();
 
-	VertexBuffer(const GLvoid *data, GLsizeiptr size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid*positionOffset, GLvoid *normalOffset, GLvoid* textureCoordOffset, GLvoid* vertexArray);
+	VertexBuffer(const GLvoid *data, GLsizeiptr size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid*positionOffset, GLvoid *normalOffset, GLvoid* textureCoordOffset, const GLvoid* vertexArray);
 	~VertexBuffer();
 
 	void configureVertexAttributes();

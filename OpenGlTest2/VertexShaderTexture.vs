@@ -1,18 +1,23 @@
 #version 330 core
 in vec3 aPositionVertex;
 in vec2 aTextCoords;
+in vec3 aPositionNormal;
 
 out vec2 TexCoord;
+out vec3 PositionNormal;
+out vec3 FragPos;
 
 uniform mat4 projectionMatrix;
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 
+uniform vec3 lightPos;
+uniform vec3 viewPos;
+
 void main()
 {
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(aPositionVertex, 1.0f);
-	//gl_Position = projectionMatrix  * vec4(aPositionVertex, 1.0f);
-	// We swap the y-axis by substracing our coordinates from 1. This is done because most images have the top y-axis inversed with OpenGL's top y-axis.
-	// TexCoord = texCoord;
 	TexCoord = vec2(aTextCoords.x, 1.0 - aTextCoords.y);
+	PositionNormal = mat3(transpose(inverse(modelMatrix))) * aPositionNormal;
+	FragPos = vec3(modelMatrix * vec4(aPositionVertex, 1.0f));
 }
