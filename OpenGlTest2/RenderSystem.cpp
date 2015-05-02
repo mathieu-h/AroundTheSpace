@@ -100,9 +100,6 @@ void RenderSystem::render(std::vector<Entity*> *children)
 
 			entity->get_vertexBuffer()->configureVertexAttributes();
 			entity->get_vertexBuffer()->renderVertexBuffer();
-
-			
-
 		}
 
 		

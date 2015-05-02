@@ -129,6 +129,9 @@
     <ClInclude Include="TriangleVertices.h">
       <Filter>Header Files\DataStructs</Filter>
     </ClInclude>
+    <ClInclude Include="indices.h">
+      <Filter>Header Files\DataStructs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
