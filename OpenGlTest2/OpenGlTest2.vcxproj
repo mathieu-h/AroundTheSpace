@@ -94,8 +94,10 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="MouvementSystem.h" />
     <ClInclude Include="noiseutils.h" />
-    <ClInclude Include="Planet.h" />    <ClInclude Include="OculusApp.h" />
-    <ClInclude Include="OculusManagerApp.h" />    <ClInclude Include="ResourcesManager.h" />
+    <ClInclude Include="Planet.h" />
+    <ClInclude Include="OculusApp.h" />
+    <ClInclude Include="OculusManagerApp.h" />
+    <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderData.h" />
     <ClInclude Include="TriangleVertices.h" />
@@ -117,11 +119,13 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="MouvementSystem.cpp" />
     <ClCompile Include="noiseutils.cpp" />
-    <ClCompile Include="Planet.cpp" />    <ClCompile Include="OculusApp.cpp" />
-    <ClCompile Include="OculusManagerApp.cpp" />    <ClCompile Include="ResourcesManager.cpp" />
+    <ClCompile Include="Planet.cpp" />
+    <ClCompile Include="OculusApp.cpp" />
+    <ClCompile Include="OculusManagerApp.cpp" />
+    <ClCompile Include="ResourcesManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderData.cpp" />
-    <ClCompile Include="Triangle01.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="ShaderInterface.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
@@ -133,6 +137,14 @@
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Vector4.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ColorShader.fs" />
+    <None Include="FragmentShaderTexture.fs" />
+    <None Include="SimpleLightShader.fsh" />
+    <None Include="SimpleLightShader.vsh" />
+    <None Include="VertexShader.fs" />
+    <None Include="VertexShaderTexture.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

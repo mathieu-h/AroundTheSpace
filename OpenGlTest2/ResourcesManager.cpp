@@ -3,7 +3,6 @@
 #include "TriangleVertices.h"
 #include "CubeVertices.h"
 #include "verticesTiangle.h"
-#include "adresse.h"
 #include "CubeQuadTex.h"
 
 ResourcesManager::ResourcesManager()
