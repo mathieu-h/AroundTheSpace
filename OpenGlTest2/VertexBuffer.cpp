@@ -2,12 +2,17 @@
 #include "VertexBuffer.h"
 
 
-VertexBuffer::VertexBuffer(const GLvoid *data, GLsizei size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid* positionOffset, GLvoid* normalOffset, GLvoid* textureCoordOffset) : _mode(mode), _count(count), _stride(stride), _shader(shader), _shaderData(shaderData), _positionOffset(positionOffset), _normalOffset(normalOffset), _textureCoordOffset(textureCoordOffset)
+VertexBuffer::VertexBuffer(const GLvoid *data, GLsizei size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid* positionOffset, GLvoid* normalOffset, GLvoid* textureCoordOffset, GLvoid* vertexArray) : _mode(mode), _count(count), _stride(stride), _shader(shader), _shaderData(shaderData), _positionOffset(positionOffset), _normalOffset(normalOffset), _textureCoordOffset(textureCoordOffset)
 {
 	glGenBuffers(1, &_vertexBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	if (vertexArray != NULL)
+	{
+		glGenVertexArrays(1, &_vexterArrayID);
+	}
 }
 
 
@@ -26,10 +31,18 @@ void VertexBuffer::renderVertexBuffer()
 {
 	glDrawArrays(_mode,0,_count);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	if (_vexterArrayID != NULL) {
+		glBindVertexArray(0);
+	}
+	
 }
 
 void VertexBuffer::configureVertexAttributes()
 {
+	if (_vexterArrayID != NULL) {
+		glBindVertexArray(_vexterArrayID);
+	}
+	
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
 
 	if (_shader->get_aPositionVertex() != -1) {
