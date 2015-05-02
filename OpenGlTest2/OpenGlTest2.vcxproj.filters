@@ -87,6 +87,12 @@
     <ClInclude Include="OculusManagerApp.h">
       <Filter>Header Files\Oculus</Filter>
     </ClInclude>
+    <ClInclude Include="ovr.h">
+      <Filter>Header Files\Oculus</Filter>
+    </ClInclude>
+    <ClInclude Include="glfw.h">
+      <Filter>Header Files\Oculus</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
