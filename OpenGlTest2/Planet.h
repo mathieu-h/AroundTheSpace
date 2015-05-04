@@ -7,6 +7,7 @@
 #include <noise/noise.h>
 
 #include "Vector3.h"
+#include "Vector2.h"
 #include "noiseutils.h""
 
 
@@ -17,6 +18,8 @@ public:
 	~Planet();
 
 	std::vector<Vector3> vertices;
+	std::vector<Vector3> normales;
+	std::vector<Vector2> uvs;
 	std::vector<int> triangles;
 
 private:
