@@ -49,23 +49,22 @@ void Planet::generatePlanet()
 	}
 	vertices[nbVertices - 1] = scalerMultiplyVector3(vector3Up, -radius);
 #pragma endregion
-/*
+
 #pragma region Normales
-	Vector3[] normales = new Vector3[vertices.Length];
-	for (int n = 0; n < vertices.Length; n++)
-		normales[n] = vertices[n].normalized;
+	normales = std::vector<Vector3>(nbVertices);
+	for (int n = 0; n < nbVertices; n++)
+		normales[n] = normalizeVector3(vertices[n]);
 #pragma endregion
-*/
-/*
+
 #pragma region UVs
-	Vector2[] uvs = new Vector2[vertices.Length];
-	uvs[0] = Vector2.up;
-	uvs[uvs.Length - 1] = Vector2.zero;
+	uvs = std::vector<Vector2>(nbVertices);
+	uvs[0] = makeVector2(1.0f, 1.0f);
+	uvs[nbVertices - 1] = makeVector2(0.0f, 0.0f);
 	for (int lat = 0; lat < nbLat; lat++)
 		for (int lon = 0; lon <= nbLong; lon++)
 			uvs[lon + lat * (nbLong + 1) + 1] = new Vector2((float)lon / nbLong, 1f - (float)(lat + 1) / (nbLat + 1));
 #pragma endregion
-*/
+
 #pragma region Triangles
 	const int nbFaces = nbVertices;
 	const int nbTriangles = nbFaces * 2;
