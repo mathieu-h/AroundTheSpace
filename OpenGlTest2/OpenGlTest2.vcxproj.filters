@@ -138,6 +138,12 @@
     <ClInclude Include="glfw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerInputSystem.h">
+      <Filter>Header Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -198,6 +204,12 @@
       <Filter>Source Files\DataStructs</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerInputSystem.cpp">
+      <Filter>Source Files\Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

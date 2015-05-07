@@ -60,9 +60,9 @@ void Planet::generatePlanet()
 	uvs = std::vector<Vector2>(nbVertices);
 	uvs[0] = makeVector2(1.0f, 1.0f);
 	uvs[nbVertices - 1] = makeVector2(0.0f, 0.0f);
-	for (int lat = 0; lat < nbLat; lat++)
-		for (int lon = 0; lon <= nbLong; lon++)
-			uvs[lon + lat * (nbLong + 1) + 1] = new Vector2((float)lon / nbLong, 1f - (float)(lat + 1) / (nbLat + 1));
+	//for (int lat = 0; lat < nbLat; lat++)
+		//for (int lon = 0; lon <= nbLong; lon++)
+			//uvs[lon + lat * (nbLong + 1) + 1] = new Vector2((float)lon / nbLong, 1f - (float)(lat + 1) / (nbLat + 1));
 #pragma endregion
 
 #pragma region Triangles
