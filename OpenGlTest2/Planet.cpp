@@ -69,7 +69,7 @@ void Planet::generatePlanet()
 	const int nbFaces = nbVertices;
 	const int nbTriangles = nbFaces * 2;
 	const int nbIndexes = nbTriangles * 3;
-	triangles = std::vector<int>(nbIndexes);
+	triangles = std::vector<GLuint>(nbIndexes);
 
 	//Top Cap
 	int i = 0;
@@ -81,7 +81,7 @@ void Planet::generatePlanet()
 	}
 
 	//Middle
-	for (int lat = 0; lat < nbLat - 1; ++lat)
+	for (int lat = 0; lat < nbLat-1; ++lat)
 	{
 		for (int lon = 0; lon < nbLong; ++lon)
 		{
@@ -104,6 +104,17 @@ void Planet::generatePlanet()
 		triangles[i++] = nbVertices - 1;
 		triangles[i++] = nbVertices - (lon + 2) - 1;
 		triangles[i++] = nbVertices - (lon + 1) - 1;
+	}
+
+	Vnu = std::vector<VertexDataPNT>(nbVertices);
+	
+	for (int i = 0; i < uvs.size(); ++i)
+	{
+		VertexDataPNT pnt;
+		pnt.positionCoordinates = vertices[i];
+		pnt.normalCoordinates = normales[i];
+		pnt.textureCoordinates = uvs[i];
+		Vnu[i] = pnt;
 	}
 #pragma endregion
 }

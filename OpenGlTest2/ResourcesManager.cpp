@@ -4,6 +4,7 @@
 #include "CubeVertices.h"
 #include "verticesTiangle.h"
 #include "CubeQuadTex.h"
+#include "Planet.h"
 
 ResourcesManager::ResourcesManager()
 {
@@ -27,6 +28,14 @@ ResourcesManager::ResourcesManager()
 
 	VertexBuffer* _vertexBufftext3 = new VertexBuffer(verticesCubeWithTexture, sizeof(verticesCubeWithTexture), GL_TRIANGLES, 36, sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), true, "OrnamentsHeads0036_S.jpg");
 	_vertexBufferArray->push_back(_vertexBufftext3);
+
+	Planet p;
+
+	VertexBuffer* _planetVertexBuffer = new VertexBuffer(p.Vnu, p.Vnu.size() * sizeof(p.Vnu), GL_TRIANGLES, p.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), p.triangles, "Gas Giant-Blue.jpg");
+	_vertexBufferArray->push_back(_planetVertexBuffer);
+
+	/*VertexBuffer* _vertexBufftext = new VertexBuffer(p.vertices, sizeof(verticesCubeWithTexture), GL_TRIANGLES, 36, sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), true, "OrnamentsHeads0036_S.jpg");
+	_vertexBufferArray->push_back(_vertexBufftext);*/
 }
 
 

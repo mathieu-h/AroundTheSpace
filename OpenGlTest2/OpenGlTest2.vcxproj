@@ -60,7 +60,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\Libs\freeglut\lib;..\Libs\glew-1.12.0\bin\Release\Win32;..\Libs\OculusSDK\lib;..\Libs\libnoisedll-1.0.0\bin;..\Libs\SOIL\LIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32s.lib;glfw3.lib;SOIL.lib;libnoise.lib;OculusVRd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32s.lib;glfw3.lib;SOIL.lib;libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
@@ -125,9 +125,9 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="MouvementSystem.cpp" />
     <ClCompile Include="noiseutils.cpp" />
-    <ClCompile Include="Planet.cpp" />
     <ClCompile Include="OculusApp.cpp" />
     <ClCompile Include="OculusManagerApp.cpp" />
+    <ClCompile Include="Planet.cpp" />
     <ClCompile Include="ResourcesManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderData.cpp" />
@@ -153,6 +153,14 @@
     <None Include="VertexShaderTexture.vs" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Gas Giant-Blue.jpg" />
+    <Image Include="Gas Giant-Green.jpg" />
+    <Image Include="Gas Giant-Red.jpg" />
+    <Image Include="Gas Giant-Yellow.jpg" />
+    <Image Include="Gas Planet 1.jpg" />
+    <Image Include="Gas Planet 2.jpg" />
+    <Image Include="Gas Planet 3.jpg" />
+    <Image Include="Gas Planet 4.jpg" />
     <Image Include="OrnamentsHeads0036_S.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

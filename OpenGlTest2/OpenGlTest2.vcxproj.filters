@@ -158,12 +158,6 @@
     <ClCompile Include="noiseutils.cpp">
       <Filter>Source Files\fred</Filter>
     </ClCompile>
-    <ClCompile Include="OculusApp.cpp">
-      <Filter>Source Files\Oculus</Filter>
-    </ClCompile>
-    <ClCompile Include="OculusManagerApp.cpp">
-      <Filter>Source Files\Oculus</Filter>
-    </ClCompile>
     <ClCompile Include="CameraSystem.cpp">
       <Filter>Source Files\Singletons</Filter>
     </ClCompile>
@@ -200,6 +194,12 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="OculusApp.cpp">
+      <Filter>Source Files\Oculus</Filter>
+    </ClCompile>
+    <ClCompile Include="OculusManagerApp.cpp">
+      <Filter>Source Files\Oculus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShaderTexture.fs">
@@ -223,6 +223,30 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="OrnamentsHeads0036_S.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Planet 1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Planet 2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Planet 3.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Planet 4.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Giant-Blue.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Giant-Green.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Giant-Red.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Giant-Yellow.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
