@@ -148,11 +148,11 @@ void RenderSystem::render(std::vector<Entity*> *children, std::vector<Entity *>*
 			GLuint transformLoc3 = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "viewMatrix");
 			glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(view));
 
-			GLint lightPosLoc = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "lightPos");
-			glUniform3f(lightPosLoc, lights->at(0)->get_position().x, lights->at(0)->get_position().y, lights->at(0)->get_position().z);
+			/*GLint lightPosLoc = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "light.position");
+			glUniform3f(lightPosLoc, lights->at(0)->get_position().x, lights->at(0)->get_position().y, lights->at(0)->get_position().z);*/
 
 			GLint viewPosLoc = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "viewPos");
-			glUniform3f(viewPosLoc, camX, _currentCamera->get_position().y, camZ);
+			glUniform3f(viewPosLoc, _currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z);
 
 
 			entity->get_vertexBuffer()->configureVertexAttributes();

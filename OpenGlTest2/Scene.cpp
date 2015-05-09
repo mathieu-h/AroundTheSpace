@@ -13,8 +13,8 @@ Scene::Scene()
 	Entity* _entity = new Entity((resources->getVertexBufferArray()->at(2)), makeVector3(-0.5f, -0.5f, 0.0f));
 	//Entity* _entity2 = new Entity((resources->getVertexBufferArray()->at(2)), makeVector3(0.0f, 0.0f, 0.0f));
 	//Entity* _entity2 = new Entity((resources->getVertexBufferArray()->at(0)), makeVector3(0.0f, 0.0f, 0.0f));
-	//_entity->set_rotation(makeVector3(90.0f, 0.0f, 0.0f));
-	_entity->set_rotationVelocity(makeVector3(0.0f, 0.0f, 0.0f));
+	_entity->set_rotation(makeVector3(0.0f, 0.0f, 35.0f));
+	_entity->set_rotationVelocity(makeVector3(0.0f, 0.1f, 0.0f));
 	//_entity->set_velocity(makeVector3(0.01f, 0.0f, 0.0f));
 	//_entity2->set_rotationVelocity(makeVector3(-1.0f, 1.0f, -1.0f));
 	//_entity2->set_scale(makeVector3(1.1f, 1.1f, 1.1f));

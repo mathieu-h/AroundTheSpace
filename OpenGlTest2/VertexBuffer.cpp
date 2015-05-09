@@ -196,8 +196,73 @@ void VertexBuffer::configureVertexAttributes()
 	if (_textureID != -1) {
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, _textureID);
-		glUniform1i(glGetUniformLocation(_shader->getProgramHandle(), "ourTexture"), 0);
+		glUniform1i(glGetUniformLocation(_shader->getProgramHandle(), "material.diffuse"), 0);
 	}
+
+	GLint matDiffuseLoc = glGetUniformLocation(_shader->getProgramHandle(), "material.diffuse");
+	GLint matSpecularLoc = glGetUniformLocation(_shader->getProgramHandle(), "material.specular");
+	GLint matShineLoc = glGetUniformLocation(_shader->getProgramHandle(), "material.shininess");
+
+	glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
+	glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
+	glUniform1f(matShineLoc, 32.0f);
+
+	/*GLint lightAmbientLoc = glGetUniformLocation(_shader->getProgramHandle(), "light.ambient");
+	GLint lightDiffuseLoc = glGetUniformLocation(_shader->getProgramHandle(), "light.diffuse");
+	GLint lightSpecularLoc = glGetUniformLocation(_shader->getProgramHandle(), "light.specular");
+
+	glUniform3f(lightAmbientLoc, 0.2f, 0.2f, 0.2f);
+	glUniform3f(lightDiffuseLoc, 0.5f, 0.5f, 0.5f); // Let's darken the light a bit to fit the scene
+	glUniform3f(lightSpecularLoc, 1.0f, 1.0f, 1.0f);
+
+	glUniform1f(glGetUniformLocation(_shader->getProgramHandle(), "light.constant"), 1.0f);
+	glUniform1f(glGetUniformLocation(_shader->getProgramHandle(), "light.linear"), 0.09);
+	glUniform1f(glGetUniformLocation(_shader->getProgramHandle(), "light.quadratic"), 0.032);*/
+
+	glm::vec3 pointLightPositions[] = {
+		glm::vec3(0.7f, 0.2f, 2.0f),
+		glm::vec3(2.3f, -3.3f, -4.0f),
+		glm::vec3(-4.0f, 2.0f, -12.0f),
+		glm::vec3(0.0f, 0.0f, -3.0f)
+	};
+
+	// Directional light
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.direction"), -0.2f, -1.0f, -0.3f);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.ambient"), 0.05f, 0.05f, 0.05f);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.diffuse"), 0.4f, 0.4f, 0.4f);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.specular"), 0.5f, 0.5f, 0.5f);
+	// Point light 1
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[0].position"), pointLightPositions[0].x, pointLightPositions[0].y, pointLightPositions[0].z);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[0].ambient"), 0.05f, 0.05f, 0.05f);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[0].diffuse"), 0.8f, 0.8f, 0.8f);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[0].specular"), 1.0f, 1.0f, 1.0f);
+	glUniform1f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[0].constant"), 1.0f);
+	glUniform1f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[0].linear"), 0.09);
+	glUniform1f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[0].quadratic"), 0.032);
+	// Point light 2
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[1].position"), pointLightPositions[1].x, pointLightPositions[1].y, pointLightPositions[1].z);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[1].ambient"), 0.05f, 0.05f, 0.05f);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[1].diffuse"), 0.8f, 0.8f, 0.8f);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[1].specular"), 1.0f, 1.0f, 1.0f);
+	glUniform1f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[1].constant"), 1.0f);
+	glUniform1f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[1].linear"), 0.09);
+	glUniform1f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[1].quadratic"), 0.032);
+	// Point light 3
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[2].position"), pointLightPositions[2].x, pointLightPositions[2].y, pointLightPositions[2].z);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[2].ambient"), 0.05f, 0.05f, 0.05f);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[2].diffuse"), 0.8f, 0.8f, 0.8f);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[2].specular"), 1.0f, 1.0f, 1.0f);
+	glUniform1f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[2].constant"), 1.0f);
+	glUniform1f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[2].linear"), 0.09);
+	glUniform1f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[2].quadratic"), 0.032);
+	// Point light 4
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[3].position"), pointLightPositions[3].x, pointLightPositions[3].y, pointLightPositions[3].z);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[3].ambient"), 0.05f, 0.05f, 0.05f);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[3].diffuse"), 0.8f, 0.8f, 0.8f);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[3].specular"), 1.0f, 1.0f, 1.0f);
+	glUniform1f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[3].constant"), 1.0f);
+	glUniform1f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[3].linear"), 0.09);
+	glUniform1f(glGetUniformLocation(_shader->getProgramHandle(), "pointLights[3].quadratic"), 0.032);
 	
 	//glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
 	
