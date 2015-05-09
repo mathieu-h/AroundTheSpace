@@ -125,7 +125,7 @@ VertexBuffer::VertexBuffer(std::vector<VertexDataPNT> data, GLsizei size, GLenum
 		glBufferData(GL_ARRAY_BUFFER, size, &data.front(), GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBufferObjectID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices.front(), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
 
 		if (_shader->get_aPositionVertex() != -1) {
 			glEnableVertexAttribArray(_shader->get_aPositionVertex());
