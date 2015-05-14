@@ -11,7 +11,6 @@ uniform mat4 projectionMatrix;
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 
-uniform vec3 lightPos;
 uniform vec3 viewPos;
 
 void main()

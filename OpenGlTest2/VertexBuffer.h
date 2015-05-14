@@ -6,6 +6,9 @@
 #include <GLFW\glfw3.h>
 #include "ShaderInterface.h"
 #include "ShaderData.h"
+#include "Planet.h"
+
+#include <SOIL.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -19,6 +22,7 @@ private :
 	GLuint _vertexBufferID;
 	GLuint _vexterArrayID;
 	GLuint _elementBufferObjectID;
+	GLuint _textureID;
 	ShaderInterface* _shader;
 	ShaderData *_shaderData;
 
@@ -35,6 +39,8 @@ public:
 	ShaderData* get_shaderData();
 
 	VertexBuffer(const GLvoid *data, GLsizeiptr size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid*positionOffset, GLvoid *normalOffset, GLvoid* textureCoordOffset, boolean indicesWith);
+	VertexBuffer(const GLvoid *data, GLsizeiptr size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid*positionOffset, GLvoid *normalOffset, GLvoid* textureCoordOffset, boolean indicesWith, const char* s);
+	VertexBuffer(std::vector<VertexDataPNT> data, GLsizei size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid* positionOffset, GLvoid* normalOffset, GLvoid* textureCoordOffset, std::vector<GLuint> indices, const char* s);
 	~VertexBuffer();
 
 	void configureVertexAttributes();

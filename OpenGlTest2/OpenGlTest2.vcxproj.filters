@@ -138,6 +138,12 @@
     <ClInclude Include="glfw.h">
       <Filter>Header Files\Oculus</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerInputSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -157,12 +163,6 @@
     </ClCompile>
     <ClCompile Include="noiseutils.cpp">
       <Filter>Source Files\fred</Filter>
-    </ClCompile>
-    <ClCompile Include="OculusApp.cpp">
-      <Filter>Source Files\Oculus</Filter>
-    </ClCompile>
-    <ClCompile Include="OculusManagerApp.cpp">
-      <Filter>Source Files\Oculus</Filter>
     </ClCompile>
     <ClCompile Include="CameraSystem.cpp">
       <Filter>Source Files\Singletons</Filter>
@@ -200,6 +200,18 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="OculusApp.cpp">
+      <Filter>Source Files\Oculus</Filter>
+    </ClCompile>
+    <ClCompile Include="OculusManagerApp.cpp">
+      <Filter>Source Files\Oculus</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerInputSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShaderTexture.fs">
@@ -220,5 +232,34 @@
     <None Include="SimpleLightShader.fsh">
       <Filter>Resource Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="OrnamentsHeads0036_S.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Planet 1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Planet 2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Planet 3.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Planet 4.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Giant-Blue.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Giant-Green.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Giant-Red.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Gas Giant-Yellow.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

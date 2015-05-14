@@ -14,9 +14,11 @@
 
 typedef struct
 {
-    GLfloat x;
-	GLfloat y;
+    GLdouble x;
+	GLdouble y;
     
 }Vector2;
+
+Vector2 makeVector2(GLfloat x, GLfloat y);
 
 #endif /* defined(__SimpleFPS__Vector2__) */

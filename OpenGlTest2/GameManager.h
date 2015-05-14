@@ -8,6 +8,7 @@
 #include "ResourcesManager.h"
 #include "MouvementSystem.h"
 #include "CameraSystem.h"
+#include "PlayerInputSystem.h"
 #include "Scene.h"
 //#define FREEGLUT_LIB_PRAGMAS 0
 //#pragma comment(lib, "freeglut.lib")
@@ -28,6 +29,7 @@ private :
 	MouvementSystem* _movementSystem;
 	CameraSystem* _cameraSystem;
 	GLFWwindow* _window;
+	PlayerInputSystem *_playerInputSystem;
 	Scene* _scene;
 
 public:
@@ -38,7 +40,7 @@ public:
 	static GameManager& getGameManager();
 	void runGameLoop();
 	//void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
-
+	void moveCamera();
 	void destroyGameMangaer();
 };
 

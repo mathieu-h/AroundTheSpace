@@ -26,6 +26,7 @@ private:
 
 	CameraSystem* _cameraSystem;
 	Entity* _currentCamera;
+	
 
 public:
 
@@ -33,6 +34,7 @@ public:
 	void setCurrentCamera(Entity* currentCamera);
 
 	void render(std::vector<Entity*> *children);
+	void render(std::vector<Entity*> *children, std::vector<Entity *>* lights);
 
 	static RenderSystem& getRenderSystem();
 	static void destroyRenderSystem();
