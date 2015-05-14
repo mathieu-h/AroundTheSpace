@@ -8,6 +8,7 @@
 
 #include "Vector3.h"
 #include "Vector2.h"
+#include "VertexDataP.h"
 #include "noiseutils.h""
 
 
@@ -20,7 +21,8 @@ public:
 	std::vector<Vector3> vertices;
 	std::vector<Vector3> normales;
 	std::vector<Vector2> uvs;
-	std::vector<int> triangles;
+	std::vector<VertexDataPNT> Vnu;
+	std::vector<GLuint> triangles;
 
 private:
 	void generatePlanet();

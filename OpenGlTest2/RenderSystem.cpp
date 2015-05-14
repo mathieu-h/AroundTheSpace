@@ -51,7 +51,7 @@ void RenderSystem::render(std::vector<Entity*> *children)
 				GLuint transformLoc2 = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "modelMatrix");
 				glUniformMatrix4fv(transformLoc2, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
 
-				GLfloat radius = 6.0f;
+				GLfloat radius = 1.0f;
 				GLfloat camX = sin(glfwGetTime()) * radius;
 				GLfloat camZ = cos(glfwGetTime()) * radius;
 
@@ -136,23 +136,23 @@ void RenderSystem::render(std::vector<Entity*> *children, std::vector<Entity *>*
 			GLuint transformLoc2 = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "modelMatrix");
 			glUniformMatrix4fv(transformLoc2, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
 
-			GLfloat radius = 6.0f;
+			GLfloat radius = 2.0f;
 			GLfloat camX = sin(glfwGetTime()) * radius;
 			GLfloat camZ = cos(glfwGetTime()) * radius;
 
 			glm::mat4 view;
-			view = glm::lookAt(glm::vec3(camX, _currentCamera->get_position().y, camZ),
+			view = glm::lookAt(glm::vec3(_currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z),
 				glm::vec3(_currentCamera->get_eyeVector().x, _currentCamera->get_eyeVector().y, _currentCamera->get_eyeVector().z),
 				glm::vec3(_currentCamera->get_upVector().x, _currentCamera->get_upVector().y, _currentCamera->get_upVector().z));
 
 			GLuint transformLoc3 = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "viewMatrix");
 			glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(view));
 
-			GLint lightPosLoc = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "lightPos");
-			glUniform3f(lightPosLoc, lights->at(0)->get_position().x, lights->at(0)->get_position().y, lights->at(0)->get_position().z);
+			/*GLint lightPosLoc = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "light.position");
+			glUniform3f(lightPosLoc, lights->at(0)->get_position().x, lights->at(0)->get_position().y, lights->at(0)->get_position().z);*/
 
 			GLint viewPosLoc = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "viewPos");
-			glUniform3f(viewPosLoc, camX, _currentCamera->get_position().y, camZ);
+			glUniform3f(viewPosLoc, _currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z);
 
 
 			entity->get_vertexBuffer()->configureVertexAttributes();
