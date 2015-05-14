@@ -60,7 +60,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\Libs\freeglut\lib;..\Libs\glew-1.12.0\bin\Release\Win32;..\Libs\OculusSDK\lib;..\Libs\libnoisedll-1.0.0\bin;..\Libs\SOIL\LIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32s.lib;glfw3.lib;SOIL.lib;libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OculusVRd.lib;glew32s.lib;glfw3.lib;SOIL.lib;libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
@@ -97,12 +97,14 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="indices.h" />
     <ClInclude Include="glfw.h" />
+    <ClInclude Include="Matrix3.h" />
     <ClInclude Include="MouvementSystem.h" />
     <ClInclude Include="noiseutils.h" />
     <ClInclude Include="Planet.h" />
     <ClInclude Include="OculusApp.h" />
     <ClInclude Include="OculusManagerApp.h" />
     <ClInclude Include="ovr.h" />
+    <ClInclude Include="PlayerInputSystem.h" />
     <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderData.h" />
@@ -123,11 +125,13 @@
     <ClCompile Include="CameraSystem.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Matrix3.cpp" />
     <ClCompile Include="MouvementSystem.cpp" />
     <ClCompile Include="noiseutils.cpp" />
     <ClCompile Include="OculusApp.cpp" />
     <ClCompile Include="OculusManagerApp.cpp" />
     <ClCompile Include="Planet.cpp" />
+    <ClCompile Include="PlayerInputSystem.cpp" />
     <ClCompile Include="ResourcesManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderData.cpp" />
