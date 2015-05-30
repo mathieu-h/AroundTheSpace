@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#define GLM_FORCE_RADIANS
+/*#define GLM_FORCE_RADIANS
 
 #include <OVR_CAPI_GL.h>
 #include <glm/glm.hpp>
@@ -44,3 +44,4 @@ public:
 
 };
 
+*/

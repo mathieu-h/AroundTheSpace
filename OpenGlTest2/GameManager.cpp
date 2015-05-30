@@ -67,7 +67,7 @@ GameManager& GameManager::getGameManager()
 		glfwWindowHint(GLFW_ALPHA_BITS, 8);
 		glfwWindowHint(GLFW_SAMPLES, 16);
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-		GLFWwindow* window = glfwCreateWindow(1024, 720, "Fps", NULL, NULL);
+		GLFWwindow* window = glfwCreateWindow(1600, 900, "Fps", NULL, NULL);
 		glfwMakeContextCurrent(window);
 		glfwSetKeyCallback(window, key_callback);
 		GLenum error = glewInit();

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "OculusApp.h"
+/*#include "OculusApp.h"
 #include "ovr.h"
 
 
@@ -26,3 +26,4 @@ OculusApp::OculusApp()
 OculusApp::~OculusApp()
 {
 }
+*/

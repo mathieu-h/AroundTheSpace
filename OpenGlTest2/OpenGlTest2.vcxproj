@@ -41,11 +41,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>..\Libs\libnoisedll-1.0.0\bin;..\Libs\glew-1.12.0\lib\Release\Win32;..\Libs\glfw-3.1.1.bin.WIN32\lib-vc2013;$(LibraryPath)</LibraryPath>
-    <IncludePath>..\Libs\libnoiseheaders-1.0.0\include;..\Libs\glew-1.12.0\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>..\Libs\libnoisedll-1.0.0\bin;..\Libs\glew-1.12.0\lib\Release\Win32;..\Libs\glfw-3.1.1.bin.WIN32\lib-vc2013;E:\2nd semestre\AroundTheSpace\Libs\LibsAssimp\bin;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\Libs\libnoiseheaders-1.0.0\include;..\Libs\glew-1.12.0\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);E:\2nd semestre\AroundTheSpace\Libs\LibsAssimp\include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>E:\2nd semestre\AroundTheSpace\Libs\LibsAssimp\include;E:\2nd semestre\AroundTheSpace\Libs\libnoiseheaders-1.0.0\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -59,8 +60,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\Libs\freeglut\lib;..\Libs\glew-1.12.0\bin\Release\Win32;..\Libs\OculusSDK\lib;..\Libs\libnoisedll-1.0.0\bin;..\Libs\SOIL\LIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32s.lib;glfw3.lib;SOIL.lib;libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Libs\freeglut\lib;..\Libs\glew-1.12.0\bin\Release\Win32;..\Libs\OculusSDK\lib;..\Libs\libnoisedll-1.0.0\bin;..\Libs\SOIL\LIB;E:\2nd semestre\AroundTheSpace\Libs\LibsAssimp\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;glfw3.lib;SOIL.lib;libnoise.lib;assimpd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
@@ -83,7 +84,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>..\Libs\freeglut\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;glew32.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;glew32.lib;SOIL.lib;libnoise.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -97,6 +98,9 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="indices.h" />
     <ClInclude Include="glfw.h" />
+    <ClInclude Include="light.h" />
+    <ClInclude Include="materials.h" />
+    <ClInclude Include="model.h" />
     <ClInclude Include="MouvementSystem.h" />
     <ClInclude Include="noiseutils.h" />
     <ClInclude Include="Planet.h" />
@@ -123,6 +127,8 @@
     <ClCompile Include="CameraSystem.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="light.cpp" />
+    <ClCompile Include="materials.cpp" />
     <ClCompile Include="MouvementSystem.cpp" />
     <ClCompile Include="noiseutils.cpp" />
     <ClCompile Include="OculusApp.cpp" />

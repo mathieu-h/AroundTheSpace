@@ -4,6 +4,7 @@
 #include"VertexBuffer.h"
 #include"Vector3.h"
 #include <vector>
+#include "materials.h"
 
 #ifndef _SimpleFps_Entity
 #define _SimpleFps_Entity
@@ -24,6 +25,8 @@ private:
 
 	Vector3 _eyeVector;
 	Vector3 _upVector;
+
+
 
 public:
 
@@ -53,6 +56,8 @@ public:
 
 	Vector3 get_upVector();
 	void set_upVector(Vector3 newUpVector);
+
+
 
 	Entity(VertexBuffer* newVertexBuffer, Vector3 newVector3);
 	~Entity();
