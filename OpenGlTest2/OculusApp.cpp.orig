@@ -1,8 +1,12 @@
 #include "stdafx.h"
-#include "OculusApp.h"
+<<<<<<< HEAD
+/*#include "OculusApp.h"
 #include "ovr.h"
 
 
+=======
+#include "OculusApp.h"
+>>>>>>> origin/Maxime
 
 OculusApp::OculusApp()
 {
@@ -26,7 +30,9 @@ OculusApp::OculusApp()
 OculusApp::~OculusApp()
 {
 }
-
+<<<<<<< HEAD
+*/
+=======
 
 GLFWwindow * OculusApp::createRenderingTarget(uvec2 & outSize, ivec2 & outPosition) {
 	return ovr::createRiftRenderingWindow(hmd, outSize, outPosition);
@@ -77,3 +83,4 @@ void OculusApp::initGl() {
 		((ovrGLTexture&)eyeTextureHeader).OGL.TexId = eyeFbos[eye].color;
 	});
 }
+>>>>>>> origin/Maxime

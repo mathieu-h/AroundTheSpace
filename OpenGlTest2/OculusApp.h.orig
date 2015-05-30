@@ -1,9 +1,12 @@
 #include "stdafx.h"
+<<<<<<< HEAD
+/*#include "OculusManagerApp.h"
+=======
 #include "OculusManagerApp.h"
 #include "ovr.h"
+>>>>>>> origin/Maxime
 
 
-class OculusApp : public OculusManagerApp
 
 struct FramebufferWraper {
 	glm::uvec2 size;
@@ -274,10 +277,11 @@ private:
 	ovrEyeRenderDesc eyeRenderDescs[2];
 	mat4 projections[2];
 	ovrPosef eyePoses[2];
-	//FramebufferWraper eyeFbos[2];
 	FramebufferWraper eyeFbos[2];
 
 public:
 	OculusApp();
 	~OculusApp();
 };
+
+*/
