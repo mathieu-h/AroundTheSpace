@@ -21,9 +21,11 @@ public:
 	std::vector<Vector3> normales;
 	std::vector<Vector2> uvs;
 	std::vector<int> triangles;
+	unsigned char texture[393216]; // texture de 512 par 256
 
 private:
 	void generatePlanet();
-	void generateHeightMap();
+	utils::NoiseMap generateHeightMap();
+	void generateTexture(utils::NoiseMap heightMap);
 };
 
