@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "OculusApp.h"
+/*#include "OculusApp.h"
 #include "ovr.h"
 
 
@@ -99,4 +99,4 @@ void OculusApp::initGl() {
 		OculusApp();
 		~OculusApp();
 	};
-}
+}*/

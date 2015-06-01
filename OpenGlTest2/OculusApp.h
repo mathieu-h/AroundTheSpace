@@ -1,4 +1,4 @@
-#include "stdafx.h"
+/*#include "stdafx.h"
 #include "OculusManagerApp.h"
 #include "ovr.h"
 
@@ -261,4 +261,4 @@ class OculusApp : public OculusManagerApp
 	};
 
 	
-};
+};*/
