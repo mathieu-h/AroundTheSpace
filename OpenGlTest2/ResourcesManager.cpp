@@ -4,18 +4,22 @@
 #include "CubeVertices.h"
 #include "verticesTiangle.h"
 #include "CubeQuadTex.h"
+#include "Planet.h"
+#include "model.h"
 
 ResourcesManager::ResourcesManager()
 {
 	_shaderArray = new std::vector < ShaderInterface* >;
 	/*ShaderInterface *shader = new ShaderInterface("VertexShader.fs", "ColorShader.fs");
-	_shaderArray->push_back(shader);
+	_shaderArray->push_back(shader);*/
 
-	ShaderInterface *lightShader = new ShaderInterface("SimpleLightShader.vsh", "SimpleLightShader.fsh");
-	_shaderArray->push_back(lightShader);*/
+	
 
 	ShaderInterface *textureShader = new ShaderInterface("VertexShaderTexture.vs", "FragmentShaderTexture.fs");
 	_shaderArray->push_back(textureShader);
+
+	ShaderInterface *instancingShader = new ShaderInterface("instancing.vs", "instancing.frag");
+	_shaderArray->push_back(instancingShader);
 
 	_shaderData = new ShaderData(makeVector4(1.0f, 0.0f, 1.0f, 1.0f), makeVector3(1.0f, 0.0f, 1.0f));
 
@@ -27,6 +31,22 @@ ResourcesManager::ResourcesManager()
 
 	VertexBuffer* _vertexBufftext3 = new VertexBuffer(verticesCubeWithTexture, sizeof(verticesCubeWithTexture), GL_TRIANGLES, 36, sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), true, "OrnamentsHeads0036_S.jpg");
 	_vertexBufferArray->push_back(_vertexBufftext3);
+
+	Planet p;
+
+	std::vector<materials*> *_materials = new std::vector<materials*>();
+	_materials->push_back(new materials("Rock-Texture-Surface.jpg", "Rock-Texture-Surface.jpg", 32.0f));
+	std::vector<materials*> *_materials2 = new std::vector<materials*>();
+	_materials2->push_back(new materials("Gas Giant-Blue.jpg", "Gas Giant-Blue.jpg", 32.0f));
+
+	VertexBuffer* _planetVertexBuffer = new VertexBuffer(p.Vnu, p.Vnu.size() * sizeof(p.Vnu) * 2, GL_TRIANGLES, p.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), p.triangles);
+	_planetVertexBuffer->set_materials(_materials2);
+	_vertexBufferArray->push_back(_planetVertexBuffer);
+
+	Model m("rock.obj", _shaderArray->at(1));
+	m.meshes.at(0)->set_materials(_materials);
+	_vertexBufferArray->push_back(m.meshes.at(0));
+
 }
 
 

@@ -6,6 +6,8 @@
 #include <GLFW\glfw3.h>
 #include "ShaderInterface.h"
 #include "ShaderData.h"
+#include "Planet.h"
+#include "materials.h"
 
 #include <SOIL.h>
 
@@ -21,7 +23,7 @@ private :
 	GLuint _vertexBufferID;
 	GLuint _vexterArrayID;
 	GLuint _elementBufferObjectID;
-	GLuint _textureID;
+
 	ShaderInterface* _shader;
 	ShaderData *_shaderData;
 
@@ -32,16 +34,32 @@ private :
 	GLvoid *_normalOffset;
 	GLvoid *_textureCoordOffset;
 
+	std::vector<materials*>*_materials;
+	GLuint _amount;
+	
+	//glm::mat4* modelMatrices;
+
 public:
 	GLuint getVertexBuffer();
 	ShaderInterface* get_Shader();
 	ShaderData* get_shaderData();
 
+	
+
 	VertexBuffer(const GLvoid *data, GLsizeiptr size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid*positionOffset, GLvoid *normalOffset, GLvoid* textureCoordOffset, boolean indicesWith);
 	VertexBuffer(const GLvoid *data, GLsizeiptr size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid*positionOffset, GLvoid *normalOffset, GLvoid* textureCoordOffset, boolean indicesWith, const char* s);
+	VertexBuffer(std::vector<VertexDataPNT> data, GLsizei size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid* positionOffset, GLvoid* normalOffset, GLvoid* textureCoordOffset, std::vector<GLuint> indices);
+	VertexBuffer(std::vector<VertexDataPNT> data, GLsizei size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid* positionOffset, GLvoid* normalOffset, GLvoid* textureCoordOffset, std::vector<GLuint> indices, boolean instancing, GLuint amount);
 	~VertexBuffer();
 
 	void configureVertexAttributes();
 	void renderVertexBuffer();
+
+	void renderMaterials();
+	void generateAmount();
+
+	std::vector<materials*>* get_materials();
+	void set_materials(std::vector<materials*>*materials);
+	GLuint get_amount();
 };
 

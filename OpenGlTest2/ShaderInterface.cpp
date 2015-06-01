@@ -32,6 +32,11 @@ GLint ShaderInterface::get_aTextCoords()
 	return _aTextCoords;
 }
 
+GLint ShaderInterface::get_uinstanceMatrix()
+{
+	return _uinstanceMatrix;
+}
+
 ShaderInterface::ShaderInterface(char*VS, char*FS)
 {
 	_VertexShaderString = loadTextFromFile(VS);
@@ -42,6 +47,8 @@ ShaderInterface::ShaderInterface(char*VS, char*FS)
 	free(_VertexShaderString);
 	free(_fragmentShaderString);
 
+	_uinstanceMatrix = glGetAttribLocation(shader->getProgramHandle(), "instanceMatrix");
+
 	_aPositionVertex = glGetAttribLocation(shader->getProgramHandle(), "aPositionVertex");
 	_aPositionNormals = glGetAttribLocation(shader->getProgramHandle(), "aPositionNormal");
 
@@ -49,6 +56,8 @@ ShaderInterface::ShaderInterface(char*VS, char*FS)
 
 	_uColor = glGetUniformLocation(shader->getProgramHandle(), "uColor");
 	_uLightPosition = glGetUniformLocation(shader->getProgramHandle(), "uLightPosition");
+
+	
 }
 ShaderInterface::~ShaderInterface()
 {

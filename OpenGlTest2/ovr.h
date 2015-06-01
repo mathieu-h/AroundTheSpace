@@ -3,6 +3,103 @@
 #include <OVR_CAPI_GL.h>
 #include "glfw.h"
 
+namespace glfw {
+	uvec2 getSize(GLFWmonitor * monitor) {
+		const GLFWvidmode * mode = glfwGetVideoMode(monitor);
+		return uvec2(mode->width, mode->height);
+	}
+
+	ivec2 getPosition(GLFWmonitor * monitor) {
+		ivec2 result;
+		glfwGetMonitorPos(monitor, &result.x, &result.y);
+		return result;
+	}
+
+	ivec2 getSecondaryScreenPosition(const uvec2 & size) {
+		GLFWmonitor * primary = glfwGetPrimaryMonitor();
+		int monitorCount;
+		GLFWmonitor ** monitors = glfwGetMonitors(&monitorCount);
+		GLFWmonitor * best = nullptr;
+		uvec2 bestSize;
+		for (int i = 0; i < monitorCount; ++i) {
+			GLFWmonitor * cur = monitors[i];
+			if (cur == primary) {
+				continue;
+			}
+			uvec2 curSize = glfw::getSize(cur);
+			if (best == nullptr || (bestSize.x < curSize.x && bestSize.y < curSize.y)) {
+				best = cur;
+				bestSize = curSize;
+			}
+		}
+		if (nullptr == best) {
+			best = primary;
+			bestSize = glfw::getSize(best);
+		}
+		ivec2 pos = glfw::getPosition(best);
+		if (bestSize.x > size.x) {
+			pos.x += (bestSize.x - size.x) / 2;
+		}
+
+		if (bestSize.y > size.y) {
+			pos.y += (bestSize.y - size.y) / 2;
+		}
+
+		return pos;
+	}
+
+	GLFWmonitor * getMonitorAtPosition(const ivec2 & position) {
+		int count;
+		GLFWmonitor ** monitors = glfwGetMonitors(&count);
+		for (int i = 0; i < count; ++i) {
+			ivec2 candidatePosition;
+			glfwGetMonitorPos(monitors[i], &candidatePosition.x, &candidatePosition.y);
+			if (candidatePosition == position) {
+				return monitors[i];
+			}
+		}
+		return nullptr;
+	}
+
+	GLFWwindow * createWindow(const uvec2 & size, const ivec2 & position/* = ivec2(INT_MIN)*/) {
+		GLFWwindow * window = glfwCreateWindow(size.x, size.y, "glfw", nullptr, nullptr);
+		if (!window) {
+			throw std::runtime_error("Unable to create rendering window");
+		}
+		if ((position.x > INT_MIN) && (position.y > INT_MIN)) {
+			glfwSetWindowPos(window, position.x, position.y);
+		}
+		return window;
+	}
+
+	GLFWwindow * createWindow(int w, int h, int x/* = INT_MIN*/, int y/* = INT_MIN*/) {
+		return glfw::createWindow(uvec2(w, h), ivec2(x, y));
+	}
+
+	GLFWwindow * createFullscreenWindow(const uvec2 & size, GLFWmonitor * targetMonitor) {
+		return glfwCreateWindow(size.x, size.y, "glfw", targetMonitor, nullptr);
+	}
+
+	GLFWwindow * createSecondaryScreenWindow(const uvec2 & size) {
+		return createWindow(size, glfw::getSecondaryScreenPosition(size));
+	}
+
+	void * getNativeWindowHandle(GLFWwindow * window) {
+		void * nativeWindowHandle = nullptr;
+		ON_WINDOWS([&]{
+			nativeWindowHandle = (void*)glfwGetWin32Window(window);
+		});
+		ON_LINUX([&]{
+			nativeWindowHandle = (void*)glfwGetX11Window(window);
+		});
+		ON_MAC([&]{
+			nativeWindowHandle = (void*)glfwGetCocoaWindow(window);
+		});
+		return nativeWindowHandle;
+	}
+
+}
+
 namespace ovr {
 
 	// Convenience method for looping over each eye with a lambda

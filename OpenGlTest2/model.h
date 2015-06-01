@@ -24,7 +24,7 @@ GLint TextureFromFile(const char* path, string directory);
 struct Texture {
 	GLuint id;
 	string type;
-	//aiString path;
+	aiString path;
 };
 
 class Model
@@ -49,7 +49,7 @@ private:
 	
 	string directory;
 	vector<Texture> textures_loaded;	// Stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
-	
+
 	/*  Functions   */
 	// Loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
 	void loadModel(string path, ShaderInterface* shader)
@@ -67,7 +67,7 @@ private:
 		this->directory = path.substr(0, path.find_last_of('/'));
 
 		// Process ASSIMP's root node recursively
-		this->processNode(scene->mRootNode, scene, shader);*/
+		this->processNode(scene->mRootNode, scene, shader);
 	}
 
 	// Processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
