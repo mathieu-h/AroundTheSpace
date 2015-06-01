@@ -1,5 +1,5 @@
 #include "stdafx.h"
-/*#include "OculusManagerApp.h"
+#include "OculusManagerApp.h"
 
 
 OculusManagerApp::OculusManagerApp(ovrHmdType defaultHmdType)
@@ -46,4 +46,4 @@ bool OculusManagerApp::isEnabled(ovrHmdCaps cap) {
 
 void OculusManagerApp::disableCaps(int caps) {
 	ovrHmd_SetEnabledCaps(hmd, getEnabledCaps() & ~caps);
-}*/
+}

@@ -76,4 +76,27 @@ void OculusApp::initGl() {
 		// Get the actual OpenGL texture ID
 		((ovrGLTexture&)eyeTextureHeader).OGL.TexId = eyeFbos[eye].color;
 	});
+
+	class OculusApp : public GlfwApp, public OculusManagerApp
+	{
+
+	protected:
+		ovrTexture eyeTextures[2];
+		ovrVector3f eyeOffsets[2];
+
+		GLFWwindow* createRenderingTarget(uvec2 & outSize, ivec2 & outPosition);
+		virtual void initGl();
+
+	private:
+		ovrEyeType currentEye{ ovrEye_Count };
+		ovrEyeRenderDesc eyeRenderDescs[2];
+		mat4 projections[2];
+		ovrPosef eyePoses[2];
+		//FramebufferWraper eyeFbos[2];
+		FramebufferWraper eyeFbos[2];
+
+	public:
+		OculusApp();
+		~OculusApp();
+	};
 }

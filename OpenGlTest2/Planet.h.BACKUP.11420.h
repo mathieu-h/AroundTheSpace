@@ -21,10 +21,13 @@ public:
 	std::vector<Vector3> vertices;
 	std::vector<Vector3> normales;
 	std::vector<Vector2> uvs;
-
+<<<<<<< HEAD
 	std::vector<VertexDataPNT> Vnu;
 	std::vector<GLuint> triangles;
+=======
+	std::vector<int> triangles;
 	unsigned char texture[393216]; // texture de 512 par 256
+>>>>>>> origin/fred
 
 private:
 	void generatePlanet();

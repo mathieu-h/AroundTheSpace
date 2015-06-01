@@ -8,7 +8,6 @@
 
 #include "Vector3.h"
 #include "Vector2.h"
-#include "VertexDataP.h"
 #include "noiseutils.h""
 
 
@@ -21,14 +20,10 @@ public:
 	std::vector<Vector3> vertices;
 	std::vector<Vector3> normales;
 	std::vector<Vector2> uvs;
-
-	std::vector<VertexDataPNT> Vnu;
-	std::vector<GLuint> triangles;
-	unsigned char texture[393216]; // texture de 512 par 256
+	std::vector<int> triangles;
 
 private:
 	void generatePlanet();
-	utils::NoiseMap generateHeightMap();
-	void generateTexture(utils::NoiseMap heightMap);
+	void generateHeightMap();
 };
 

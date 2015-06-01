@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include <iostream>
 
-/*#define GLM_FORCE_RADIANS
+#define GLM_FORCE_RADIANS
 
 #include <OVR_CAPI_GL.h>
 #include <glm/glm.hpp>
@@ -44,5 +44,3 @@ public:
 	void disableCaps(int caps);
 
 };
-
-*/
