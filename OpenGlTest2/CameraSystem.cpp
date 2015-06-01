@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CameraSystem.h"
 #include "RenderSystem.h"
+#include "PlayerInputSystem.h"
 
 Entity* CameraSystem::getCurrentCamera()
 {
@@ -13,6 +14,8 @@ void CameraSystem::setCurrentCamera(Entity* entity)
 
 	RenderSystem* renderSystem = &RenderSystem::getRenderSystem();
 	renderSystem->setCurrentCamera(_currentCamera);
+	PlayerInputSystem* playerSystem = &PlayerInputSystem::getPlayerInputSystem();
+	playerSystem->setCurrentPlayer(_currentCamera);
 }
 
 CameraSystem& CameraSystem::getCameraSystem()

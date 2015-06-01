@@ -40,28 +40,31 @@ void PlayerInputSystem::keyCallback(GLFWwindow *window,
 void PlayerInputSystem::update()
 {
 	if (_currentPlayer == NULL){
-		printf("tamer");
+		printf("no current player");
 	}
 	if (_currentPlayer != NULL &&
 		glfwGetInputMode(_window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED) {
 
 		if (glfwGetKey(_window, GLFW_KEY_Z)) {
-			printf("tamer");
+			printf("Z pressed");
 			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, 0.07f)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_S)) {
+			printf("S pressed");
 			_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, 0.07f)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_Q)) {
+			printf("Q pressed");
 			_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), 0.07f)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_D)) {
+			printf("D pressed");
 			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), 0.07f)));
 		}
-
+		/*
 		Vector2 currentMousePosition;
 		glfwGetCursorPos(_window, &currentMousePosition.x, &currentMousePosition.y);
 
@@ -69,7 +72,7 @@ void PlayerInputSystem::update()
 
 		glfwGetCursorPos(_window, &_lastMousePosition.x, &_lastMousePosition.y);
 
-		_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_position(), _eyeVector));
+		_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_position(), _eyeVector));*/
 
 	}
 }
