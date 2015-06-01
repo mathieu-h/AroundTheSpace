@@ -19,16 +19,16 @@ Planet::~Planet()
 
 
 void Planet::generatePlanet()
-{
+{/*
 	utils::NoiseMap heightMap = generateHeightMap();
 	int heightMapHeight = heightMap.GetHeight();
 	int heightMapWigth = heightMap.GetWidth();
 
 	generateTexture(heightMap);
-
+	*/
 	float radius = 1.0f;
-	const int nbLong = 24;
-	const int nbLat = 16;
+	const int nbLong = 200;
+	const int nbLat = 100;
 	const int nbVertices = (nbLong + 1) * nbLat + 2;
 	Vector3 vector3Up = makeVector3(0.0f, 1.0f, 0.0f);
 
@@ -49,11 +49,11 @@ void Planet::generatePlanet()
 			float a2 = _2pi * float(lon == nbLong ? 0 : lon) / nbLong;
 			float sin2 = sin(a2);
 			float cos2 = cos(a2);
-			int heightX = lon / nbLong * heightMapWigth;
-			int heightY = lat / nbLat * heightMapWigth;
-			float height = heightMap.GetValue(heightX, heightY) * 0.1f;
+			//int heightX = lon / nbLong * heightMapWigth;
+			//int heightY = lat / nbLat * heightMapWigth;
+			//float height = heightMap.GetValue(heightX, heightY) * 0.1f;
 
-			vertices[lon + lat * (nbLong + 1) + 1] = scalerMultiplyVector3(makeVector3(sin1 * cos2, cos1, sin1 * sin2), radius + height);
+			vertices[lon + lat * (nbLong + 1) + 1] = scalerMultiplyVector3(makeVector3(sin1 * cos2, cos1, sin1 * sin2), radius);
 		}
 	}
 	vertices[nbVertices - 1] = scalerMultiplyVector3(vector3Up, -radius);
@@ -88,7 +88,7 @@ void Planet::generatePlanet()
 		triangles[i++] = lon + 1;
 		triangles[i++] = 0;
 	}
-
+	
 	//Middle
 	for (int lat = 0; lat < nbLat-1; ++lat)
 	{
@@ -106,7 +106,7 @@ void Planet::generatePlanet()
 			triangles[i++] = next;
 		}
 	}
-
+	
 	//Bottom Cap
 	for (int lon = 0; lon < nbLong; ++lon)
 	{
@@ -114,10 +114,10 @@ void Planet::generatePlanet()
 		triangles[i++] = nbVertices - (lon + 2) - 1;
 		triangles[i++] = nbVertices - (lon + 1) - 1;
 	}
-
+	
 	Vnu = std::vector<VertexDataPNT>(nbVertices);
 	
-	for (int i = 0; i < uvs.size(); ++i)
+	for (int i = 0; i < nbVertices; ++i)
 	{
 		VertexDataPNT pnt;
 		pnt.positionCoordinates = vertices[i];
