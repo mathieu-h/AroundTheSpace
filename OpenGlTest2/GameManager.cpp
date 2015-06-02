@@ -44,8 +44,9 @@ void GameManager::runGameLoop()
 
 			_running = !glfwWindowShouldClose(_window);
 
-			_movementSystem->update(_scene->getChildren());
 			_playerInputSystem->update();
+			_movementSystem->update(_scene->getChildren());
+			
 
 			--deltaTime;
 		}

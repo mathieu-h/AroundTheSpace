@@ -49,30 +49,38 @@ void PlayerInputSystem::update()
 
 		if (glfwGetKey(_window, GLFW_KEY_Z)) {
 			printf("Z pressed");
-			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, 0.07f)));
+			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(),makeVector3(0.00f,0.00f,0.07f)));
+			_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_eyeVector(), makeVector3(0.0f, 0.00f, 0.07f)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_S)) {
 			printf("S pressed");
-			_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, 0.07f)));
+			//_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, 0.07f)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_Q)) {
 			printf("Q pressed");
-			_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), 0.07f)));
+			//_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), 0.07f)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_D)) {
 			printf("D pressed");
-			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), 0.07f)));
+			//_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), 0.07f)));
 		}
-		/*
-		Vector2 currentMousePosition;
-		glfwGetCursorPos(_window, &currentMousePosition.x, &currentMousePosition.y);
+		/*Vector2 currentMousePosition;
+		double x;
+		double y;
+		glfwGetCursorPos(_window, &x, &y);
+		GLfloat x3 = x;
+		GLfloat y3 = y;
+		currentMousePosition.x = x3;
+		currentMousePosition.y = y3;
 
-		_eyeVector = transformVector3(_eyeVector, makeRotationMatrix3((3.14f / (4.0f*45.0f))*-(currentMousePosition.x - _lastMousePosition.x), 0.0f, 1.0f, 0.0f));
+		_eyeVector = transformVector3(_eyeVector, makeRotationMatrix3((3.14f / (4.0f*45.0f))*(-(currentMousePosition.x - _lastMousePosition.x)), 0.0f, 1.0f, 0.0f));
 
-		glfwGetCursorPos(_window, &_lastMousePosition.x, &_lastMousePosition.y);
+		double x2 = _lastMousePosition.x;
+		double y2 = _lastMousePosition.y;
+		glfwGetCursorPos(_window, &x2, &y2);
 
 		_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_position(), _eyeVector));*/
 
