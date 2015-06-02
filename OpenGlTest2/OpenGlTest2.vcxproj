@@ -91,19 +91,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraSystem.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="CubeQuadTex.h" />
     <ClInclude Include="CubeVertices.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="OculusManager.h" />
     <ClInclude Include="indices.h" />
-    <ClInclude Include="glfw.h" />
     <ClInclude Include="Matrix3.h" />
     <ClInclude Include="MouvementSystem.h" />
     <ClInclude Include="noiseutils.h" />
     <ClInclude Include="Planet.h" />
-    <ClInclude Include="OculusApp.h" />
-    <ClInclude Include="OculusManagerApp.h" />
-    <ClInclude Include="ovr.h" />
     <ClInclude Include="PlayerInputSystem.h" />
     <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Scene.h" />
@@ -128,8 +126,7 @@
     <ClCompile Include="Matrix3.cpp" />
     <ClCompile Include="MouvementSystem.cpp" />
     <ClCompile Include="noiseutils.cpp" />
-    <ClCompile Include="OculusApp.cpp" />
-    <ClCompile Include="OculusManagerApp.cpp" />
+    <ClCompile Include="OculusManager.cpp" />
     <ClCompile Include="Planet.cpp" />
     <ClCompile Include="PlayerInputSystem.cpp" />
     <ClCompile Include="ResourcesManager.cpp" />

@@ -31,7 +31,6 @@ private :
 	GLFWwindow* _window;
 	PlayerInputSystem *_playerInputSystem;
 	Scene* _scene;
-
 public:
 	GameManager(bool running);
 	~GameManager();

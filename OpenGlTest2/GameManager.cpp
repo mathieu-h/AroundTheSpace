@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "GameManager.h"
+#include "OculusManager.h"
+#include "Constants.h"
 
 
 
@@ -76,19 +78,24 @@ GameManager& GameManager::getGameManager()
 	static GameManager *gamemanager = NULL;
 
 	if (gamemanager == NULL) {
-
-		glfwInit();
-		glfwWindowHint(GLFW_DEPTH_BITS, 24);
-		glfwWindowHint(GLFW_RED_BITS, 8);
-		glfwWindowHint(GLFW_BLUE_BITS, 8);
-		glfwWindowHint(GLFW_GREEN_BITS, 8);
-		glfwWindowHint(GLFW_ALPHA_BITS, 8);
-		glfwWindowHint(GLFW_SAMPLES, 16);
-		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-		GLFWwindow* window = glfwCreateWindow(1024, 720, "Fps", NULL, NULL);
-		glfwMakeContextCurrent(window);
-		//glfwSetKeyCallback(window, key_callback);
-		GLenum error = glewInit();
+		if (Constants::oculus)
+		{
+			OculusManager oculus = OculusManager::getOculusManager();
+		}
+		else {
+			glfwInit();
+			glfwWindowHint(GLFW_DEPTH_BITS, 24);
+			glfwWindowHint(GLFW_RED_BITS, 8);
+			glfwWindowHint(GLFW_BLUE_BITS, 8);
+			glfwWindowHint(GLFW_GREEN_BITS, 8);
+			glfwWindowHint(GLFW_ALPHA_BITS, 8);
+			glfwWindowHint(GLFW_SAMPLES, 16);
+			glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+			GLFWwindow* window = glfwCreateWindow(Constants::window_width, Constants::window_heigh, Constants::game_name(), NULL, NULL);
+			glfwMakeContextCurrent(window);
+			//glfwSetKeyCallback(window, key_callback);
+			GLenum error = glewInit();
+		}
 
 		gamemanager = new GameManager(true);
 	}

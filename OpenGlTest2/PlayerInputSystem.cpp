@@ -25,7 +25,7 @@ void PlayerInputSystem::keyCallback(GLFWwindow *window,
 	int mods)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-		printf("tamer");
+		//printf("tamer");
 		if (GLFW_CURSOR_DISABLED == glfwGetInputMode(glfwGetCurrentContext(), GLFW_CURSOR)) {
 			glfwSetInputMode(glfwGetCurrentContext(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		}
@@ -40,13 +40,13 @@ void PlayerInputSystem::keyCallback(GLFWwindow *window,
 void PlayerInputSystem::update()
 {
 	if (_currentPlayer == NULL){
-		printf("tamer");
+		//printf("tamer");
 	}
 	if (_currentPlayer != NULL &&
 		glfwGetInputMode(_window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED) {
 
 		if (glfwGetKey(_window, GLFW_KEY_Z)) {
-			printf("tamer");
+			//printf("tamer");
 			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, 0.07f)));
 		}
 
