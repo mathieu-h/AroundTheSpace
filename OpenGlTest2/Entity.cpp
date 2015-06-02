@@ -91,8 +91,9 @@ void Entity::set_upVector(Vector3 newUpVector)
 	_upVector = newUpVector;
 }
 
+
 Entity::Entity(VertexBuffer* newVertexBuffer, Vector3 newVector3) : _vertexBuffer(newVertexBuffer), 
-_position(newVector3), _scale(makeVector3(1.0f, 1.0f, 1.0f)), _rotation(makeVector3(0.0f, 0.0f, 0.0f)), 
+_position(newVector3), _scale(makeVector3(10.0f, 10.0f, 10.0f)), _rotation(makeVector3(0.0f, 0.0f, 0.0f)), 
 _velocity(makeVector3(0.0f, 0.0f, 0.0f)), _scaleVelocity(makeVector3(0.0f, 0.0f, 0.0f)), _rotationVelocity(makeVector3(0.0f, 0.0f, 0.0f)),
 _eyeVector(makeVector3(0.0f, 0.0f, 0.0f)), _upVector(makeVector3(0.0f, 1.0f, 0.0f))
 {

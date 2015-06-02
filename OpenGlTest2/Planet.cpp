@@ -20,6 +20,12 @@ Planet::~Planet()
 
 void Planet::generatePlanet()
 {
+	utils::NoiseMap heightMap = generateHeightMap();
+	int heightMapHeight = heightMap.GetHeight();
+	int heightMapWigth = heightMap.GetWidth();
+
+	generateTexture(heightMap);
+
 	float radius = 1.0f;
 	const int nbLong = 24;
 	const int nbLat = 16;
@@ -43,34 +49,36 @@ void Planet::generatePlanet()
 			float a2 = _2pi * float(lon == nbLong ? 0 : lon) / nbLong;
 			float sin2 = sin(a2);
 			float cos2 = cos(a2);
+			int heightX = lon / nbLong * heightMapWigth;
+			int heightY = lat / nbLat * heightMapWigth;
+			float height = heightMap.GetValue(heightX, heightY) * 0.1f;
 
 			vertices[lon + lat * (nbLong + 1) + 1] = scalerMultiplyVector3(makeVector3(sin1 * cos2, cos1, sin1 * sin2), radius);
 		}
 	}
 	vertices[nbVertices - 1] = scalerMultiplyVector3(vector3Up, -radius);
 #pragma endregion
-/*
+
 #pragma region Normales
-	Vector3[] normales = new Vector3[vertices.Length];
-	for (int n = 0; n < vertices.Length; n++)
-		normales[n] = vertices[n].normalized;
+	normales = std::vector<Vector3>(nbVertices);
+	for (int n = 0; n < nbVertices; n++)
+		normales[n] = normalizeVector3(vertices[n]);
 #pragma endregion
-*/
-/*
+
 #pragma region UVs
-	Vector2[] uvs = new Vector2[vertices.Length];
-	uvs[0] = Vector2.up;
-	uvs[uvs.Length - 1] = Vector2.zero;
+	uvs = std::vector<Vector2>(nbVertices);
+	uvs[0] = makeVector2(1.0f, 1.0f);
+	uvs[nbVertices - 1] = makeVector2(0.0f, 0.0f);
 	for (int lat = 0; lat < nbLat; lat++)
 		for (int lon = 0; lon <= nbLong; lon++)
-			uvs[lon + lat * (nbLong + 1) + 1] = new Vector2((float)lon / nbLong, 1f - (float)(lat + 1) / (nbLat + 1));
+			uvs[lon + lat * (nbLong + 1) + 1] = makeVector2((float)lon / nbLong, 1.0f - (float)(lat + 1) / (nbLat + 1));
 #pragma endregion
-*/
+
 #pragma region Triangles
 	const int nbFaces = nbVertices;
 	const int nbTriangles = nbFaces * 2;
 	const int nbIndexes = nbTriangles * 3;
-	triangles = std::vector<int>(nbIndexes);
+	triangles = std::vector<GLuint>(nbIndexes);
 
 	//Top Cap
 	int i = 0;
@@ -82,7 +90,7 @@ void Planet::generatePlanet()
 	}
 
 	//Middle
-	for (int lat = 0; lat < nbLat - 1; ++lat)
+	for (int lat = 0; lat < nbLat-1; ++lat)
 	{
 		for (int lon = 0; lon < nbLong; ++lon)
 		{
@@ -106,12 +114,91 @@ void Planet::generatePlanet()
 		triangles[i++] = nbVertices - (lon + 2) - 1;
 		triangles[i++] = nbVertices - (lon + 1) - 1;
 	}
+
+	Vnu = std::vector<VertexDataPNT>(nbVertices);
+	
+	for (int i = 0; i < uvs.size(); ++i)
+	{
+		VertexDataPNT pnt;
+		pnt.positionCoordinates = vertices[i];
+		pnt.normalCoordinates = normales[i];
+		pnt.textureCoordinates = uvs[i];
+		Vnu[i] = pnt;
+	}
 #pragma endregion
 }
 
 
 
-void Planet::generateHeightMap()
+utils::NoiseMap Planet::generateHeightMap()
 {
+	module::RidgedMulti mountainTerrain;
 
+	module::Billow baseFlatTerrain;
+	baseFlatTerrain.SetFrequency(2.0);
+
+	module::ScaleBias flatTerrain;
+	flatTerrain.SetSourceModule(0, baseFlatTerrain);
+	flatTerrain.SetScale(0.125);
+	flatTerrain.SetBias(-0.75);
+
+	module::Perlin terrainType;
+	terrainType.SetFrequency(0.5);
+	terrainType.SetPersistence(0.25);
+	//terrainType.SetOctaveCount(10);
+
+	module::Select terrainSelector;
+	terrainSelector.SetSourceModule(0, flatTerrain);
+	terrainSelector.SetSourceModule(1, mountainTerrain);
+	terrainSelector.SetControlModule(terrainType);
+	terrainSelector.SetBounds(0.0, 1000.0);
+	terrainSelector.SetEdgeFalloff(0.125);
+
+	module::Turbulence finalTerrain;
+	finalTerrain.SetSourceModule(0, terrainSelector);
+	finalTerrain.SetFrequency(4.0);
+	finalTerrain.SetPower(0.125);
+
+	utils::NoiseMap heightMap;
+	utils::NoiseMapBuilderSphere heightMapBuilder;
+	heightMapBuilder.SetSourceModule(finalTerrain);
+	heightMapBuilder.SetDestNoiseMap(heightMap);
+	heightMapBuilder.SetDestSize(512, 256);
+	heightMapBuilder.SetBounds(-90.0, 90.0, -180.0, 180.0);
+	heightMapBuilder.Build();
+
+	return heightMap;
+}
+
+
+void Planet::generateTexture(utils::NoiseMap heightMap)
+{
+	utils::Image image;
+
+	utils::RendererImage renderer;
+	renderer.SetSourceNoiseMap(heightMap);
+	renderer.SetDestImage(image);
+	renderer.ClearGradient();
+	renderer.AddGradientPoint(-1.0000, utils::Color(0, 0, 128, 255)); // deeps
+	renderer.AddGradientPoint(-0.2500, utils::Color(0, 0, 255, 255)); // shallow
+	renderer.AddGradientPoint(0.0000, utils::Color(0, 128, 255, 255)); // shore
+	renderer.AddGradientPoint(0.0625, utils::Color(240, 240, 64, 255)); // sand
+	renderer.AddGradientPoint(0.1250, utils::Color(32, 160, 0, 255)); // grass
+	renderer.AddGradientPoint(0.3750, utils::Color(224, 224, 0, 255)); // dirt
+	renderer.AddGradientPoint(0.7500, utils::Color(128, 128, 128, 255)); // rock
+	renderer.AddGradientPoint(1.0000, utils::Color(255, 255, 255, 255)); // snow
+	renderer.EnableLight();
+	renderer.SetLightContrast(3.0);
+	renderer.SetLightBrightness(2.0);
+	renderer.Render();
+
+	int i = 0;
+	for (int y = 0; y < 256; ++y) {
+		for (int x = 0; x < 512; ++x) {
+			utils::Color pixel = image.GetValue(x, y);
+			texture[i++] = pixel.red;
+			texture[i++] = pixel.green;
+			texture[i++] = pixel.blue;
+		}
+	}
 }

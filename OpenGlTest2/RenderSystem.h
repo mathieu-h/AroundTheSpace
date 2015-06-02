@@ -14,7 +14,9 @@
 #include "VertexBuffer.h"
 #include <vector>
 #include "Entity.h"
+#include "light.h"
 #include "CameraSystem.h"
+
 
 class RenderSystem
 {
@@ -26,6 +28,7 @@ private:
 
 	CameraSystem* _cameraSystem;
 	Entity* _currentCamera;
+	
 
 public:
 
@@ -33,6 +36,8 @@ public:
 	void setCurrentCamera(Entity* currentCamera);
 
 	void render(std::vector<Entity*> *children);
+	void render(std::vector<Entity*> *children, std::vector<light *>* lights);
+	void renderLights(Entity* entity,std::vector<light *>* lights);
 
 	static RenderSystem& getRenderSystem();
 	static void destroyRenderSystem();

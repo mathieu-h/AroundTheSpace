@@ -4,8 +4,6 @@
 #include "ShaderInterface.h"
 #include "VertexBuffer.h"
 
-#include <SOIL.h>
-
 #ifndef _SimpleFps_ResourcesManager
 #define _SimpleFps_ResourcesManager
 
