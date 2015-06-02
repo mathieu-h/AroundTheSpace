@@ -49,8 +49,8 @@ void PlayerInputSystem::update()
 
 		if (glfwGetKey(_window, GLFW_KEY_Z)) {
 			printf("Z pressed");
-			_currentPlayer->set_velocity(makeVector3(0.7f,0.00f,0.00f));
-
+			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(),makeVector3(0.00f,0.00f,0.07f)));
+			_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_eyeVector(), makeVector3(0.0f, 0.00f, 0.07f)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_S)) {
