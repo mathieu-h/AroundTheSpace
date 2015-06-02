@@ -19,16 +19,16 @@ Planet::~Planet()
 
 
 void Planet::generatePlanet()
-{/*
+{
 	utils::NoiseMap heightMap = generateHeightMap();
 	int heightMapHeight = heightMap.GetHeight();
-	int heightMapWigth = heightMap.GetWidth();
+	int heightMapWidth = heightMap.GetWidth();
 
 	generateTexture(heightMap);
-	*/
+	
 	float radius = 1.0f;
-	const int nbLong = 200;
-	const int nbLat = 100;
+	const int nbLong = 240;
+	const int nbLat = 160;
 	const int nbVertices = (nbLong + 1) * nbLat + 2;
 	Vector3 vector3Up = makeVector3(0.0f, 1.0f, 0.0f);
 
@@ -49,11 +49,15 @@ void Planet::generatePlanet()
 			float a2 = _2pi * float(lon == nbLong ? 0 : lon) / nbLong;
 			float sin2 = sin(a2);
 			float cos2 = cos(a2);
-			//int heightX = lon / nbLong * heightMapWigth;
-			//int heightY = lat / nbLat * heightMapWigth;
-			//float height = heightMap.GetValue(heightX, heightY) * 0.1f;
+			int heightX = int(float(lon) / (nbLong) * heightMapWidth);
+			int heightY = int(float(lat) / (nbLat) * heightMapHeight);
+			if (lon == nbLong)
+				heightX = 0;
+			float height = heightMap.GetValue(heightX, heightY) * 0.05f;
+			if (height < 0)
+				height = 0;
 
-			vertices[lon + lat * (nbLong + 1) + 1] = scalerMultiplyVector3(makeVector3(sin1 * cos2, cos1, sin1 * sin2), radius);
+			vertices[lon + lat * (nbLong + 1) + 1] = scalerMultiplyVector3(makeVector3(sin1 * cos2, cos1, sin1 * sin2), radius + height);
 		}
 	}
 	vertices[nbVertices - 1] = scalerMultiplyVector3(vector3Up, -radius);
@@ -145,7 +149,7 @@ utils::NoiseMap Planet::generateHeightMap()
 	module::Perlin terrainType;
 	terrainType.SetFrequency(0.5);
 	terrainType.SetPersistence(0.25);
-	//terrainType.SetOctaveCount(10);
+	terrainType.SetOctaveCount(10);
 
 	module::Select terrainSelector;
 	terrainSelector.SetSourceModule(0, flatTerrain);
@@ -192,13 +196,19 @@ void Planet::generateTexture(utils::NoiseMap heightMap)
 	renderer.SetLightBrightness(2.0);
 	renderer.Render();
 
+	int heigth = heightMap.GetHeight();
+	int width = heightMap.GetWidth();
+	//unsigned char texture[heigth * width * 3];
+	unsigned char texture[393216];
 	int i = 0;
-	for (int y = 0; y < 256; ++y) {
-		for (int x = 0; x < 512; ++x) {
+	for (int y = 0; y < heigth; ++y) {
+		for (int x = 0; x < width; ++x) {
 			utils::Color pixel = image.GetValue(x, y);
 			texture[i++] = pixel.red;
 			texture[i++] = pixel.green;
 			texture[i++] = pixel.blue;
 		}
 	}
+
+	mat = new materials(texture,512,256);
 }

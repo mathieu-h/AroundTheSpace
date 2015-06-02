@@ -34,6 +34,7 @@ private:
 public:
 	materials(const char* s, GLfloat shineness);
 	materials(const char* s, const char* s2, GLfloat shineness);
+	materials(unsigned char* s,int width, int height);
 	materials(GLuint id, GLfloat shineness);
 	materials(GLuint id, GLuint id2, GLfloat shineness);
 	~materials();

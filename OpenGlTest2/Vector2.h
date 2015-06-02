@@ -14,8 +14,8 @@
 
 typedef struct
 {
-    GLdouble x;
-	GLdouble y;
+    GLfloat x;
+	GLfloat y;
     
 }Vector2;
 

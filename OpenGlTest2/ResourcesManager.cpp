@@ -37,8 +37,8 @@ ResourcesManager::ResourcesManager()
 	std::vector<materials*> *_materials = new std::vector<materials*>();
 	_materials->push_back(new materials("Rock-Texture-Surface.jpg", "Rock-Texture-Surface.jpg", 32.0f));
 	std::vector<materials*> *_materials2 = new std::vector<materials*>();
-	_materials2->push_back(new materials("Gas Giant-Blue.jpg", "Gas Giant-Blue.jpg", 32.0f));
-
+	//_materials2->push_back(new materials("Gas Giant-Blue.jpg", "Gas Giant-Blue.jpg", 32.0f));
+	_materials2->push_back(p.mat);
 	VertexBuffer* _planetVertexBuffer = new VertexBuffer(p.Vnu, p.Vnu.size() * sizeof(p.Vnu) * 2, GL_TRIANGLES, p.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), p.triangles);
 	_planetVertexBuffer->set_materials(_materials2);
 	_vertexBufferArray->push_back(_planetVertexBuffer);
