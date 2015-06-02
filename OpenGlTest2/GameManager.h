@@ -29,7 +29,7 @@ private :
 	MouvementSystem* _movementSystem;
 	CameraSystem* _cameraSystem;
 	GLFWwindow* _window;
-	PlayerInputSystem *_playerInputSystem;
+	//PlayerInputSystem *_playerInputSystem;
 	Scene* _scene;
 
 public:
