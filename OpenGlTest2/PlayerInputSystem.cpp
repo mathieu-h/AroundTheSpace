@@ -10,7 +10,9 @@ void PlayerInputSystem::setCurrentPlayer(Entity *newPlayer)
 
 PlayerInputSystem::PlayerInputSystem() : _window(glfwGetCurrentContext())
 {
-	glfwGetCursorPos(_window, &_lastMousePosition.x, &_lastMousePosition.y);
+	double x = _lastMousePosition.x;
+	double y = _lastMousePosition.y;
+	glfwGetCursorPos(_window, &x, &y);
 }
 
 PlayerInputSystem::~PlayerInputSystem()
@@ -73,6 +75,17 @@ void PlayerInputSystem::update()
 		glfwGetCursorPos(_window, &_lastMousePosition.x, &_lastMousePosition.y);
 
 		_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_position(), _eyeVector));*/
+
+		/*Vector2 currentMousePosition;
+		  double x;
+		  double y;
+		  glfwGetCursorPos(_window, &x, &y);
+		  GLfloat x3 = x;
+		  GLfloat y3 = y;
+		  currentMousePosition.x = x3;
+		  currentMousePosition.y = y3;
+
+		  eyeVector = transformVector3(_eyeVector, makeRotationMatrix3((3.14f / (4.0f*45.0f))*(-(currentMousePosition.x - lastMousePosition.x)), 0.0f, 1.0f, 0.0f));*/
 
 	}
 }
