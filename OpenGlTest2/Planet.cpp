@@ -53,7 +53,7 @@ void Planet::generatePlanet()
 			int heightY = lat / nbLat * heightMapWigth;
 			float height = heightMap.GetValue(heightX, heightY) * 0.1f;
 
-			vertices[lon + lat * (nbLong + 1) + 1] = scalerMultiplyVector3(makeVector3(sin1 * cos2, cos1, sin1 * sin2), radius + height);
+			vertices[lon + lat * (nbLong + 1) + 1] = scalerMultiplyVector3(makeVector3(sin1 * cos2, cos1, sin1 * sin2), radius);
 		}
 	}
 	vertices[nbVertices - 1] = scalerMultiplyVector3(vector3Up, -radius);
