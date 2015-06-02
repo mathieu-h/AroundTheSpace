@@ -50,8 +50,6 @@ void GameManager::runGameLoop()
 			--deltaTime;
 		}
 
-
-
 		_render->render(_scene->getChildren(), _scene->getLights());
 	}
 }
