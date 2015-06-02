@@ -188,7 +188,7 @@ RenderSystem& RenderSystem::getRenderSystem()
 		glViewport(0.0f, 0.0f, 1600.0f, 900.0f);
 		glMatrixMode(GL_MODELVIEW);
 
-		//glEnable(GL_CULL_FACE);
+		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
 	}
 

@@ -1,6 +1,7 @@
-#include "stdafx.h"
+/*#include "stdafx.h"
+#include <iostream>
 
-/*#define GLM_FORCE_RADIANS
+#define GLM_FORCE_RADIANS
 
 #include <OVR_CAPI_GL.h>
 #include <glm/glm.hpp>
@@ -42,6 +43,4 @@ public:
 	bool isEnabled(ovrHmdCaps cap);
 	void disableCaps(int caps);
 
-};
-
-*/
+};*/
