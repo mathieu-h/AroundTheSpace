@@ -61,7 +61,7 @@ void RenderSystem::render(std::vector<Entity*> *children)
 				GLfloat camZ = cos(glfwGetTime()) * radius;
 
 				glm::mat4 view;
-				view = glm::lookAt(glm::vec3(camX, _currentCamera->get_position().y, camZ),
+				view = glm::lookAt(glm::vec3(_currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z),
 					glm::vec3(_currentCamera->get_eyeVector().x, _currentCamera->get_eyeVector().y, _currentCamera->get_eyeVector().z),
 					glm::vec3(_currentCamera->get_upVector().x, _currentCamera->get_upVector().y, _currentCamera->get_upVector().z));
 
@@ -72,7 +72,7 @@ void RenderSystem::render(std::vector<Entity*> *children)
 				glUniform3f(lightPosLoc, 5.0f, 5.0f, 5.0f);
 
 				GLint viewPosLoc = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "viewPos");
-				glUniform3f(viewPosLoc, camX, _currentCamera->get_position().y, camZ);
+				glUniform3f(viewPosLoc, _currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z);
 
 			}
 			else {
@@ -151,7 +151,8 @@ void RenderSystem::render(std::vector<Entity*> *children, std::vector<light *>* 
 			GLfloat camZ = cos(glfwGetTime()) * radius;
 
 			glm::mat4 view;
-			view = glm::lookAt(glm::vec3(0.0f, 25.0f, -85.0f),
+			//view = glm::lookAt(glm::vec3(0.0f, 25.0f, -85.0f),
+			view = glm::lookAt(glm::vec3(_currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z),
 				glm::vec3(_currentCamera->get_eyeVector().x, _currentCamera->get_eyeVector().y, _currentCamera->get_eyeVector().z),
 				glm::vec3(_currentCamera->get_upVector().x, _currentCamera->get_upVector().y, _currentCamera->get_upVector().z));
 
