@@ -42,6 +42,7 @@
     <ClInclude Include="MouvementSystem.h" />
     <ClInclude Include="noiseutils.h" />
     <ClInclude Include="Planet.h" />
+    <ClInclude Include="ovr.h" />
     <ClInclude Include="PlayerInputSystem.h" />
     <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Scene.h" />

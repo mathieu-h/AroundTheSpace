@@ -49,8 +49,8 @@ void PlayerInputSystem::update()
 
 		if (glfwGetKey(_window, GLFW_KEY_Z)) {
 			printf("Z pressed");
-			_currentPlayer->set_velocity(makeVector3(0.7f,0.00f,0.00f));
-
+			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(),makeVector3(0.00f,0.00f,0.07f)));
+			_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_eyeVector(), makeVector3(0.0f, 0.00f, 0.07f)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_S)) {
@@ -83,6 +83,17 @@ void PlayerInputSystem::update()
 		glfwGetCursorPos(_window, &x2, &y2);
 
 		_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_position(), _eyeVector));*/
+
+		/*Vector2 currentMousePosition;
+		  double x;
+		  double y;
+		  glfwGetCursorPos(_window, &x, &y);
+		  GLfloat x3 = x;
+		  GLfloat y3 = y;
+		  currentMousePosition.x = x3;
+		  currentMousePosition.y = y3;
+
+		  eyeVector = transformVector3(_eyeVector, makeRotationMatrix3((3.14f / (4.0f*45.0f))*(-(currentMousePosition.x - lastMousePosition.x)), 0.0f, 1.0f, 0.0f));*/
 
 	}
 }
