@@ -10,7 +10,9 @@ void PlayerInputSystem::setCurrentPlayer(Entity *newPlayer)
 
 PlayerInputSystem::PlayerInputSystem() : _window(glfwGetCurrentContext())
 {
-	glfwGetCursorPos(_window, &_lastMousePosition.x, &_lastMousePosition.y);
+	double x = _lastMousePosition.x;
+	double y = _lastMousePosition.y;
+	glfwGetCursorPos(_window, &x, &y);
 }
 
 PlayerInputSystem::~PlayerInputSystem()
@@ -25,7 +27,7 @@ void PlayerInputSystem::keyCallback(GLFWwindow *window,
 	int mods)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-		//printf("tamer");
+		printf("tamer");
 		if (GLFW_CURSOR_DISABLED == glfwGetInputMode(glfwGetCurrentContext(), GLFW_CURSOR)) {
 			glfwSetInputMode(glfwGetCurrentContext(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		}
@@ -40,36 +42,47 @@ void PlayerInputSystem::keyCallback(GLFWwindow *window,
 void PlayerInputSystem::update()
 {
 	if (_currentPlayer == NULL){
-		//printf("tamer");
+		printf("no current player");
 	}
 	if (_currentPlayer != NULL &&
 		glfwGetInputMode(_window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED) {
 
 		if (glfwGetKey(_window, GLFW_KEY_Z)) {
-			//printf("tamer");
-			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, 0.07f)));
+			printf("Z pressed");
+			_currentPlayer->set_velocity(makeVector3(0.7f,0.00f,0.00f));
+
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_S)) {
-			_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, 0.07f)));
+			printf("S pressed");
+			//_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, 0.07f)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_Q)) {
-			_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), 0.07f)));
+			printf("Q pressed");
+			//_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), 0.07f)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_D)) {
-			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), 0.07f)));
+			printf("D pressed");
+			//_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), 0.07f)));
 		}
+		/*Vector2 currentMousePosition;
+		double x;
+		double y;
+		glfwGetCursorPos(_window, &x, &y);
+		GLfloat x3 = x;
+		GLfloat y3 = y;
+		currentMousePosition.x = x3;
+		currentMousePosition.y = y3;
 
-		Vector2 currentMousePosition;
-		glfwGetCursorPos(_window, &currentMousePosition.x, &currentMousePosition.y);
+		_eyeVector = transformVector3(_eyeVector, makeRotationMatrix3((3.14f / (4.0f*45.0f))*(-(currentMousePosition.x - _lastMousePosition.x)), 0.0f, 1.0f, 0.0f));
 
-		_eyeVector = transformVector3(_eyeVector, makeRotationMatrix3((3.14f / (4.0f*45.0f))*-(currentMousePosition.x - _lastMousePosition.x), 0.0f, 1.0f, 0.0f));
+		double x2 = _lastMousePosition.x;
+		double y2 = _lastMousePosition.y;
+		glfwGetCursorPos(_window, &x2, &y2);
 
-		glfwGetCursorPos(_window, &_lastMousePosition.x, &_lastMousePosition.y);
-
-		_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_position(), _eyeVector));
+		_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_position(), _eyeVector));*/
 
 	}
 }

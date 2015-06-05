@@ -41,11 +41,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>..\Libs\libnoisedll-1.0.0\bin;..\Libs\glew-1.12.0\lib\Release\Win32;..\Libs\glfw-3.1.1.bin.WIN32\lib-vc2013;$(LibraryPath)</LibraryPath>
-    <IncludePath>..\Libs\libnoiseheaders-1.0.0\include;..\Libs\glew-1.12.0\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>..\Libs\libnoisedll-1.0.0\bin;..\Libs\glew-1.12.0\lib\Release\Win32;..\Libs\glfw-3.1.1.bin.WIN32\lib-vc2013;E:\2nd semestre\AroundTheSpace\Libs\LibsAssimp\bin;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\Libs\libnoiseheaders-1.0.0\include;..\Libs\glew-1.12.0\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);E:\2nd semestre\AroundTheSpace\Libs\LibsAssimp\include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>E:\2nd semestre\AroundTheSpace\Libs\LibsAssimp\include;E:\2nd semestre\AroundTheSpace\Libs\libnoiseheaders-1.0.0\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -59,8 +60,13 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+<<<<<<< HEAD
+      <AdditionalLibraryDirectories>..\Libs\freeglut\lib;..\Libs\glew-1.12.0\bin\Release\Win32;..\Libs\OculusSDK\lib;..\Libs\libnoisedll-1.0.0\bin;..\Libs\SOIL\LIB;E:\2nd semestre\AroundTheSpace\Libs\LibsAssimp\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;glfw3.lib;SOIL.lib;libnoise.lib;assimpd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+=======
       <AdditionalLibraryDirectories>..\Libs\freeglut\lib;..\Libs\glew-1.12.0\bin\Release\Win32;..\Libs\OculusSDK\lib;..\Libs\libnoisedll-1.0.0\bin;..\Libs\SOIL\LIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32s.lib;glfw3.lib;SOIL.lib;libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OculusVRd.lib;glew32s.lib;glfw3.lib;SOIL.lib;libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
+>>>>>>> origin/Maxime
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
@@ -83,7 +89,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>..\Libs\freeglut\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;glew32.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;glew32.lib;SOIL.lib;libnoise.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -95,17 +101,22 @@
     <ClInclude Include="CubeVertices.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameManager.h" />
-<<<<<<< HEAD
-    <ClInclude Include="glfw.h" />
-=======
     <ClInclude Include="indices.h" />
->>>>>>> origin/Valentin
+    <ClInclude Include="glfw.h" />
+<<<<<<< HEAD
+    <ClInclude Include="light.h" />
+    <ClInclude Include="materials.h" />
+    <ClInclude Include="model.h" />
+=======
+    <ClInclude Include="Matrix3.h" />
+>>>>>>> origin/Maxime
     <ClInclude Include="MouvementSystem.h" />
     <ClInclude Include="noiseutils.h" />
     <ClInclude Include="Planet.h" />
     <ClInclude Include="OculusApp.h" />
     <ClInclude Include="OculusManagerApp.h" />
     <ClInclude Include="ovr.h" />
+    <ClInclude Include="PlayerInputSystem.h" />
     <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderData.h" />
@@ -126,11 +137,18 @@
     <ClCompile Include="CameraSystem.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameManager.cpp" />
+<<<<<<< HEAD
+    <ClCompile Include="light.cpp" />
+    <ClCompile Include="materials.cpp" />
+=======
+    <ClCompile Include="Matrix3.cpp" />
+>>>>>>> origin/Maxime
     <ClCompile Include="MouvementSystem.cpp" />
     <ClCompile Include="noiseutils.cpp" />
-    <ClCompile Include="Planet.cpp" />
     <ClCompile Include="OculusApp.cpp" />
     <ClCompile Include="OculusManagerApp.cpp" />
+    <ClCompile Include="Planet.cpp" />
+    <ClCompile Include="PlayerInputSystem.cpp" />
     <ClCompile Include="ResourcesManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderData.cpp" />
@@ -154,6 +172,17 @@
     <None Include="SimpleLightShader.vsh" />
     <None Include="VertexShader.fs" />
     <None Include="VertexShaderTexture.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Gas Giant-Blue.jpg" />
+    <Image Include="Gas Giant-Green.jpg" />
+    <Image Include="Gas Giant-Red.jpg" />
+    <Image Include="Gas Giant-Yellow.jpg" />
+    <Image Include="Gas Planet 1.jpg" />
+    <Image Include="Gas Planet 2.jpg" />
+    <Image Include="Gas Planet 3.jpg" />
+    <Image Include="Gas Planet 4.jpg" />
+    <Image Include="OrnamentsHeads0036_S.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

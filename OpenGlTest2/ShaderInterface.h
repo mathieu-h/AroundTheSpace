@@ -10,6 +10,7 @@ private :
 	GLint _uColor;
 	GLint _uLightPosition;
 	GLint _aTextCoords;
+	GLint _uinstanceMatrix;
 
 	char* _VertexShaderString;
 	char* _fragmentShaderString;
@@ -24,6 +25,7 @@ public :
 	GLint get_uColor();
 	GLint get_uLightPosition();
 	GLint get_aTextCoords();
+	GLint get_uinstanceMatrix();
 
 	ShaderInterface(char*VS, char*FS);
 	~ShaderInterface();
