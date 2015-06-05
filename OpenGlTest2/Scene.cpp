@@ -21,7 +21,7 @@ Scene::Scene()
 	//_entity2->set_rotationVelocity(makeVector3(-1.0f, 1.0f, -1.0f));
 	_entity2->set_scale(makeVector3(18.0f, 18.0f, 18.0f));
 	_entity2->set_rotationVelocity(makeVector3(0.0f, 0.1f, 0.0f));
-	_entity2->set_rotation(makeVector3(0.0f, 0.0f, 35.0f));
+	_entity2->set_rotation(makeVector3(0.0f, 0.0f, 15.0f));
 	/*for (int i = 0; i < 100000; ++i)
 	{
 	Entity* _entity3 = new Entity((resources->getVertexBufferArray()->at(2)), makeVector3(cos(i * 0.05f), -sin(i * 0.05f),i * 0.05f));
