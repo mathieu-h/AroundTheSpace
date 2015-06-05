@@ -41,31 +41,39 @@ void PlayerInputSystem::keyCallback(GLFWwindow *window,
 
 void PlayerInputSystem::update()
 {
+
+	float moveSpeed = 0.07f;
+
 	if (_currentPlayer == NULL){
-		printf("no current player");
+		//printf("no current player");
 	}
 	if (_currentPlayer != NULL &&
 		glfwGetInputMode(_window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED) {
 
 		if (glfwGetKey(_window, GLFW_KEY_Z)) {
-			printf("Z pressed");
-			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(),makeVector3(0.00f,0.00f,0.07f)));
-			_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_eyeVector(), makeVector3(0.0f, 0.00f, 0.07f)));
+			//printf("Z pressed");
+			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), makeVector3(0.00f, 0.00f, moveSpeed)));
+			_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_eyeVector(), makeVector3(0.0f, 0.00f, moveSpeed)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_S)) {
-			printf("S pressed");
+			//printf("S pressed");
 			//_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, 0.07f)));
+			_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), makeVector3(0.00f, 0.00f, moveSpeed)));
+			_currentPlayer->set_eyeVector(subtractVector3(_currentPlayer->get_eyeVector(), makeVector3(0.0f, 0.00f, moveSpeed)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_Q)) {
-			printf("Q pressed");
-			//_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), 0.07f)));
+			//printf("Q pressed");
+			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), makeVector3(moveSpeed, 0.0f, 0.0f)));
+			_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_eyeVector(), makeVector3(moveSpeed, 0.0f, 0.0f)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_D)) {
-			printf("D pressed");
+			//printf("D pressed");
 			//_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), 0.07f)));
+			_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), makeVector3(moveSpeed, 0.0f, 0.0f)));
+			_currentPlayer->set_eyeVector(subtractVector3(_currentPlayer->get_eyeVector(), makeVector3(moveSpeed, 0.0f, 0.0f)));
 		}
 		/*Vector2 currentMousePosition;
 		double x;

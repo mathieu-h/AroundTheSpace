@@ -155,7 +155,7 @@ private:
 			
 		}
 		//_materials->push_back(new materials("Rock-Texture-Surface.jpg", "Rock-Texture-Surface.jpg", 32.0f));
-		VertexBuffer* vertexBuff = new VertexBuffer(Vnu, Vnu.size() * sizeof(Vnu) * 2, GL_TRIANGLES, indices.size(), sizeof(VertexDataPNT), shader, NULL, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), indices, true, 10000);
+		VertexBuffer* vertexBuff = new VertexBuffer(Vnu, Vnu.size() * sizeof(Vnu) * 2, GL_TRIANGLES, indices.size(), sizeof(VertexDataPNT), shader, NULL, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), indices, true, 2500);
 		//vertexBuff->set_materials(_materials);
 		// Return a mesh object created from the extracted mesh data
 		return vertexBuff;
