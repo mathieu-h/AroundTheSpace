@@ -75,34 +75,10 @@ void PlayerInputSystem::update()
 			_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), makeVector3(moveSpeed, 0.0f, 0.0f)));
 			_currentPlayer->set_eyeVector(subtractVector3(_currentPlayer->get_eyeVector(), makeVector3(moveSpeed, 0.0f, 0.0f)));
 		}
-		/*Vector2 currentMousePosition;
-		double x;
-		double y;
-		glfwGetCursorPos(_window, &x, &y);
-		GLfloat x3 = x;
-		GLfloat y3 = y;
-		currentMousePosition.x = x3;
-		currentMousePosition.y = y3;
-
-		_eyeVector = transformVector3(_eyeVector, makeRotationMatrix3((3.14f / (4.0f*45.0f))*(-(currentMousePosition.x - _lastMousePosition.x)), 0.0f, 1.0f, 0.0f));
-
-		double x2 = _lastMousePosition.x;
-		double y2 = _lastMousePosition.y;
-		glfwGetCursorPos(_window, &x2, &y2);
-
-		_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_position(), _eyeVector));*/
-
-		/*Vector2 currentMousePosition;
-		  double x;
-		  double y;
-		  glfwGetCursorPos(_window, &x, &y);
-		  GLfloat x3 = x;
-		  GLfloat y3 = y;
-		  currentMousePosition.x = x3;
-		  currentMousePosition.y = y3;
-
-		  eyeVector = transformVector3(_eyeVector, makeRotationMatrix3((3.14f / (4.0f*45.0f))*(-(currentMousePosition.x - lastMousePosition.x)), 0.0f, 1.0f, 0.0f));*/
-
+		//Gestion de la souris dans le déplacement
+		double xPos, yPos;
+		glfwGetCursorPos(_window, &xPos, &yPos);
+		_currentPlayer->set_eyeVector(makeVector3(-xPos, -yPos, 0.0f));
 	}
 }
 
