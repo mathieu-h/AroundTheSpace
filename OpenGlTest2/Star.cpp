@@ -1,53 +1,42 @@
 #include "stdafx.h"
-#include "Planet.h"
-
-using namespace noise;
+#include "Star.h"
 
 
-
-Planet::Planet()
+Star::Star()
 {
-	this->generatePlanet();
+	this->generateStar();
 }
 
 
-
-Planet::~Planet()
+Star::~Star()
 {
 }
 
 
-
-void Planet::generatePlanet()
+void Star::generateStar()
 {
 	srand(time(NULL));
 
 	radius = 1.0f;
-	temperature = std::rand() % 101;
 
-	compositionColor1 = utils::Color(
-		rand() % 125 + 50,
-		rand() % 100 + 25,
-		rand() % 50 + 25,
-		255);
+	int c = std::rand() % 3;
 
-	compositionColor2 = utils::Color(
-		rand() % 125 + 50,
-		rand() % 100 + 25,
-		rand() % 50 + 25,
-		255);
+	compositionColor1.red = c == 0 ? 255 : rand() % 75 + 150;
+	compositionColor1.green = c == 1 ? 255 : rand() % 75 + 150;
+	compositionColor1.blue = c == 2 ? 255 : rand() % 75 + 150;
+	compositionColor1.alpha = 255;
 
-	water = (temperature < 65) && (rand() % 5 == 0);
-	liquidWater = water && temperature > 35;
-	solidWater = water && temperature < 50;
-	life = liquidWater && (rand() % 10 == 0);
+	compositionColor2.red = c == 0 ? 255 : rand() % 75 + 150;
+	compositionColor2.green = c == 1 ? 255 : rand() % 75 + 150;
+	compositionColor2.blue = c == 2 ? 255 : rand() % 75 + 150;
+	compositionColor2.alpha = 255;
 
 	utils::NoiseMap heightMap = generateHeightMap();
 	int heightMapHeight = heightMap.GetHeight();
 	int heightMapWidth = heightMap.GetWidth();
 
 	generateTexture(heightMap);
-	
+
 	const int nbLong = 240;
 	const int nbLat = 160;
 	const int nbVertices = (nbLong + 1) * nbLat + 2;
@@ -64,21 +53,18 @@ void Planet::generatePlanet()
 		float a1 = _pi * float(lat + 1) / (nbLat + 1);
 		float sin1 = sin(a1);
 		float cos1 = cos(a1);
-		
+
 		for (int lon = 0; lon <= nbLong; ++lon)
 		{
 			float a2 = _2pi * float(lon == nbLong ? 0 : lon) / nbLong;
 			float sin2 = sin(a2);
 			float cos2 = cos(a2);
-			int heightX = int(float(lon) / (nbLong) * heightMapWidth);
-			int heightY = int(float(lat) / (nbLat) * heightMapHeight);
+			int heightX = int(float(lon) / (nbLong)* heightMapWidth);
+			int heightY = int(float(lat) / (nbLat)* heightMapHeight);
 			if (lon == nbLong)
 				heightX = 0;
-			float height = heightMap.GetValue(heightX, heightY) * 0.05f;
-			if (liquidWater && height < 0)
-				height = 0;
 
-			vertices[lon + lat * (nbLong + 1) + 1] = scalerMultiplyVector3(makeVector3(sin1 * cos2, cos1, sin1 * sin2), radius + height);
+			vertices[lon + lat * (nbLong + 1) + 1] = scalerMultiplyVector3(makeVector3(sin1 * cos2, cos1, sin1 * sin2), radius);
 		}
 	}
 	vertices[nbVertices - 1] = scalerMultiplyVector3(vector3Up, -radius);
@@ -113,9 +99,9 @@ void Planet::generatePlanet()
 		triangles[i++] = lon + 1;
 		triangles[i++] = 0;
 	}
-	
+
 	//Middle
-	for (int lat = 0; lat < nbLat-1; ++lat)
+	for (int lat = 0; lat < nbLat - 1; ++lat)
 	{
 		for (int lon = 0; lon < nbLong; ++lon)
 		{
@@ -131,7 +117,7 @@ void Planet::generatePlanet()
 			triangles[i++] = next;
 		}
 	}
-	
+
 	//Bottom Cap
 	for (int lon = 0; lon < nbLong; ++lon)
 	{
@@ -139,9 +125,9 @@ void Planet::generatePlanet()
 		triangles[i++] = nbVertices - (lon + 2) - 1;
 		triangles[i++] = nbVertices - (lon + 1) - 1;
 	}
-	
+
 	Vnu = std::vector<VertexDataPNT>(nbVertices);
-	
+
 	for (int i = 0; i < nbVertices; ++i)
 	{
 		VertexDataPNT pnt;
@@ -155,7 +141,7 @@ void Planet::generatePlanet()
 
 
 
-utils::NoiseMap Planet::generateHeightMap()
+utils::NoiseMap Star::generateHeightMap()
 {
 	module::RidgedMulti mountainTerrain;
 
@@ -168,10 +154,10 @@ utils::NoiseMap Planet::generateHeightMap()
 	flatTerrain.SetBias(-0.75);
 
 	module::Perlin terrainType;
-	terrainType.SetSeed(rand());
 	terrainType.SetFrequency(0.5);
 	terrainType.SetPersistence(0.25);
 	terrainType.SetOctaveCount(10);
+	terrainType.SetSeed(rand());
 
 	module::Select terrainSelector;
 	terrainSelector.SetSourceModule(0, flatTerrain);
@@ -197,7 +183,7 @@ utils::NoiseMap Planet::generateHeightMap()
 }
 
 
-void Planet::generateTexture(utils::NoiseMap heightMap)
+void Star::generateTexture(utils::NoiseMap heightMap)
 {
 	utils::Image image;
 
@@ -206,36 +192,9 @@ void Planet::generateTexture(utils::NoiseMap heightMap)
 	renderer.SetDestImage(image);
 	renderer.ClearGradient();
 
-	if (water) {
-		if (liquidWater && solidWater) {
-			renderer.AddGradientPoint(-1.0000, utils::Color(0, 0, 128, 255)); // deeps
-			renderer.AddGradientPoint(-0.2500, utils::Color(0, 0, 255, 255)); // shallow
-			renderer.AddGradientPoint(0.0000, utils::Color(0, 128, 255, 255)); // shore
-			renderer.AddGradientPoint(0.0625, compositionColor1);
-			if (life) renderer.AddGradientPoint(0.3500, utils::Color(32, 160, 0, 255)); // grass
-			renderer.AddGradientPoint(0.7500, compositionColor2);
-			renderer.AddGradientPoint(1.0000, utils::Color(255, 255, 255, 255)); // snow
+	renderer.AddGradientPoint(-1, compositionColor1);
+	renderer.AddGradientPoint(1, compositionColor2);
 
-		}
-		if (liquidWater && !solidWater) {
-			renderer.AddGradientPoint(-1.0000, utils::Color(0, 0, 128, 255)); // deeps
-			renderer.AddGradientPoint(-0.2500, utils::Color(0, 0, 255, 255)); // shallow
-			renderer.AddGradientPoint(0.0000, utils::Color(0, 128, 255, 255)); // shore
-			renderer.AddGradientPoint(0.0625, compositionColor1);
-			if (life) renderer.AddGradientPoint(0.5000, utils::Color(32, 160, 0, 255)); // grass
-			renderer.AddGradientPoint(1.000, compositionColor2);
-		}
-		if (!liquidWater && solidWater) {
-			renderer.AddGradientPoint(-1.000, compositionColor1); 
-			renderer.AddGradientPoint(0.3500, compositionColor2);
-			renderer.AddGradientPoint(1.0000, utils::Color(255, 255, 255, 255)); // snow
-		}
-	}
-	else {
-		renderer.AddGradientPoint(-1, compositionColor1);
-		renderer.AddGradientPoint(1, compositionColor2);
-	}
-	
 	renderer.EnableLight();
 	renderer.SetLightContrast(3.0);
 	renderer.SetLightBrightness(2.0);
@@ -255,5 +214,5 @@ void Planet::generateTexture(utils::NoiseMap heightMap)
 		}
 	}
 
-	mat = new materials(texture,512,256);
+	mat = new materials(texture, 512, 256);
 }

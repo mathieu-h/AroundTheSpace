@@ -14,11 +14,11 @@
 #include "materials.h"
 
 
-class Planet
+class Star
 {
 public:
-	Planet();
-	~Planet();
+	Star();
+	~Star();
 
 	std::vector<Vector3> vertices;
 	std::vector<Vector3> normales;
@@ -29,17 +29,12 @@ public:
 	materials* mat;
 
 private:
-	void generatePlanet();
+	void generateStar();
 	utils::NoiseMap generateHeightMap();
 	void generateTexture(utils::NoiseMap heightMap);
 
 	float radius;
-	int temperature;
 	utils::Color compositionColor1;
 	utils::Color compositionColor2;
-	bool water;
-	bool liquidWater;
-	bool solidWater;
-	bool life;
 };
 
