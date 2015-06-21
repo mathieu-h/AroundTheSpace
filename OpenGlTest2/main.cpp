@@ -4,11 +4,9 @@
 #include "stdafx.h"
 
 #include <cstdio>
+#include <time.h> 
 
 #include "GameManager.h"
-
-
-#include <cstdio>
 
 #include <stdlib.h>
 
@@ -17,6 +15,7 @@
 
 int main(int argc, char** argv)
 {
+	srand(time(NULL));
 	GameManager* game = &GameManager::getGameManager();
 	game->runGameLoop();
 
