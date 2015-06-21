@@ -60,6 +60,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+
       <AdditionalLibraryDirectories>..\Libs\freeglut\lib;..\Libs\glew-1.12.0\bin\Release\Win32;..\Libs\OculusSDK\lib;..\Libs\libnoisedll-1.0.0\bin;..\Libs\SOIL\LIB;..\Libs\LibsAssimp\bin;..\Libs\LibsAssimp\Libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>OculusVRd.lib;glew32s.lib;glfw3.lib;SOIL.lib;libnoise.lib;assimpd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
