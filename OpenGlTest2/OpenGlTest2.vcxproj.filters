@@ -27,6 +27,7 @@
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="Star.cpp" />
     <ClCompile Include="PlanetarySystem.cpp" />
+    <ClCompile Include="GameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraSystem.h" />
@@ -64,6 +65,7 @@
     <ClInclude Include="verticesTiangle.h" />
     <ClInclude Include="Star.h" />
     <ClInclude Include="PlanetarySystem.h" />
+    <ClInclude Include="GameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Gas Giant-Blue.jpg" />

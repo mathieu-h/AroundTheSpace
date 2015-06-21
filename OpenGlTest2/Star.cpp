@@ -5,6 +5,7 @@
 Star::Star()
 {
 	this->generateStar();
+	worldPosition = makeVector3(0.0f, 0.0f, 0.0f);
 }
 
 
@@ -15,11 +16,9 @@ Star::~Star()
 
 void Star::generateStar()
 {
-	srand(time(NULL));
+	radius = 10.0f;
 
-	radius = 1.0f;
-
-	int c = std::rand() % 3;
+	int c = rand() % 3;
 
 	compositionColor1.red = c == 0 ? 255 : rand() % 75 + 150;
 	compositionColor1.green = c == 1 ? 255 : rand() % 75 + 150;
@@ -36,6 +35,10 @@ void Star::generateStar()
 	int heightMapWidth = heightMap.GetWidth();
 
 	generateTexture(heightMap);
+
+	vector<Vector3> vertices;
+	vector<Vector3> normales;
+	vector<Vector2> uvs;
 
 	const int nbLong = 240;
 	const int nbLat = 160;

@@ -8,6 +8,7 @@ using namespace noise;
 Planet::Planet()
 {
 	this->generatePlanet();
+	worldPosition = makeVector3(0.0f, 0.0f, 0.0f);
 }
 
 
@@ -20,10 +21,9 @@ Planet::~Planet()
 
 void Planet::generatePlanet()
 {
-	srand(time(NULL));
-
-	radius = 1.0f;
-	temperature = std::rand() % 101;
+	radius = float(rand() % 21) / 10.0f + 1.0f;
+	cout << radius;
+	temperature = rand() % 101;
 
 	compositionColor1 = utils::Color(
 		rand() % 125 + 50,
@@ -47,7 +47,11 @@ void Planet::generatePlanet()
 	int heightMapWidth = heightMap.GetWidth();
 
 	generateTexture(heightMap);
-	
+
+	vector<Vector3> vertices;
+	vector<Vector3> normales;
+	vector<Vector2> uvs;
+
 	const int nbLong = 240;
 	const int nbLat = 160;
 	const int nbVertices = (nbLong + 1) * nbLat + 2;
@@ -74,7 +78,7 @@ void Planet::generatePlanet()
 			int heightY = int(float(lat) / (nbLat) * heightMapHeight);
 			if (lon == nbLong)
 				heightX = 0;
-			float height = heightMap.GetValue(heightX, heightY) * 0.05f;
+			float height = heightMap.GetValue(heightX, heightY) * radius * 0.05f;
 			if (liquidWater && height < 0)
 				height = 0;
 
