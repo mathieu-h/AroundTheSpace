@@ -65,20 +65,6 @@ void GameManager::runGameLoop()
 	}
 }
 
-/*
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode){
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
-		glfwSetWindowShouldClose(window, GL_TRUE);
-	}
-	if (key == GLFW_KEY_C && action == GLFW_PRESS){
-		// Do turn camera
-		// GameManager::moveCamera();
-	}
-} */
-
-void GameManager::moveCamera(){
-	// TODO
-}
 
 GameManager& GameManager::getGameManager()
 {
