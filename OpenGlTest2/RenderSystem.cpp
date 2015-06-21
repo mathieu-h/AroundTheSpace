@@ -34,9 +34,7 @@ void RenderSystem::render(std::vector<Entity*> *children)
 	{
 		Entity* entity = *iterator;
 		if (entity->get_vertexBuffer() != NULL) {
-
 			
-
 			glUseProgram(entity->get_vertexBuffer()->get_Shader()->getProgramHandle());
 
 			if (entity->get_vertexBuffer()->get_Shader()->get_aTextCoords() != -1) {
@@ -132,7 +130,6 @@ void RenderSystem::render(std::vector<Entity*> *children, std::vector<light *>* 
 			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(m_projectionMatrix));
 
 			glm::mat4 m_modelMatrix;
-
 			
 			m_modelMatrix = glm::translate(m_modelMatrix, glm::vec3(entity->get_position().x, entity->get_position().y, entity->get_position().z));
 

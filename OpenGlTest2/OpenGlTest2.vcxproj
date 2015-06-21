@@ -104,7 +104,6 @@
     <ClInclude Include="light.h" />
     <ClInclude Include="materials.h" />
     <ClInclude Include="model.h" />
-    <ClInclude Include="MouvementSystem.h" />
     <ClInclude Include="noiseutils.h" />
     <ClInclude Include="Planet.h" />
     <ClInclude Include="PlayerInputSystem.h" />
@@ -131,7 +130,6 @@
     <ClCompile Include="Matrix3.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="materials.cpp" />
-    <ClCompile Include="MouvementSystem.cpp" />
     <ClCompile Include="noiseutils.cpp" />
     <ClCompile Include="OculusManager.cpp" />
     <ClCompile Include="Planet.cpp" />

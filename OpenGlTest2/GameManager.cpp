@@ -10,19 +10,16 @@ _running(running),
 _window(glfwGetCurrentContext()),
 _render(&RenderSystem::getRenderSystem()), 
 _resourcesManager(&ResourcesManager::getResourcesManager()), 
-_movementSystem(&MouvementSystem::getMouvementSystem()),
 _cameraSystem(&CameraSystem::getCameraSystem()), 
 _scene(new Scene()), 
 _playerInputSystem(&PlayerInputSystem::getPlayerInputSystem())
 {
-	//_playerInputSystem->setCurrentPlayer(_render->getCurrentCamera());
 }
 
 
 GameManager::~GameManager()
 {
 	ResourcesManager::destroyResourcesManager();
-	RenderSystem::destroyRenderSystem();
 	RenderSystem::destroyRenderSystem();
 	PlayerInputSystem::destroyPlayerInputSystem();
 }
@@ -45,8 +42,6 @@ void GameManager::runGameLoop()
 		while (deltaTime >= 1.0f) {
 
 			_running = !glfwWindowShouldClose(_window);
-
-			_movementSystem->update(_scene->getChildren());
 			_playerInputSystem->update();
 
 			--deltaTime;
@@ -58,20 +53,6 @@ void GameManager::runGameLoop()
 	}
 }
 
-/*
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode){
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
-		glfwSetWindowShouldClose(window, GL_TRUE);
-	}
-	if (key == GLFW_KEY_C && action == GLFW_PRESS){
-		// Do turn camera
-		// GameManager::moveCamera();
-	}
-} */
-
-void GameManager::moveCamera(){
-	// TODO
-}
 
 GameManager& GameManager::getGameManager()
 {

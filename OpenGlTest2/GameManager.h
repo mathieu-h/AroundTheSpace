@@ -6,7 +6,6 @@
 
 #include "RenderSystem.h"	
 #include "ResourcesManager.h"
-#include "MouvementSystem.h"
 #include "CameraSystem.h"
 #include "PlayerInputSystem.h"
 #include "Scene.h"
@@ -26,7 +25,6 @@ private :
 	bool _running;
 	RenderSystem* _render;
 	ResourcesManager* _resourcesManager;
-	MouvementSystem* _movementSystem;
 	CameraSystem* _cameraSystem;
 	GLFWwindow* _window;
 	PlayerInputSystem *_playerInputSystem;
