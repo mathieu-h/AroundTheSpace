@@ -20,17 +20,15 @@ Planet::~Planet()
 
 void Planet::generatePlanet()
 {
-// A enlever
 	utils::NoiseMap heightMap = generateHeightMap();
 	int heightMapHeight = heightMap.GetHeight();
 	int heightMapWidth = heightMap.GetWidth();
 
 	generateTexture(heightMap);
-//
 	
-	float radius = 1.0f; // A changer
-	const int nbLong = 240; // a changer
-	const int nbLat = 160; // a changer
+	float radius = 1.0f;
+	const int nbLong = 240;
+	const int nbLat = 160;
 	const int nbVertices = (nbLong + 1) * nbLat + 2;
 	Vector3 vector3Up = makeVector3(0.0f, 1.0f, 0.0f);
 
@@ -51,7 +49,6 @@ void Planet::generatePlanet()
 			float a2 = _2pi * float(lon == nbLong ? 0 : lon) / nbLong;
 			float sin2 = sin(a2);
 			float cos2 = cos(a2);
-			// A enlever
 			int heightX = int(float(lon) / (nbLong) * heightMapWidth);
 			int heightY = int(float(lat) / (nbLat) * heightMapHeight);
 			if (lon == nbLong)
@@ -59,8 +56,8 @@ void Planet::generatePlanet()
 			float height = heightMap.GetValue(heightX, heightY) * 0.05f;
 			if (height < 0)
 				height = 0;
-			// A enlever
-			vertices[lon + lat * (nbLong + 1) + 1] = scalerMultiplyVector3(makeVector3(sin1 * cos2, cos1, sin1 * sin2), radius + height); // Enlever le height
+
+			vertices[lon + lat * (nbLong + 1) + 1] = scalerMultiplyVector3(makeVector3(sin1 * cos2, cos1, sin1 * sin2), radius + height);
 		}
 	}
 	vertices[nbVertices - 1] = scalerMultiplyVector3(vector3Up, -radius);
