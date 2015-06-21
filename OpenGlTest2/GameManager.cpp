@@ -53,8 +53,15 @@ void GameManager::runGameLoop()
 		}
 
 
-
-		_render->render(_scene->getChildren(), _scene->getLights());
+		if (Constants::oculus)
+		{
+			OculusManager oculus = OculusManager::getOculusManager();
+			oculus.render(_render, _scene);
+		}
+		else
+		{
+			_render->render(_scene->getChildren(), _scene->getLights());
+		}
 	}
 }
 

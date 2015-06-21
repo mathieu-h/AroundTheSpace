@@ -10,5 +10,5 @@ public:
 	static char* game_name(){ return "Around the space"; };
 
 	//Oculus
-	static const bool oculus = false;
+	static const bool oculus = true;
 };
