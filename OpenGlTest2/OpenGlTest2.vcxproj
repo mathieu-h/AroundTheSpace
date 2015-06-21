@@ -60,6 +60,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+
       <AdditionalLibraryDirectories>..\Libs\freeglut\lib;..\Libs\glew-1.12.0\bin\Release\Win32;..\Libs\OculusSDK\lib;..\Libs\libnoisedll-1.0.0\bin;..\Libs\SOIL\LIB;..\Libs\LibsAssimp\bin;..\Libs\LibsAssimp\Libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>OculusVRd.lib;glew32s.lib;glfw3.lib;SOIL.lib;libnoise.lib;assimpd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -107,10 +108,12 @@
     <ClInclude Include="MouvementSystem.h" />
     <ClInclude Include="noiseutils.h" />
     <ClInclude Include="Planet.h" />
+    <ClInclude Include="PlanetarySystem.h" />
     <ClInclude Include="PlayerInputSystem.h" />
     <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderData.h" />
+    <ClInclude Include="Star.h" />
     <ClInclude Include="TriangleVertices.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
@@ -135,6 +138,7 @@
     <ClCompile Include="noiseutils.cpp" />
     <ClCompile Include="OculusManager.cpp" />
     <ClCompile Include="Planet.cpp" />
+    <ClCompile Include="PlanetarySystem.cpp" />
     <ClCompile Include="PlayerInputSystem.cpp" />
     <ClCompile Include="ResourcesManager.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -143,6 +147,7 @@
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="ShaderInterface.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
+    <ClCompile Include="Star.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
