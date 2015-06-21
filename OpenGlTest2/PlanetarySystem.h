@@ -1,6 +1,5 @@
 #pragma once
 
-#include <time.h> 
 #include <vector>
 #include "Star.h"
 #include "Planet.h"

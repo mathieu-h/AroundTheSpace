@@ -26,12 +26,10 @@ vector<GameObject> PlanetarySystem::GetGameObject() const
 
 void PlanetarySystem::GeneratePlanetarySystem()
 {
-	srand(time(NULL));
-
 	star = Star();
 	star.worldPosition = makeVector3(0.0f, 0.0f, 0.0f);
 
-	nbPlanet = rand() % 10 + 1;
+	nbPlanet = rand() % 8 + 3;
 	for (int i = 0; i < nbPlanet; ++i) {
 		float distance = 20.0f + i * 5.0f;
 		planets.push_back(Planet());
