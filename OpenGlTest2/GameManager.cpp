@@ -10,16 +10,19 @@ _running(running),
 _window(glfwGetCurrentContext()),
 _render(&RenderSystem::getRenderSystem()), 
 _resourcesManager(&ResourcesManager::getResourcesManager()), 
+_movementSystem(&MouvementSystem::getMouvementSystem()),
 _cameraSystem(&CameraSystem::getCameraSystem()), 
 _scene(new Scene()), 
 _playerInputSystem(&PlayerInputSystem::getPlayerInputSystem())
 {
+	//_playerInputSystem->setCurrentPlayer(_render->getCurrentCamera());
 }
 
 
 GameManager::~GameManager()
 {
 	ResourcesManager::destroyResourcesManager();
+	RenderSystem::destroyRenderSystem();
 	RenderSystem::destroyRenderSystem();
 	PlayerInputSystem::destroyPlayerInputSystem();
 }
@@ -42,6 +45,8 @@ void GameManager::runGameLoop()
 		while (deltaTime >= 1.0f) {
 
 			_running = !glfwWindowShouldClose(_window);
+
+			_movementSystem->update(_scene->getChildren());
 			_playerInputSystem->update();
 
 			--deltaTime;

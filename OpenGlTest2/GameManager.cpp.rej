@@ -1,0 +1,14 @@
+diff a/OpenGlTest2/GameManager.cpp b/OpenGlTest2/GameManager.cpp	(rejected hunks)
+@@ -10,12 +10,10 @@
+ _window(glfwGetCurrentContext()),
+ _render(&RenderSystem::getRenderSystem()), 
+ _resourcesManager(&ResourcesManager::getResourcesManager()), 
+-_movementSystem(&MouvementSystem::getMouvementSystem()),
+ _cameraSystem(&CameraSystem::getCameraSystem()), 
+ _scene(new Scene()), 
+ _playerInputSystem(&PlayerInputSystem::getPlayerInputSystem())
+ {
+-	//_playerInputSystem->setCurrentPlayer(_render->getCurrentCamera());
+ }
+ 
+ 
