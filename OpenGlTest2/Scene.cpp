@@ -33,7 +33,7 @@ Scene::Scene()
 	children->push_back(_entity2);
 
 	Entity* camera = new Entity(NULL, makeVector3(0.0f, 25.0f, -85.0f));
-	camera->set_eyeVector(makeVector3(1.0f, 1.0f, 1.0f));
+	camera->set_eyeVector(makeVector3(0.1f, 0.1f, 0.1f));
 	camera->set_upVector(makeVector3(0.0f, 1.0f, 0.0f));
 	//camera->set_velocity(makeVector3(0.0f, 0.01f, 0.01f));
 

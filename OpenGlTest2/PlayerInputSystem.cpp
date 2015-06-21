@@ -23,7 +23,6 @@ void PlayerInputSystem::keyCallback(GLFWwindow *window,
 	int mods)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-		printf("tamer");
 		if (GLFW_CURSOR_DISABLED == glfwGetInputMode(glfwGetCurrentContext(), GLFW_CURSOR)) {
 			glfwSetInputMode(glfwGetCurrentContext(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		}
@@ -37,57 +36,29 @@ void PlayerInputSystem::keyCallback(GLFWwindow *window,
 
 void PlayerInputSystem::update()
 {
-
 	float moveSpeed = 0.27f;
 	double xPos, yPos;
 	glfwGetCursorPos(_window, &xPos, &yPos);
 	Vector3 currentEyeVector = _currentPlayer->get_eyeVector();
 	Vector3 currentPosition = _currentPlayer->get_position();
-	
-	if (_currentPlayer == NULL){
-	//printf("no current player");
-	}
-	/*
+
 	if (_currentPlayer != NULL && glfwGetInputMode(_window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED) {
 
 		if (glfwGetKey(_window, GLFW_KEY_Z)) {
-			_currentPlayer->set_position(addVector3(currentPosition, makeVector3(0.00f, 0.00f, moveSpeed)));
-			_currentPlayer->set_eyeVector(addVector3(currentEyeVector, makeVector3(0.0f, 0.00f, moveSpeed)));
+			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, moveSpeed)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_S)) {
-			_currentPlayer->set_position(subtractVector3(currentPosition, makeVector3(0.00f, 0.00f, moveSpeed)));
-			_currentPlayer->set_eyeVector(subtractVector3(currentEyeVector, makeVector3(0.0f, 0.00f, moveSpeed)));
+			_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, moveSpeed)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_Q)) {
-			_currentPlayer->set_position(addVector3(currentPosition, makeVector3(moveSpeed, 0.00f, 0.0f)));
-			_currentPlayer->set_eyeVector(addVector3(currentEyeVector, makeVector3(moveSpeed, 0.0f, 0.0f)));
+			_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), moveSpeed)));
 		}
 
 		if (glfwGetKey(_window, GLFW_KEY_D)) {
-			_currentPlayer->set_position(subtractVector3(currentPosition, makeVector3(moveSpeed, 0.0f, 0.0f)));
-			_currentPlayer->set_eyeVector(subtractVector3(currentEyeVector, makeVector3(moveSpeed, 0.0f, 0.0f)));
-		}*/
-
-		if (_currentPlayer != NULL &&
-			glfwGetInputMode(_window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED) {
-
-			if (glfwGetKey(_window, GLFW_KEY_Z)) {
-				_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, moveSpeed)));
-			}
-
-			if (glfwGetKey(_window, GLFW_KEY_S)) {
-				_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, moveSpeed)));
-			}
-
-			if (glfwGetKey(_window, GLFW_KEY_Q)) {
-				_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), moveSpeed)));
-			}
-
-			if (glfwGetKey(_window, GLFW_KEY_D)) {
-				_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), moveSpeed)));
-			}
+			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), moveSpeed)));
+		}
 			/*
 		//Gestion de la souris dans le déplacement
 		_currentPlayer->set_eyeVector(makeVector3(-xPos, -yPos, 0.0f));*/
