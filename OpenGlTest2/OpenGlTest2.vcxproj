@@ -98,6 +98,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="OculusManager.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="indices.h" />
     <ClInclude Include="glfw.h" />
     <ClInclude Include="Matrix3.h" />
@@ -107,10 +108,15 @@
     <ClInclude Include="MouvementSystem.h" />
     <ClInclude Include="noiseutils.h" />
     <ClInclude Include="Planet.h" />
+    <ClInclude Include="OculusApp.h" />
+    <ClInclude Include="OculusManagerApp.h" />
+    <ClInclude Include="ovr.h" />
+    <ClInclude Include="PlanetarySystem.h" />
     <ClInclude Include="PlayerInputSystem.h" />
     <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderData.h" />
+    <ClInclude Include="Star.h" />
     <ClInclude Include="TriangleVertices.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
@@ -128,6 +134,7 @@
     <ClCompile Include="CameraSystem.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Matrix3.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="materials.cpp" />
@@ -135,6 +142,7 @@
     <ClCompile Include="noiseutils.cpp" />
     <ClCompile Include="OculusManager.cpp" />
     <ClCompile Include="Planet.cpp" />
+    <ClCompile Include="PlanetarySystem.cpp" />
     <ClCompile Include="PlayerInputSystem.cpp" />
     <ClCompile Include="ResourcesManager.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -143,6 +151,7 @@
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="ShaderInterface.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
+    <ClCompile Include="Star.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
