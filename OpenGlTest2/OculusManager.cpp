@@ -136,7 +136,7 @@ GLFWwindow * OculusManager::createRiftRenderingWindow(ovrHmd hmd, glm::uvec2 & o
 }
 
 GLFWwindow * OculusManager::createWindow(const uvec2 & size, const ivec2 & position) {
-	GLFWwindow * window = glfwCreateWindow(size.x, size.y, Constants::game_name(), nullptr, nullptr);
+	GLFWwindow * window = glfwCreateWindow(size.x, size.y, Constants::getConstants()->game_name(), nullptr, nullptr);
 	if (!window) {
 		fprintf(stderr, "Unable to create rendering window");
 	}

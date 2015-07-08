@@ -169,7 +169,7 @@ void RenderSystem::render(std::vector<Entity*> *children, std::vector<light *>* 
 			entity->get_vertexBuffer()->renderVertexBuffer();
 		}
 	}
-	if (!Constants::oculus)
+	if (!Constants::getConstants()->oculus)
 	{
 		glfwSwapBuffers(_window);
 	}
