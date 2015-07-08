@@ -59,9 +59,13 @@ void RenderSystem::render(std::vector<Entity*> *children)
 				GLfloat camZ = cos(glfwGetTime()) * radius;
 
 				glm::mat4 view;
+
+
 				view = glm::lookAt(glm::vec3(_currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z),
-					glm::vec3(_currentCamera->get_eyeVector().x, _currentCamera->get_eyeVector().y, _currentCamera->get_eyeVector().z),
+					glm::vec3(_currentCamera->get_eyeVector().x + _currentCamera->get_eyeVector().x, _currentCamera->get_eyeVector().y, _currentCamera->get_eyeVector().z),
 					glm::vec3(_currentCamera->get_upVector().x, _currentCamera->get_upVector().y, _currentCamera->get_upVector().z));
+
+				//view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
 				GLuint transformLoc3 = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "viewMatrix");
 				glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(view));
@@ -149,9 +153,22 @@ void RenderSystem::render(std::vector<Entity*> *children, std::vector<light *>* 
 
 			glm::mat4 view;
 			//view = glm::lookAt(glm::vec3(0.0f, 25.0f, -85.0f),
+			/*
 			view = glm::lookAt(glm::vec3(_currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z),
 				glm::vec3(_currentCamera->get_eyeVector().x, _currentCamera->get_eyeVector().y, _currentCamera->get_eyeVector().z),
-				glm::vec3(_currentCamera->get_upVector().x, _currentCamera->get_upVector().y, _currentCamera->get_upVector().z));
+				glm::vec3(_currentCamera->get_upVector().x, _currentCamera->get_upVector().y, _currentCamera->get_upVector().z));*/
+
+			Vector3 pos = _currentCamera->get_position();
+			Vector3 front = _currentCamera->get_eyeVector();
+			Vector3 up = _currentCamera->get_upVector();
+
+			std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
+			std::cout << front.x << " " << front.y << " " << front.z << std::endl;
+			std::cout << up.x << " " << up.y << " " << up.z << std::endl;
+
+			view = glm::lookAt(glm::vec3(pos.x, pos.y, pos.z),
+				glm::vec3(front.x + pos.x, front.y + pos.y, front.z + pos.z),
+				glm::vec3(up.x, up.y, up.z));
 
 			GLuint transformLoc3 = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "viewMatrix");
 			glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(view));
