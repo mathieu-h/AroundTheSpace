@@ -53,8 +53,15 @@ void GameManager::runGameLoop()
 		}
 
 
-
-		_render->render(_scene->getChildren(), _scene->getLights());
+		if (Constants::getConstants()->oculus)
+		{
+			OculusManager oculus = OculusManager::getOculusManager();
+			oculus.render(_render, _scene);
+		}
+		else
+		{
+			_render->render(_scene->getChildren(), _scene->getLights());
+		}
 	}
 }
 
@@ -64,7 +71,7 @@ GameManager& GameManager::getGameManager()
 	static GameManager *gamemanager = NULL;
 
 	if (gamemanager == NULL) {
-		if (Constants::oculus)
+		if ( Constants::getConstants()->oculus)
 		{
 			OculusManager oculus = OculusManager::getOculusManager();
 		}
@@ -77,7 +84,7 @@ GameManager& GameManager::getGameManager()
 			glfwWindowHint(GLFW_ALPHA_BITS, 8);
 			glfwWindowHint(GLFW_SAMPLES, 16);
 			glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-			GLFWwindow* window = glfwCreateWindow(Constants::window_width, Constants::window_heigh, Constants::game_name(), NULL, NULL);
+			GLFWwindow* window = glfwCreateWindow(Constants::getConstants()->window_width,Constants::getConstants()->window_heigh, Constants::getConstants()->game_name(), NULL, NULL);
 			glfwMakeContextCurrent(window);
 			//glfwSetKeyCallback(window, key_callback);
 			GLenum error = glewInit();

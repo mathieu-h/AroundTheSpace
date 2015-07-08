@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
+#include "Constants.h"
+#include "OculusManager.h"
 
 using namespace std;
 
@@ -184,7 +186,10 @@ void RenderSystem::render(std::vector<Entity*> *children, std::vector<light *>* 
 			entity->get_vertexBuffer()->renderVertexBuffer();
 		}
 	}
-	glfwSwapBuffers(_window);
+	if (!Constants::getConstants()->oculus)
+	{
+		glfwSwapBuffers(_window);
+	}
 	glfwPollEvents();
 }
 

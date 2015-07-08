@@ -1,14 +1,15 @@
 #include "stdafx.h"
-
 class Constants
 {
 public:
+	static Constants* Constants::getConstants();
 
-	//Window const
-	static const int window_width = 1280;
-	static const int window_heigh = 720;
-	static char* game_name(){ return "Around the space"; };
+	const bool oculus = false;
 
-	//Oculus
-	static const bool oculus = false;
+	const int window_width = 1280;
+	const int window_heigh = 720;
+
+	static char* game_name();
+
 };
+
