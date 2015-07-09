@@ -13,11 +13,13 @@ public:
 
 	vector<GameObject> GetGameObject() const;
 
-private:
-	void GeneratePlanetarySystem();
-
 	int nbPlanet;
 	Star star;
 	vector<Planet> planets;
+
+private:
+	void GeneratePlanetarySystem();
+
+	
 };
 

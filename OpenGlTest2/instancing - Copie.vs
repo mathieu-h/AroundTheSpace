@@ -1,20 +1,20 @@
-#version 330 core
-in vec3 aPositionVertex;
-//in vec2 aTextCoords;
-//in vec3 aPositionNormal;
-in mat4 instanceMatrix;
+#version 400
+layout (location = 0) in vec3 aPositionVertex;
+layout (location = 1) in vec2 aTextCoords;
+layout (location = 2) in vec3 aPositionNormal;
+layout (location = 3) in mat4 instanceMatrix;
 
-//out vec2 TexCoord;
-//out vec3 PositionNormal;
-//out vec3 FragPos;
+uniform mat4 projectionMatrix;
+uniform mat4 viewMatrix;
 
-uniform mat4 projection;
-uniform mat4 view;
+out vec3 PositionNormal;
+out vec3 FragPos;
+out vec2 TextCoords;
 
 void main()
 {
-    gl_Position = projection * view * instanceMatrix * vec4(aPositionVertex, 1.0f); 
-    //TexCoord = vec2(aTextCoords.x, 1.0 - aTextCoords.y);
-	//PositionNormal = mat3(transpose(inverse(instanceMatrix))) * aPositionNormal;
-	//FragPos = vec3(instanceMatrix * vec4(aPositionVertex, 1.0f));
+    gl_Position = projectionMatrix * viewMatrix * instanceMatrix * vec4(aPositionVertex.x, aPositionVertex.y, aPositionVertex.z, 1.0f);
+	TextCoords = aTextCoords;
+	PositionNormal = mat3(transpose(inverse(instanceMatrix))) * aPositionNormal;
+	FragPos = vec3(instanceMatrix * vec4(aPositionVertex, 1.0f));
 }

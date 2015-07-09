@@ -35,12 +35,21 @@ public:
 	Entity* getCurrentCamera();
 	void setCurrentCamera(Entity* currentCamera);
 
+
+	GLuint _cubemaptexture;
+
+	GLuint loadCubemap(vector<const GLchar*> faces);
+
 	void render(std::vector<Entity*> *children);
 	void render(std::vector<Entity*> *children, std::vector<light *>* lights);
 	void renderLights(Entity* entity,std::vector<light *>* lights);
+	void setMatrices(Entity* entity, ShaderInterface* shader);
 
 	static RenderSystem& getRenderSystem();
 	static void destroyRenderSystem();
+
+	bool up_down = false;
+	float next_Step = 180.0f;
 
 	glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);

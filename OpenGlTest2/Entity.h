@@ -31,7 +31,7 @@ private:
 	Vector3 _eyeVector;
 	Vector3 _upVector;
 
-
+	Vector3 _goal;
 
 public:
 
@@ -62,11 +62,20 @@ public:
 	Vector3 get_upVector();
 	void set_upVector(Vector3 newUpVector);
 
+	Vector3 get_goal();
+	void set_goal(Vector3 newGoal);
 
 
 	Entity(VertexBuffer* newVertexBuffer, Vector3 newVector3);
 	~Entity();
 
+	int army;
+	int id;
+	int chess;
+
+
+	bool isLight;
+	float lightLifetime;
 
 };
 

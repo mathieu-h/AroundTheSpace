@@ -3,6 +3,8 @@
 #include <vector>
 #include "ShaderInterface.h"
 #include "VertexBuffer.h"
+#include "Planet.h"
+#include "Star.h" 
 
 #ifndef _SimpleFps_ResourcesManager
 #define _SimpleFps_ResourcesManager
@@ -18,6 +20,10 @@ public:
 
 	static ResourcesManager& getResourcesManager();
 	static void destroyResourcesManager();
+
+	int _nbPlanet;
+	Star _star;
+	vector<Planet> _planets;
 
 private:
 	std::vector<ShaderInterface*> *_shaderArray;
