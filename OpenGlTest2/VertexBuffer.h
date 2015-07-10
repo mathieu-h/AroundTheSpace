@@ -9,7 +9,7 @@
 #include "materials.h"
 #include "VertexDataP.h"
 #include <vector>
-#include "Text.h"
+//#include "Text.h"
 
 #include <SOIL.h>
 

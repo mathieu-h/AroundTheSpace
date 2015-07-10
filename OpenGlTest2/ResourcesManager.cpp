@@ -13,31 +13,31 @@ ResourcesManager::ResourcesManager()
 {
 	_shaderArray = new std::vector < ShaderInterface* >;
 
-	ShaderInterface *textureShader = new ShaderInterface("VertexShaderTexture.vs", "FragmentShaderTexture.fs");
+	ShaderInterface *textureShader = new ShaderInterface("../shaders/VertexShaderTexture.vs", "../shaders/FragmentShaderTexture.fs");
 	_shaderArray->push_back(textureShader);
 
-	ShaderInterface *instancingShader = new ShaderInterface("instancing.vs", "instancing.frag");
+	ShaderInterface *instancingShader = new ShaderInterface("../shaders/instancing.vs", "../shaders/instancing.frag");
 	_shaderArray->push_back(instancingShader);
 
-	ShaderInterface *lightShader = new ShaderInterface("light.vs", "light.frag");
+	ShaderInterface *lightShader = new ShaderInterface("../shaders/light.vs", "../shaders/light.frag");
 	_shaderArray->push_back(lightShader);
 
-	ShaderInterface *textShader = new ShaderInterface("TextRender.vs", "TextRender.frag");
+	ShaderInterface *textShader = new ShaderInterface("../shaders/TextRender.vs", "../shaders/TextRender.frag");
 	_shaderArray->push_back(textShader);
 
-	ShaderInterface* skyboxShader = new ShaderInterface("skybox.vs", "skybox.frag");
+	ShaderInterface* skyboxShader = new ShaderInterface("../shaders/skybox.vs", "../shaders/skybox.frag");
 	_shaderArray->push_back(skyboxShader);
 
-	ShaderInterface* depthShader = new ShaderInterface("shadow_mapping_depth.vs", "shadow_mapping_depth.frag");
+	ShaderInterface* depthShader = new ShaderInterface("../shaders/shadow_mapping_depth.vs", "../shaders/shadow_mapping_depth.frag");
 	_shaderArray->push_back(depthShader);
 
-	ShaderInterface* depthDebugShader = new ShaderInterface("depthMap.vs", "depthMap.frag");
+	ShaderInterface* depthDebugShader = new ShaderInterface("../shaders/depthMap.vs", "../shaders/depthMap.frag");
 	_shaderArray->push_back(depthDebugShader);
 
-	ShaderInterface* depthShaderinstancing = new ShaderInterface("shadow_mapping_depth_instancing.vs", "shadow_mapping_depth_instancing.frag");
+	ShaderInterface* depthShaderinstancing = new ShaderInterface("../shaders/shadow_mapping_depth_instancing.vs", "../shaders/shadow_mapping_depth_instancing.frag");
 	_shaderArray->push_back(depthShaderinstancing);
 
-	ShaderInterface* depthDebugShaderinstancing = new ShaderInterface("depthMap_instancing.vs", "depthMap_instancing.frag");
+	ShaderInterface* depthDebugShaderinstancing = new ShaderInterface("../shaders/depthMap_instancing.vs", "../shaders/depthMap_instancing.frag");
 	_shaderArray->push_back(depthDebugShaderinstancing);
 
 	_shaderData = new ShaderData(makeVector4(1.0f, 0.0f, 1.0f, 1.0f), makeVector3(1.0f, 0.0f, 1.0f));
