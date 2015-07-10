@@ -170,6 +170,9 @@ void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader)
 
 	glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "startPos"), entity->get_position().x, entity->get_position().y, entity->get_position().z);
 
+	glUniform1f(glGetUniformLocation(shader->getProgramHandle(), "planetSpeed"), entity->get_vertexBuffer()->speed);
+	glUniform1f(glGetUniformLocation(shader->getProgramHandle(), "timeOffset"), entity->get_vertexBuffer()->timeOffset);
+
 	entity->get_vertexBuffer()->renderMaterials();
 
 	GLint viewPosLoc = glGetUniformLocation(shader->getProgramHandle(), "viewPos");
