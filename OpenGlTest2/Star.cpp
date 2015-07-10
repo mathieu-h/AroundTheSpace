@@ -178,7 +178,8 @@ utils::NoiseMap Star::generateHeightMap()
 	utils::NoiseMapBuilderSphere heightMapBuilder;
 	heightMapBuilder.SetSourceModule(finalTerrain);
 	heightMapBuilder.SetDestNoiseMap(heightMap);
-	heightMapBuilder.SetDestSize(512, 256);
+	//heightMapBuilder.SetDestSize(2048, 1024);
+	heightMapBuilder.SetDestSize(1024, 512);
 	heightMapBuilder.SetBounds(-90.0, 90.0, -180.0, 180.0);
 	heightMapBuilder.Build();
 
@@ -205,8 +206,7 @@ void Star::generateTexture(utils::NoiseMap heightMap)
 
 	int heigth = heightMap.GetHeight();
 	int width = heightMap.GetWidth();
-	//unsigned char texture[heigth * width * 3];
-	unsigned char texture[393216];
+	unsigned char* texture = new unsigned char[heigth * width * 3];
 	int i = 0;
 	for (int y = 0; y < heigth; ++y) {
 		for (int x = 0; x < width; ++x) {
@@ -217,5 +217,5 @@ void Star::generateTexture(utils::NoiseMap heightMap)
 		}
 	}
 
-	mat = new materials(texture, 512, 256);
+	mat = new materials(texture, width, heigth);
 }

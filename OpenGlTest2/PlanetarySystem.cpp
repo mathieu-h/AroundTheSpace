@@ -29,7 +29,7 @@ void PlanetarySystem::GeneratePlanetarySystem()
 	star = Star();
 	star.worldPosition = startPos;
 
-	nbPlanet = rand() % 8 + 5;
+	nbPlanet = rand() % 5 + 3;
 	for (int i = 0; i < nbPlanet; ++i) {
 		float distance = 50.0f + i * 20.0f;
 		planets.push_back(Planet());
