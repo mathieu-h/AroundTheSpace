@@ -32,7 +32,8 @@ void PlanetarySystem::GeneratePlanetarySystem()
 
 	nbPlanet = rand() % 8 + 3;
 	for (int i = 0; i < nbPlanet; ++i) {
-		float distance = 50.0f + i * 20.0f + (rand()%60);
+		//float distance = 50.0f + i * 20.0f + (rand()%60);
+		float distance = 50.0f + i * 10.0f;
 		planets.push_back(Planet());
 		planets[i].worldPosition = addVector3(startPos, makeVector3(distance, 0.0f, 0.0f));
 		planets[i].speed = chooseSpeed();
@@ -62,7 +63,7 @@ float PlanetarySystem::chooseSpeed()
 			speed = 0.05;
 			break;
 		case 5:
-			speed = 0.75;
+			speed = 0.0075;
 			break;
 	}
 	return speed;

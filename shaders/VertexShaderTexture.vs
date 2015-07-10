@@ -14,7 +14,7 @@ uniform mat4 viewMatrix;
 uniform float time;
 uniform vec3 viewPos;
 uniform vec3 originPos;
-
+uniform vec3 starPos;
 uniform float planetSpeed;
 uniform float timeOffset;
 
@@ -28,7 +28,7 @@ void main()
 	float camX = sin((time*planetSpeed) + timeOffset) * distancePlanets;
 	float camZ = cos((time*planetSpeed) + timeOffset) * distancePlanets;
 			
-	vec4 finalPos = projectionMatrix * viewMatrix * vec4(aPositionVertex.x + camX, aPositionVertex.y + startPos.y,aPositionVertex.z+camZ, 1.0f);
+	vec4 finalPos = projectionMatrix * viewMatrix * vec4(aPositionVertex.x + camX + starPos.x, aPositionVertex.y + startPos.y,aPositionVertex.z+camZ + starPos.y, 1.0f);
 	
 	//vec2 offset = offsets[gl_InstanceID];
 	//vec3 aOffset = aPositionVertex.xyz + offset;
