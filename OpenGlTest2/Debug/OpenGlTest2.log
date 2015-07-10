@@ -1,0 +1,49 @@
+﻿Build started 09/07/2015 12:37:43.
+     1>Project "E:\2nd semestre\AroundTheSpace\OpenGlTest2\OpenGlTest2.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\Libs\LibsAssimp\include /I"..\Libs\glfw-3.1.1.bin.WIN32\include" /I..\Libs\freeglut\include /I..\Libs\OculusSDK\LibOVR\Src /I..\Libs\glm /I..\Libs\SOIL\src /I"E:\2nd semestre\AroundTheSpace\Libs\libnoiseheaders-1.0.0\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _CRT_SECURE_NO_WARNINGS /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\OpenGlTest2.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt RenderSystem.cpp
+         RenderSystem.cpp
+     1>e:\2nd semestre\aroundthespace\opengltest2\rendersystem.cpp(128): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>e:\2nd semestre\aroundthespace\opengltest2\rendersystem.cpp(220): warning C4244: 'argument' : conversion from 'float' to 'GLsizei', possible loss of data
+     1>e:\2nd semestre\aroundthespace\opengltest2\rendersystem.cpp(220): warning C4244: 'argument' : conversion from 'float' to 'GLint', possible loss of data
+     1>e:\2nd semestre\aroundthespace\opengltest2\rendersystem.cpp(232): warning C4244: 'argument' : conversion from 'unsigned int' to 'GLfloat', possible loss of data
+     1>e:\2nd semestre\aroundthespace\opengltest2\rendersystem.cpp(234): warning C4018: '<' : signed/unsigned mismatch
+         GLM: perspective function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
+         GLM: rotate function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\2nd semestre\AroundTheSpace\Debug\OpenGlTest2.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\Libs\freeglut\lib /LIBPATH:"..\Libs\glew-1.12.0\bin\Release\Win32" /LIBPATH:..\Libs\OculusSDK\lib /LIBPATH:"..\Libs\libnoisedll-1.0.0\bin" /LIBPATH:..\Libs\SOIL\LIB /LIBPATH:..\Libs\LibsAssimp\bin /LIBPATH:..\Libs\LibsAssimp\Libs OculusVRd.lib glew32s.lib glfw3.lib SOIL.lib libnoise.lib assimpd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\2nd semestre\AroundTheSpace\Debug\OpenGlTest2.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\2nd semestre\AroundTheSpace\Debug\OpenGlTest2.lib" /MACHINE:X86 Debug\CameraSystem.obj
+         Debug\Constants.obj
+         Debug\Entity.obj
+         Debug\GameManager.obj
+         Debug\GameObject.obj
+         Debug\Matrix3.obj
+         Debug\light.obj
+         Debug\materials.obj
+         Debug\MouvementSystem.obj
+         Debug\noiseutils.obj
+         Debug\OculusManager.obj
+         Debug\Planet.obj
+         Debug\PlanetarySystem.obj
+         Debug\PlayerInputSystem.obj
+         Debug\ResourcesManager.obj
+         Debug\Scene.obj
+         Debug\ShaderData.obj
+         Debug\main.obj
+         Debug\RenderSystem.obj
+         Debug\ShaderInterface.obj
+         Debug\ShaderLoader.obj
+         Debug\Star.obj
+         Debug\stdafx.obj
+         Debug\Vector2.obj
+         Debug\Vector3.obj
+         Debug\Vector4.obj
+         Debug\VertexBuffer.obj
+     1>LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'E:\2nd semestre\AroundTheSpace\Debug\vc120.pdb'; linking object as if no debug info
+         OpenGlTest2.vcxproj -> E:\2nd semestre\AroundTheSpace\Debug\OpenGlTest2.exe
+     1>Done Building Project "E:\2nd semestre\AroundTheSpace\OpenGlTest2\OpenGlTest2.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.33

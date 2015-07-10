@@ -1,0 +1,74 @@
+﻿Build started 06/07/2015 11:17:57.
+     1>Project "E:\2nd semestre\AroundTheSpace\OpenGlTest2\OpenGlTest2.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\Libs\freeglut\include /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D _CRT_SECURE_NO_WARNINGS /D NDEBUG /D _CONSOLE /D _LIB /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\OpenGlTest2.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt CameraSystem.cpp Entity.cpp GameManager.cpp Matrix3.cpp light.cpp materials.cpp MouvementSystem.cpp noiseutils.cpp OculusManager.cpp Planet.cpp PlanetarySystem.cpp PlayerInputSystem.cpp ResourcesManager.cpp Scene.cpp ShaderData.cpp main.cpp RenderSystem.cpp ShaderInterface.cpp Star.cpp Vector2.cpp Vector3.cpp VertexBuffer.cpp
+         CameraSystem.cpp
+     1>e:\2nd semestre\aroundthespace\opengltest2\noiseutils.h(1217): warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+         Entity.cpp
+     1>e:\2nd semestre\aroundthespace\opengltest2\noiseutils.h(1217): warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+         GameManager.cpp
+     1>e:\2nd semestre\aroundthespace\opengltest2\noiseutils.h(1217): warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+     1>e:\2nd semestre\aroundthespace\opengltest2\OculusManager.h(9): fatal error C1083: Cannot open include file: 'OVR_CAPI_GL.h': No such file or directory
+         Matrix3.cpp
+         light.cpp
+     1>e:\2nd semestre\aroundthespace\opengltest2\noiseutils.h(1217): warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+         materials.cpp
+         MouvementSystem.cpp
+     1>e:\2nd semestre\aroundthespace\opengltest2\noiseutils.h(1217): warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+         noiseutils.cpp
+     1>e:\2nd semestre\aroundthespace\opengltest2\noiseutils.h(1217): warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+     1>noiseutils.cpp(62): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>noiseutils.cpp(63): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>noiseutils.cpp(868): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+         OculusManager.cpp
+     1>e:\2nd semestre\aroundthespace\opengltest2\noiseutils.h(1217): warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+     1>e:\2nd semestre\aroundthespace\opengltest2\OculusManager.h(9): fatal error C1083: Cannot open include file: 'OVR_CAPI_GL.h': No such file or directory
+         Planet.cpp
+     1>e:\2nd semestre\aroundthespace\opengltest2\noiseutils.h(1217): warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+     1>Planet.cpp(23): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>Planet.cpp(58): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+         PlanetarySystem.cpp
+         PlayerInputSystem.cpp
+     1>C:\Program Files (x86)\Windows Kits\8.1\Include\shared\minwindef.h(130): warning C4005: 'APIENTRY' : macro redefinition
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\GLFW/glfw3.h(92) : see previous definition of 'APIENTRY'
+     1>e:\2nd semestre\aroundthespace\opengltest2\noiseutils.h(1217): warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+         ResourcesManager.cpp
+     1>e:\2nd semestre\aroundthespace\opengltest2\noiseutils.h(1217): warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+         Scene.cpp
+     1>e:\2nd semestre\aroundthespace\opengltest2\noiseutils.h(1217): warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+         ShaderData.cpp
+         main.cpp
+     1>e:\2nd semestre\aroundthespace\opengltest2\noiseutils.h(1217): warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+         RenderSystem.cpp
+     1>e:\2nd semestre\aroundthespace\opengltest2\noiseutils.h(1217): warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+     1>RenderSystem.cpp(60): warning C4244: 'initializing' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>RenderSystem.cpp(61): warning C4244: 'initializing' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>RenderSystem.cpp(150): warning C4244: 'initializing' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>RenderSystem.cpp(151): warning C4244: 'initializing' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>RenderSystem.cpp(189): warning C4244: 'argument' : conversion from 'float' to 'GLsizei', possible loss of data
+     1>RenderSystem.cpp(189): warning C4244: 'argument' : conversion from 'float' to 'GLint', possible loss of data
+     1>RenderSystem.cpp(201): warning C4244: 'argument' : conversion from 'unsigned int' to 'GLfloat', possible loss of data
+     1>RenderSystem.cpp(203): warning C4018: '<' : signed/unsigned mismatch
+         ShaderInterface.cpp
+         Star.cpp
+     1>e:\2nd semestre\aroundthespace\opengltest2\noiseutils.h(1217): warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+     1>Star.cpp(18): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>Star.cpp(47): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+         Vector2.cpp
+         Compiling...
+         Vector3.cpp
+     1>Vector3.cpp(49): warning C4244: '=' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
+     1>Vector3.cpp(50): warning C4244: '=' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
+     1>Vector3.cpp(51): warning C4244: '=' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
+         VertexBuffer.cpp
+     1>e:\2nd semestre\aroundthespace\opengltest2\noiseutils.h(1217): warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+     1>VertexBuffer.cpp(15): warning C4805: '==' : unsafe mix of type 'boolean' and type 'bool' in operation
+     1>VertexBuffer.cpp(61): warning C4805: '==' : unsafe mix of type 'boolean' and type 'bool' in operation
+     1>VertexBuffer.cpp(147): warning C4316: 'glm::tmat4x4<float,0>' : object allocated on the heap may not be aligned 16
+     1>VertexBuffer.cpp(168): warning C4244: 'initializing' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>VertexBuffer.cpp(173): warning C4244: 'initializing' : conversion from 'int' to 'GLfloat', possible loss of data
+     1>Done Building Project "E:\2nd semestre\AroundTheSpace\OpenGlTest2\OpenGlTest2.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:13.55
