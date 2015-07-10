@@ -71,7 +71,7 @@ void RenderSystem::render(std::vector<Entity*> *children, std::vector<light *>* 
 			glUniformMatrix4fv(transformLoc2, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
 
 			GLfloat radius = 2.0f;
-			GLfloat camX = sin(glfwGetTime()) * radius;
+			GLfloat camX = sin(glfwGetTime()) * radiusr
 			GLfloat camZ = cos(glfwGetTime()) * radius;
 
 			glm::mat4 view;
@@ -165,6 +165,8 @@ void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader)
 		glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(view));
 		glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "cameraPos"), _currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z);
 	}
+
+	glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "originPos"), entity->get_vertexBuffer()->originPos.x, entity->get_vertexBuffer()->originPos.y, entity->get_vertexBuffer()->originPos.z);
 
 	glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "startPos"), entity->get_position().x, entity->get_position().y, entity->get_position().z);
 

@@ -17,6 +17,9 @@ public:
 	Star star;
 	vector<Planet> planets;
 
+	float timeOffset;
+	float speed;
+
 	Vector3 startPos;
 private:
 	void GeneratePlanetarySystem();

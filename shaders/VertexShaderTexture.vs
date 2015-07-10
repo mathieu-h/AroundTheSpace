@@ -2,6 +2,7 @@
 in vec3 aPositionVertex;
 in vec2 aTextCoords;
 in vec3 aPositionNormal;
+//in vec3 originPos;
 
 out vec2 TexCoord;
 out vec3 PositionNormal;	
@@ -12,6 +13,7 @@ uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform float time;
 uniform vec3 viewPos;
+uniform vec3 originPos;
 
 uniform vec3 startPos;
 

@@ -11,6 +11,7 @@ private :
 	GLint _uLightPosition;
 	GLint _aTextCoords;
 	GLint _uinstanceMatrix;
+	GLint _originPos;
 
 	char* _VertexShaderString;
 	char* _fragmentShaderString;
@@ -26,6 +27,7 @@ public :
 	GLint get_uLightPosition();
 	GLint get_aTextCoords();
 	GLint get_uinstanceMatrix();
+	GLint get_originPos();
 
 	ShaderInterface(char*VS, char*FS);
 	~ShaderInterface();
