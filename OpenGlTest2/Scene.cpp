@@ -15,13 +15,8 @@ Scene::Scene()
 	for (int i = 0; i < resources->getVertexBufferArray()->size(); i++)
 	{
 		Entity* _entity;
-		if (i == 0)
 		{
-			_entity = new Entity((resources->getVertexBufferArray()->at(i)), resources->_star.worldPosition);
-		}
-		else
-		{
-			_entity = new Entity((resources->getVertexBufferArray()->at(i)), resources->_planets.at(i-1).worldPosition);
+			_entity = new Entity((resources->getVertexBufferArray()->at(i)), resources->_planets.at(i).worldPosition);
 		}
 		_entity->set_scale(makeVector3(1.0f, 1.0f, 1.0f));
 		children->push_back(_entity);

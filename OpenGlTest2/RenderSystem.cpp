@@ -125,7 +125,7 @@ void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader)
 	glm::vec3 vec(entity->get_scale().x, entity->get_scale().y, entity->get_scale().z);
 	m_modelMatrix = glm::scale(m_modelMatrix, vec);
 
-	float f = glfwGetTime() * 3.0f;
+	float f = glfwGetTime();
 
 	if (up_down == true) {
 		f = next_Step + (next_Step - f);

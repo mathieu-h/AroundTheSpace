@@ -22,8 +22,7 @@ public:
 	static void destroyResourcesManager();
 
 	int _nbPlanet;
-	Star _star;
-	vector<Planet> _planets;
+	vector<GameObject> _planets;
 
 private:
 	std::vector<ShaderInterface*> *_shaderArray;

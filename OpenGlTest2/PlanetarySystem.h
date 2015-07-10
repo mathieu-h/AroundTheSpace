@@ -8,7 +8,7 @@
 class PlanetarySystem
 {
 public:
-	PlanetarySystem();
+	PlanetarySystem(Vector3 _startPos);
 	~PlanetarySystem();
 
 	vector<GameObject> GetGameObject() const;
@@ -17,6 +17,7 @@ public:
 	Star star;
 	vector<Planet> planets;
 
+	Vector3 startPos;
 private:
 	void GeneratePlanetarySystem();
 

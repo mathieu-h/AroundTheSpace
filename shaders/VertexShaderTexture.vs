@@ -19,16 +19,16 @@ uniform vec2 offsets[10];
 
 void main()
 {
-	vec4 otherPosition = vec4(startPos,1.0f) * vec4(1.0f);
-	vec3 pos = vec3(normalize(otherPosition));
-	pos = -time * pos;
-	
-	vec4 finalPos = projectionMatrix * viewMatrix * modelMatrix * vec4(aPositionVertex, 1.0f);
+	float distancePlanets = distance(vec3(0.0f), startPos);
+	float camX = sin(time*0.01) * distancePlanets;
+	float camZ = cos(time*0.01) * distancePlanets;
+			
+	vec4 finalPos = projectionMatrix * viewMatrix * vec4(aPositionVertex.x + camX, aPositionVertex.y + startPos.y,aPositionVertex.z+camZ, 1.0f);
 	
 	//vec2 offset = offsets[gl_InstanceID];
 	//vec3 aOffset = aPositionVertex.xyz + offset;
 	gl_Position = finalPos;
 	TexCoord = vec2(aTextCoords.x, 1.0 - aTextCoords.y);
 	PositionNormal = mat3(transpose(inverse(modelMatrix))) * aPositionNormal;
-	FragPos = vec3(modelMatrix * vec4(aPositionVertex + pos, 1.0f));
+	FragPos = vec3(modelMatrix * vec4(aPositionVertex, 1.0f));
 }

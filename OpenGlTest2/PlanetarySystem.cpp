@@ -2,7 +2,7 @@
 #include "PlanetarySystem.h"
 
 
-PlanetarySystem::PlanetarySystem()
+PlanetarySystem::PlanetarySystem(Vector3 _startPos) : startPos(_startPos)
 {
 	GeneratePlanetarySystem();
 }
@@ -27,12 +27,12 @@ vector<GameObject> PlanetarySystem::GetGameObject() const
 void PlanetarySystem::GeneratePlanetarySystem()
 {
 	star = Star();
-	star.worldPosition = makeVector3(0.0f, 0.0f, 0.0f);
+	star.worldPosition = startPos;
 
 	nbPlanet = rand() % 8 + 5;
 	for (int i = 0; i < nbPlanet; ++i) {
 		float distance = 50.0f + i * 20.0f;
 		planets.push_back(Planet());
-		planets[i].worldPosition = makeVector3(distance, 0.0f, 0.0f);
+		planets[i].worldPosition = addVector3(startPos, makeVector3(distance, 0.0f, 0.0f));
 	}
 }
