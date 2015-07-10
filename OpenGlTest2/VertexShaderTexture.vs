@@ -23,10 +23,6 @@ void main()
 	vec3 pos = vec3(normalize(otherPosition));
 	pos = -time * pos;
 	
-	float newX = 0.0f + (aPositionVertex.x -0.0f))*cos(x) - (point2y-centerY)*Math.sin(x);
-
-	float newY = 0.0f + (aPositionVertex.x-0.0f)*sin(x) + (point2y-centerY)*Math.cos(x);
-	
 	vec4 finalPos = projectionMatrix * viewMatrix * modelMatrix * vec4(aPositionVertex, 1.0f);
 	
 	//vec2 offset = offsets[gl_InstanceID];
