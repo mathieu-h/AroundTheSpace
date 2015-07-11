@@ -127,7 +127,7 @@ void RenderSystem::render(std::vector<Entity*> *children, std::vector<light *>* 
 
 void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader)
 {
-	glm::mat4 m_projectionMatrix = glm::perspective(45.0f, (1920.0f / 1080.0f), 0.1f, 10000.0f);
+	glm::mat4 m_projectionMatrix = glm::perspective(45.0f, (1920.0f / 1080.0f), 0.1f, 10000000000000.0f);
 	GLuint transformLoc = glGetUniformLocation(shader->getProgramHandle(), "projectionMatrix");
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(m_projectionMatrix));
 

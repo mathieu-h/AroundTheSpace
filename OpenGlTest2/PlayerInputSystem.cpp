@@ -55,9 +55,9 @@ void PlayerInputSystem::do_movement(){
 
 	// rajouter un vecteur shuttleFront pour pouvoir gérer indépendamment le déplacement du vaisseau par rapport a la camera pour que ca soit compatible avec l'oculus
 	GLfloat cameraSpeed = 5.0f * deltaTime;	if (keys[GLFW_KEY_LEFT_CONTROL])
-		cameraSpeed = 60.0f * deltaTime;
+		cameraSpeed = 500.0f * deltaTime;
 	if (keys[GLFW_KEY_LEFT_SHIFT])
-		cameraSpeed = 20.0f * deltaTime;
+		cameraSpeed = 100.0f * deltaTime;
 	if (keys[GLFW_KEY_Z])
 		cameraPos += cameraSpeed * cameraFront;
 	if (keys[GLFW_KEY_S])

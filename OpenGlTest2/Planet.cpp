@@ -21,8 +21,8 @@ Planet::~Planet()
 
 void Planet::generatePlanet()
 {
-	radius = float(rand() % 21) / 10.0f + 1.0f;
-	float mountainHeight = float(rand() % 4) * 0.01f + 0.02f;
+	radius = float(rand() % 410) / 5.0f + 100.0f;
+	float mountainHeight = float(rand() % 8) * 0.01f + 0.02f;
 	
 	temperature = rand() % 101;
 
