@@ -22,7 +22,8 @@ Planet::~Planet()
 void Planet::generatePlanet()
 {
 	radius = float(rand() % 21) / 10.0f + 1.0f;
-	cout << radius;
+	float mountainHeight = float(rand() % 5) * 0.01f + 0.01f;
+	
 	temperature = rand() % 101;
 
 	compositionColor1 = utils::Color(
@@ -78,7 +79,7 @@ void Planet::generatePlanet()
 			int heightY = int(float(lat) / (nbLat) * heightMapHeight);
 			if (lon == nbLong)
 				heightX = 0;
-			float height = heightMap.GetValue(heightX, heightY) * radius * 0.05f;
+			float height = heightMap.GetValue(heightX, heightY) * radius * mountainHeight;
 			if (liquidWater && height < 0)
 				height = 0;
 
@@ -173,16 +174,16 @@ utils::NoiseMap Planet::generateHeightMap()
 
 	module::Perlin terrainType;
 	terrainType.SetSeed(rand());
-	terrainType.SetFrequency(0.5);
-	terrainType.SetPersistence(0.25);
-	terrainType.SetOctaveCount(10);
+	terrainType.SetFrequency(1);
+	//terrainType.SetPersistence(0.25);
+	terrainType.SetOctaveCount(6);
 
 	module::Select terrainSelector;
 	terrainSelector.SetSourceModule(0, flatTerrain);
 	terrainSelector.SetSourceModule(1, mountainTerrain);
 	terrainSelector.SetControlModule(terrainType);
 	terrainSelector.SetBounds(0.0, 1000.0);
-	terrainSelector.SetEdgeFalloff(0.125);
+	terrainSelector.SetEdgeFalloff(1);
 
 	module::Turbulence finalTerrain;
 	finalTerrain.SetSourceModule(0, terrainSelector);
@@ -193,7 +194,8 @@ utils::NoiseMap Planet::generateHeightMap()
 	utils::NoiseMapBuilderSphere heightMapBuilder;
 	heightMapBuilder.SetSourceModule(finalTerrain);
 	heightMapBuilder.SetDestNoiseMap(heightMap);
-	heightMapBuilder.SetDestSize(512, 256);
+	//heightMapBuilder.SetDestSize(2048, 1024);
+	heightMapBuilder.SetDestSize(1024, 512);
 	heightMapBuilder.SetBounds(-90.0, 90.0, -180.0, 180.0);
 	heightMapBuilder.Build();
 
@@ -247,8 +249,7 @@ void Planet::generateTexture(utils::NoiseMap heightMap)
 
 	int heigth = heightMap.GetHeight();
 	int width = heightMap.GetWidth();
-	//unsigned char texture[heigth * width * 3];
-	unsigned char texture[393216];
+	unsigned char* texture = new unsigned char[heigth * width * 3];
 	int i = 0;
 	for (int y = 0; y < heigth; ++y) {
 		for (int x = 0; x < width; ++x) {
@@ -258,6 +259,5 @@ void Planet::generateTexture(utils::NoiseMap heightMap)
 			texture[i++] = pixel.blue;
 		}
 	}
-
-	mat = new materials(texture,512,256);
+	mat = new materials(texture, width, heigth);
 }
