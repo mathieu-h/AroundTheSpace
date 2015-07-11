@@ -919,10 +919,10 @@ void VertexBuffer::configureVertexAttributes()
 	}
 
 
-	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.direction"), 0.2f, 20.0f, 20.3f);
+	/*glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.direction"), 0.2f, 20.0f, 20.3f);
 	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.ambient"), 0.8f, 0.8f, 0.8f);
 	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.diffuse"), 1.0f, 1.0f, 1.0f);
-	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.specular"), 1.0f, 1.0f, 1.0f);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.specular"), 1.0f, 1.0f, 1.0f);*/
 }
 
 ShaderInterface* VertexBuffer::get_Shader()

@@ -40,6 +40,9 @@ ResourcesManager::ResourcesManager()
 	ShaderInterface* depthDebugShaderinstancing = new ShaderInterface("../shaders/depthMap_instancing.vs", "../shaders/depthMap_instancing.frag");
 	_shaderArray->push_back(depthDebugShaderinstancing);
 
+	ShaderInterface *textureStarShader = new ShaderInterface("../shaders/VertexStarShaderTexture.vs", "../shaders/FragmentStarShaderTexture.fs");
+	_shaderArray->push_back(textureStarShader);
+
 	_shaderData = new ShaderData(makeVector4(1.0f, 0.0f, 1.0f, 1.0f), makeVector3(1.0f, 0.0f, 1.0f));
 
 
@@ -50,21 +53,21 @@ ResourcesManager::ResourcesManager()
 	//Star s;
 
 	PlanetarySystem pS(makeVector3(0.0f,0.f,0.0f));
-	PlanetarySystem pS1(makeVector3(0.0f, 300.0f, 400.0f));
-	PlanetarySystem pS2(makeVector3(-400.0f, 500.0f, -300.0f));
-	PlanetarySystem pS3(makeVector3(-140.0f, -200.0f, -500.0f));
-	PlanetarySystem pS4(makeVector3(300.0f, 250.0f, 0.0f));
+	//PlanetarySystem pS1(makeVector3(0.0f, 300.0f, 400.0f));
+	//PlanetarySystem pS2(makeVector3(-400.0f, 500.0f, -300.0f));
+	//PlanetarySystem pS3(makeVector3(-140.0f, -200.0f, -500.0f));
+	//PlanetarySystem pS4(makeVector3(300.0f, 250.0f, 0.0f));
 
 
 	//_nbPlanet = pS.nbPlanet + pS1.nbPlanet + pS2.nbPlanet + pS3.nbPlanet + pS4.nbPlanet;
 	_nbPlanet = pS.nbPlanet;
-	/*_star.push_back(pS.star);
-	_star.push_back(pS1.star);
-	_star.push_back(pS2.star);
-	_star.push_back(pS3.star);
-	_star.push_back(pS4.star);
+	_star.push_back(pS.star);
+	//_star.push_back(pS1.star);
+	//_star.push_back(pS2.star);
+	//_star.push_back(pS3.star);
+	//_star.push_back(pS4.star);
 
-	for (int i = 0; i < pS.planets.size(); i++)
+	/*for (int i = 0; i < pS.planets.size(); i++)
 	{
 		_planets.push_back(pS.planets.at(i));
 	}
@@ -87,10 +90,10 @@ ResourcesManager::ResourcesManager()
 	}*/
 
 	std::vector<GameObject> _arrayGameObjects = pS.GetGameObject();
-	std::vector<GameObject> _arrayGameObjects1 = pS1.GetGameObject();
+	/*std::vector<GameObject> _arrayGameObjects1 = pS1.GetGameObject();
 	std::vector<GameObject> _arrayGameObjects2 = pS2.GetGameObject();
 	std::vector<GameObject> _arrayGameObjects3 = pS3.GetGameObject();
-	std::vector<GameObject> _arrayGameObjects4 = pS4.GetGameObject();
+	std::vector<GameObject> _arrayGameObjects4 = pS4.GetGameObject();*/
 
 	std::vector<std::vector<materials*>*> _arrayMaterials = std::vector<std::vector<materials*>*>();
 
@@ -100,7 +103,7 @@ ResourcesManager::ResourcesManager()
 		VertexBuffer* _planetVertexBuffer;
 		if (i == 0)
 		{
-			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS.startPos, g.timeOffset, g.speed, true);
+			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(9), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS.startPos, g.timeOffset, g.speed, true);
 		} else{
 			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS.startPos, g.timeOffset, g.speed, false);
 		}
@@ -110,17 +113,17 @@ ResourcesManager::ResourcesManager()
 		_vertexBufferArray->push_back(_planetVertexBuffer);
 		_planets.push_back(g);
 	}
-	std::vector<std::vector<materials*>*> _arrayMaterials1 = std::vector<std::vector<materials*>*>();
+	/*std::vector<std::vector<materials*>*> _arrayMaterials1 = std::vector<std::vector<materials*>*>();
 	for (int i = 0; i < _arrayGameObjects1.size(); i++)
 	{
 		GameObject g = _arrayGameObjects1.at(i);
 		VertexBuffer* _planetVertexBuffer;
 		if (i == 0)
 		{
-			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS.startPos, g.timeOffset, g.speed, true);
+			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(9), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS1.startPos, g.timeOffset, g.speed, true);
 		}
 		else{
-			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS.startPos, g.timeOffset, g.speed, false);
+			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS1.startPos, g.timeOffset, g.speed, false);
 		}
 		_arrayMaterials1.push_back(new std::vector<materials*>());
 		_arrayMaterials1.at(i)->push_back(g.mat);
@@ -136,10 +139,10 @@ ResourcesManager::ResourcesManager()
 		VertexBuffer* _planetVertexBuffer;
 		if (i == 0)
 		{
-			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS.startPos, g.timeOffset, g.speed, true);
+			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(9), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS2.startPos, g.timeOffset, g.speed, true);
 		}
 		else{
-			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS.startPos, g.timeOffset, g.speed, false);
+			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS2.startPos, g.timeOffset, g.speed, false);
 		}
 		_arrayMaterials2.push_back(new std::vector<materials*>());
 		_arrayMaterials2.at(i)->push_back(g.mat);
@@ -155,10 +158,10 @@ ResourcesManager::ResourcesManager()
 		VertexBuffer* _planetVertexBuffer;
 		if (i == 0)
 		{
-			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS.startPos, g.timeOffset, g.speed, true);
+			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(9), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS3.startPos, g.timeOffset, g.speed, true);
 		}
 		else{
-			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS.startPos, g.timeOffset, g.speed, false);
+			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS3.startPos, g.timeOffset, g.speed, false);
 		}
 		
 		_arrayMaterials3.push_back(new std::vector<materials*>());
@@ -175,17 +178,17 @@ ResourcesManager::ResourcesManager()
 		VertexBuffer* _planetVertexBuffer;
 		if (i == 0)
 		{
-			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS.startPos, g.timeOffset, g.speed, true);
+			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(9), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS4.startPos, g.timeOffset, g.speed, true);
 		}
 		else{
-			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS.startPos, g.timeOffset, g.speed, false);
+			_planetVertexBuffer = new VertexBuffer(g.Vnu, g.Vnu.size() * sizeof(g.Vnu) * 2, GL_TRIANGLES, g.triangles.size(), sizeof(VertexDataPNT), _shaderArray->at(0), _shaderData, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), g.triangles, pS4.startPos, g.timeOffset, g.speed, false);
 		}
 		_arrayMaterials4.push_back(new std::vector<materials*>());
 		_arrayMaterials4.at(i)->push_back(g.mat);
 		_planetVertexBuffer->set_materials(_arrayMaterials4.at(i));
 		_vertexBufferArray->push_back(_planetVertexBuffer);
 		_planets.push_back(g);
-	}
+	}*/
 
 	std::vector<materials*> *_materials2 = new std::vector<materials*>();
 

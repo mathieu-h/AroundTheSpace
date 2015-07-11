@@ -43,12 +43,13 @@ Scene::Scene()
 	cameraSystem->setCurrentCamera(camera);
 
 	_lights = new std::vector<light*>();
+
+	for (int i = 0; i < resources->_star.size(); i++)
+	{
+		_lights->push_back(new light(NULL, resources->_star.at(i).worldPosition, makeVector3(1.00f, 1.00f, 1.00f), makeVector3(0.8f, 0.8f, 0.8f), makeVector3(1.0f, 1.0f, 1.0f), 1.0f, 0.045f, 0.0075f));
+	}
 	
-	_lights->push_back(new light(NULL, makeVector3(0.0f, 0.0f, 0.0f), makeVector3(0.05f, 0.05f, 0.05f), makeVector3(0.8f, 0.8f, 0.8f), makeVector3(1.0f, 1.0f, 1.0f), 1.0f, 0.09f, 0.032f));
-	_lights->push_back(new light(NULL, makeVector3(-10.0f, -10.0f, 0.0f), makeVector3(0.05f, 0.05f, 0.05f), makeVector3(0.8f, 0.8f, 0.8f), makeVector3(1.0f, 1.0f, 1.0f), 1.0f, 0.09f, 0.032f));
-	_lights->push_back(new light(NULL, makeVector3(0.0f, -10.0f, -10.0f), makeVector3(0.05f, 0.05f, 0.05f), makeVector3(0.8f, 0.8f, 0.8f), makeVector3(1.0f, 1.0f, 1.0f), 1.0f, 0.09f, 0.032f));
-	_lights->push_back(new light(NULL, makeVector3(-10.0f, 10.0f, 0.0f), makeVector3(0.05f, 0.05f, 0.05f), makeVector3(0.8f, 0.8f, 0.8f), makeVector3(1.0f, 1.0f, 1.0f), 1.0f, 0.09f, 0.032f));
-	_lights->push_back(new light(NULL, makeVector3(0.0f, 0.0f, 10.0f), makeVector3(0.05f, 0.05f, 0.05f), makeVector3(0.8f, 0.8f, 0.8f), makeVector3(1.0f, 1.0f, 1.0f), 1.0f, 0.09f, 0.032f));
+	
 
 	
 }

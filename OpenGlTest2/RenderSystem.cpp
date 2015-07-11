@@ -94,8 +94,9 @@ void RenderSystem::render(std::vector<Entity*> *children, std::vector<light *>* 
 			glUniform3f(viewPosLoc, _currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z);*/
 
 			setMatrices(entity, entity->get_vertexBuffer()->get_Shader());
-
 			renderLights(entity, lights);
+			
+
 			entity->get_vertexBuffer()->configureVertexAttributes();
 			entity->get_vertexBuffer()->renderVertexBuffer();
 		}
@@ -179,13 +180,13 @@ void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader)
 
 	}
 
+
 	entity->get_vertexBuffer()->renderMaterials();
 
 	GLint viewPosLoc = glGetUniformLocation(shader->getProgramHandle(), "viewPos");
 	glUniform3f(viewPosLoc, _currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z);
 	
 }
-
 
 GLuint RenderSystem::loadCubemap(vector<const GLchar*> faces)
 {
@@ -213,9 +214,6 @@ GLuint RenderSystem::loadCubemap(vector<const GLchar*> faces)
 	return textureID;
 }
 
-
-
-
 RenderSystem& RenderSystem::getRenderSystem()
 {
 	static RenderSystem * renderSystem = NULL;
@@ -240,7 +238,7 @@ RenderSystem& RenderSystem::getRenderSystem()
 
 void RenderSystem::renderLights(Entity* entity,std::vector<light *>* lights)
 {
-	glUniform1f(glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "numberoflights"), lights->size()-1);
+	glUniform1f(glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "numberoflights"), lights->size());
 
 	for (int i = 0; i < lights->size(); i++)
 	{

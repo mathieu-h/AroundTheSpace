@@ -53,7 +53,7 @@ void PlayerInputSystem::do_movement(){
 	glm::vec3 cameraFront = glm::vec3(_currentPlayer->get_eyeVector().x, _currentPlayer->get_eyeVector().y, _currentPlayer->get_eyeVector().z);
 	glm::vec3 cameraUp = glm::vec3(_currentPlayer->get_upVector().x, _currentPlayer->get_upVector().y, _currentPlayer->get_upVector().z);
 
-	GLfloat cameraSpeed = 5.0f * deltaTime;
+	GLfloat cameraSpeed = 50.0f * deltaTime;
 	if (keys[GLFW_KEY_Z])
 		cameraPos += cameraSpeed * cameraFront;
 	if (keys[GLFW_KEY_S])
