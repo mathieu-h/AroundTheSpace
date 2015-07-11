@@ -23,12 +23,28 @@ RenderSystem::RenderSystem() : _window(glfwGetCurrentContext()), _cameraSystem(&
 	_currentCamera = _cameraSystem->getCurrentCamera();
 
 	vector<const GLchar*> faces;
-	faces.push_back("right.jpg");
+	
+	faces.push_back("Green Nebula Left TEX.png");
+	faces.push_back("Green Nebula Right TEX.png");
+	faces.push_back("Green Nebula Top TEX.png");
+	faces.push_back("Green Nebula Bottom TEX.png");
+	faces.push_back("Green Nebula Front TEX.png");
+	faces.push_back("Green Nebula Back TEX.png");
+	
+	
+	/*faces.push_back("Green Nebula Back TEX.png");
+	faces.push_back("Green Nebula Bottom TEX.png");
+	faces.push_back("Green Nebula Front TEX.png");
+	faces.push_back("Green Nebula Left TEX.png");
+	faces.push_back("Green Nebula Right TEX.png");
+	faces.push_back("Green Nebula Top TEX.png");*/
+	/*faces.push_back("right.jpg");
 	faces.push_back("left.jpg");
 	faces.push_back("top.jpg");
 	faces.push_back("bottom.jpg");
 	faces.push_back("back.jpg");
-	faces.push_back("front.jpg");
+	faces.push_back("front.jpg");*/
+
 	_cubemaptexture = loadCubemap(faces);
 
 }
@@ -111,7 +127,7 @@ void RenderSystem::render(std::vector<Entity*> *children, std::vector<light *>* 
 
 void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader)
 {
-	glm::mat4 m_projectionMatrix = glm::perspective(45.0f, (1920.0f / 1080.0f), 0.1f, 1000.0f);
+	glm::mat4 m_projectionMatrix = glm::perspective(45.0f, (1920.0f / 1080.0f), 0.1f, 10000.0f);
 	GLuint transformLoc = glGetUniformLocation(shader->getProgramHandle(), "projectionMatrix");
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(m_projectionMatrix));
 
@@ -154,6 +170,14 @@ void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader)
 		glm::vec3(up.x, up.y, up.z));
 	if (entity->get_vertexBuffer()->_cube) {
 
+		/*view = glm::mat4(glm::mat3(glm::lookAt(glm::vec3(_currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z),
+			glm::vec3(_currentCamera->get_eyeVector().x, _currentCamera->get_eyeVector().y, _currentCamera->get_eyeVector().z),
+			glm::vec3(_currentCamera->get_upVector().x, _currentCamera->get_upVector().y, _currentCamera->get_upVector().z))));*/
+
+		view = glm::mat4(glm::mat3(glm::lookAt(glm::vec3(pos.x, pos.y, pos.z),
+			glm::vec3(front.x + pos.x, front.y + pos.y, front.z + pos.z),
+			glm::vec3(up.x, up.y, up.z))));
+
 		GLuint transformLoc3 = glGetUniformLocation(shader->getProgramHandle(), "viewMatrix");
 		glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(view));
 		glBindTexture(GL_TEXTURE_CUBE_MAP, _cubemaptexture);
@@ -165,26 +189,25 @@ void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader)
 		GLuint transformLoc3 = glGetUniformLocation(shader->getProgramHandle(), "viewMatrix");
 		glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(view));
 		glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "cameraPos"), _currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z);
+	
+
+		glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "originPos"), entity->get_vertexBuffer()->originPos.x, entity->get_vertexBuffer()->originPos.y, entity->get_vertexBuffer()->originPos.z);
+		glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "startPos"), entity->get_position().x, entity->get_position().y, entity->get_position().z);
+		glUniform1f(glGetUniformLocation(shader->getProgramHandle(), "planetSpeed"), entity->get_vertexBuffer()->speed);
+		glUniform1f(glGetUniformLocation(shader->getProgramHandle(), "timeOffset"), entity->get_vertexBuffer()->timeOffset);
+
+		if (entity->get_vertexBuffer()->isStart)
+		{
+			glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "starPos"), entity->get_position().x, entity->get_position().y, entity->get_position().z);
+
+		}
+
+
+		entity->get_vertexBuffer()->renderMaterials();
+
+		GLint viewPosLoc = glGetUniformLocation(shader->getProgramHandle(), "viewPos");
+		glUniform3f(viewPosLoc, _currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z);
 	}
-
-	glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "originPos"), entity->get_vertexBuffer()->originPos.x, entity->get_vertexBuffer()->originPos.y, entity->get_vertexBuffer()->originPos.z);
-
-	glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "startPos"), entity->get_position().x, entity->get_position().y, entity->get_position().z);
-
-	glUniform1f(glGetUniformLocation(shader->getProgramHandle(), "planetSpeed"), entity->get_vertexBuffer()->speed);
-	glUniform1f(glGetUniformLocation(shader->getProgramHandle(), "timeOffset"), entity->get_vertexBuffer()->timeOffset);
-
-	if (entity->get_vertexBuffer()->isStart)
-	{
-		glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "starPos"), entity->get_position().x, entity->get_position().y, entity->get_position().z);
-
-	}
-
-
-	entity->get_vertexBuffer()->renderMaterials();
-
-	GLint viewPosLoc = glGetUniformLocation(shader->getProgramHandle(), "viewPos");
-	glUniform3f(viewPosLoc, _currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z);
 	
 }
 
@@ -222,15 +245,19 @@ RenderSystem& RenderSystem::getRenderSystem()
 	{
 		renderSystem = new RenderSystem();
 
-		glClearColor(0.0f,0.0f,0.0f,1.0f);
+		glClearColor(0.0f,0.0f,0.0f,0.1f);
 
 		glMatrixMode(GL_PROJECTION);
 		gluPerspective(45.0f, 1600.0f / 900.0f, 0.1, 10000);
 		glViewport(0.0f, 0.0f, 1600.0f, 900.0f);
 		glMatrixMode(GL_MODELVIEW);
-
+		glDepthFunc(GL_LESS);
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
+
+		glEnable(GL_BLEND);
+
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	return *renderSystem;
