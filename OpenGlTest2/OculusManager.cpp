@@ -4,16 +4,26 @@
 #include <GLFW/glfw3native.h>
 #include "Constants.h"
 
-static unsigned int fbo, fb_tex, fb_depth;
-static int fb_tex_width, fb_tex_height;
-static ovrTexture fb_ovr_tex[2];
-static ovrHmd hmd;
-static ovrSizei eyeres[2];
-static int fb_width, fb_height;
-static ovrEyeRenderDesc eyeRenderDescs[2];
-static OVR::Matrix4f g_ProjectionMatrici[2];
+static GLuint l_FBOId;
+static ovrHmd g_Hmd;
+static ovrGLConfig g_Cfg;
+static ovrEyeRenderDesc g_EyeRenderDesc[2];
 static ovrVector3f g_EyeOffsets[2];
 static ovrPosef g_EyePoses[2];
+static ovrTexture g_EyeTextures[2];
+static OVR::Matrix4f g_ProjectionMatrici[2];
+static OVR::Sizei g_RenderTargetSize;
+static ovrVector3f g_CameraPosition;
+
+const bool l_MultiSampling = false;
+const bool l_Spin = false;
+
+static int g_DistortionCaps = 0
+| ovrDistortionCap_Vignette
+| ovrDistortionCap_Chromatic
+| ovrDistortionCap_Overdrive
+// | ovrDistortionCap_TimeWarp // Turning this on gives ghosting???
+;
 
 OculusManager& OculusManager::getOculusManager()
 {
@@ -29,220 +39,257 @@ OculusManager& OculusManager::getOculusManager()
 
 		//= *OculusManager::getHmd();
 
-		if (!(hmd = ovrHmd_Create(0))) {
-			fprintf(stderr, "failed to open Oculus HMD, falling back to virtual debug HMD\n");
-			if (!(hmd = ovrHmd_CreateDebug(ovrHmd_DK2))) {
-				fprintf(stderr, "failed to create virtual debug HMD\n");
+		g_Hmd = ovrHmd_Create(0);
+		if (!g_Hmd)
+		{
+			printf("No Oculus Rift device attached, using virtual version...\n");
+			g_Hmd = ovrHmd_CreateDebug(ovrHmd_DK2);
+		}
+		printf("initialized HMD: %s - %s\n", g_Hmd->Manufacturer, g_Hmd->ProductName);
+
+		GLFWwindow* l_Window;
+
+		if (!glfwInit()) exit(EXIT_FAILURE);
+
+		if (l_MultiSampling) glfwWindowHint(GLFW_SAMPLES, 4); else glfwWindowHint(GLFW_SAMPLES, 0);
+
+		bool l_DirectMode = ((g_Hmd->HmdCaps & ovrHmdCap_ExtendDesktop) == 0);
+
+		GLFWmonitor* l_Monitor;
+		ovrSizei l_ClientSize;
+		if (l_DirectMode)
+		{
+			printf("Running in \"Direct\" mode...\n");
+			l_Monitor = NULL;
+
+			l_ClientSize.w = g_Hmd->Resolution.w / 2; // Something reasonable, smaller, but maintain aspect ratio...
+			l_ClientSize.h = g_Hmd->Resolution.h / 2; // Something reasonable, smaller, but maintain aspect ratio...
+		}
+		else // Extended Desktop mode...
+		{
+			printf("Running in \"Extended Desktop\" mode...\n");
+			int l_Count;
+			GLFWmonitor** l_Monitors = glfwGetMonitors(&l_Count);
+			switch (l_Count)
+			{
+			case 0:
+				printf("No monitors found, exiting...\n");
+				exit(EXIT_FAILURE);
+				break;
+			case 1:
+				printf("Two monitors expected, found only one, using primary...\n");
+				l_Monitor = glfwGetPrimaryMonitor();
+				break;
+			case 2:
+				printf("Two monitors found, using second monitor...\n");
+				l_Monitor = l_Monitors[1];
+				break;
+			default:
+				printf("More than two monitors found, using second monitor...\n");
+				l_Monitor = l_Monitors[1];
+			}
+
+			l_ClientSize.w = g_Hmd->Resolution.w; // 1920 for DK2...
+			l_ClientSize.h = g_Hmd->Resolution.h; // 1080 for DK2...
+		}
+
+		l_Window = glfwCreateWindow(l_ClientSize.w, l_ClientSize.h, "GLFW Oculus Rift Test", l_Monitor, NULL);
+
+		if (!l_Window)
+		{
+			glfwTerminate();
+			exit(EXIT_FAILURE);
+		}
+
+#if defined(_WIN32)
+		if (l_DirectMode)
+		{
+			ovrBool l_AttachResult = ovrHmd_AttachToWindow(g_Hmd, glfwGetWin32Window(l_Window), NULL, NULL);
+			if (!l_AttachResult)
+			{
+				printf("Could not attach to window...");
+				exit(EXIT_FAILURE);
 			}
 		}
-		printf("initialized HMD: %s - %s\n", hmd->Manufacturer, hmd->ProductName);
+#endif
 
-		if (!ovrHmd_ConfigureTracking(hmd,
-			ovrTrackingCap_Orientation | ovrTrackingCap_Position | ovrTrackingCap_MagYawCorrection, 0)) {
-			fprintf(stderr, "Could not attach to sensor device");
+		glfwMakeContextCurrent(l_Window);
+
+		glewExperimental = GL_TRUE;
+		GLenum l_GlewResult = glewInit();
+		if (l_GlewResult != GLEW_OK)
+		{
+			printf("glewInit() error.\n");
+			exit(EXIT_FAILURE);
 		}
 
-		glfwInit();
-		glfwWindowHint(GLFW_DEPTH_BITS, 24);
-		glfwWindowHint(GLFW_RED_BITS, 8);
-		glfwWindowHint(GLFW_BLUE_BITS, 8);
-		glfwWindowHint(GLFW_GREEN_BITS, 8);
-		glfwWindowHint(GLFW_ALPHA_BITS, 8);
-		glfwWindowHint(GLFW_SAMPLES, 16);
-		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+		int l_Major = glfwGetWindowAttrib(l_Window, GLFW_CONTEXT_VERSION_MAJOR);
+		int l_Minor = glfwGetWindowAttrib(l_Window, GLFW_CONTEXT_VERSION_MINOR);
+		int l_Profile = glfwGetWindowAttrib(l_Window, GLFW_OPENGL_PROFILE);
+		printf("OpenGL: %d.%d ", l_Major, l_Minor);
+		if (l_Major >= 3) // Profiles introduced in OpenGL 3.0...
+		{
+			if (l_Profile == GLFW_OPENGL_COMPAT_PROFILE) printf("GLFW_OPENGL_COMPAT_PROFILE\n"); else printf("GLFW_OPENGL_CORE_PROFILE\n");
+		}
+		printf("Vendor: %s\n", (char*)glGetString(GL_VENDOR));
+		printf("Renderer: %s\n", (char*)glGetString(GL_RENDERER));
 
-		uvec2 windowSize;
-		ivec2 windowPosition;
-		GLFWwindow * window = OculusManager::createRiftRenderingWindow(hmd, windowSize, windowPosition);
+		ovrSizei l_EyeTextureSizes[2];
 
-		glfwMakeContextCurrent(window);
-		GLenum error = glewInit();
+		l_EyeTextureSizes[ovrEye_Left] = ovrHmd_GetFovTextureSize(g_Hmd, ovrEye_Left, g_Hmd->MaxEyeFov[ovrEye_Left], 1.0f);
+		l_EyeTextureSizes[ovrEye_Right] = ovrHmd_GetFovTextureSize(g_Hmd, ovrEye_Right, g_Hmd->MaxEyeFov[ovrEye_Right], 1.0f);
 
-		eyeres[0] = ovrHmd_GetFovTextureSize(hmd, ovrEye_Left, hmd->DefaultEyeFov[0], 1.0);
-		eyeres[1] = ovrHmd_GetFovTextureSize(hmd, ovrEye_Right, hmd->DefaultEyeFov[1], 1.0);
+		// Combine for one texture for both eyes...
+		g_RenderTargetSize.w = l_EyeTextureSizes[ovrEye_Left].w + l_EyeTextureSizes[ovrEye_Right].w;
+		g_RenderTargetSize.h = (l_EyeTextureSizes[ovrEye_Left].h > l_EyeTextureSizes[ovrEye_Right].h ? l_EyeTextureSizes[ovrEye_Left].h : l_EyeTextureSizes[ovrEye_Right].h);
 
-		/* and create a single render target texture to encompass both eyes */
-		fb_width = eyeres[0].w + eyeres[1].w;
-		fb_height = eyeres[0].h > eyeres[1].h ? eyeres[0].h : eyeres[1].h;
-		update_rtarg(fb_width, fb_height);
+		// Create the FBO being a single one for both eyes (this is open for debate)...
+		glGenFramebuffers(1, &l_FBOId);
+		glBindFramebuffer(GL_FRAMEBUFFER, l_FBOId);
 
-		/* fill in the ovrGLTexture structures that describe our render target texture */
-		for (int i = 0; i < 2; i++) {
-			fb_ovr_tex[i].Header.API = ovrRenderAPI_OpenGL;
-			fb_ovr_tex[i].Header.TextureSize.w = fb_tex_width;
-			fb_ovr_tex[i].Header.TextureSize.h = fb_tex_height;
-			/* this next field is the only one that differs between the two eyes */
-			fb_ovr_tex[i].Header.RenderViewport.Pos.x = i == 0 ? 0 : fb_width / 2.0;
-			fb_ovr_tex[i].Header.RenderViewport.Pos.y = 0;
-			fb_ovr_tex[i].Header.RenderViewport.Size.w = fb_width / 2.0;
-			fb_ovr_tex[i].Header.RenderViewport.Size.h = fb_height;
-			((ovrGLTexture&)(fb_ovr_tex[i])).OGL.TexId = fb_tex;
+		// The texture we're going to render to...
+		GLuint l_TextureId;
+		glGenTextures(1, &l_TextureId);
+		// "Bind" the newly created texture : all future texture functions will modify this texture...
+		glBindTexture(GL_TEXTURE_2D, l_TextureId);
+		// Give an empty image to OpenGL (the last "0")
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, g_RenderTargetSize.w, g_RenderTargetSize.h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+		// Linear filtering...
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+		// Create Depth Buffer...
+		GLuint l_DepthBufferId;
+		glGenRenderbuffers(1, &l_DepthBufferId);
+		glBindRenderbuffer(GL_RENDERBUFFER, l_DepthBufferId);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, g_RenderTargetSize.w, g_RenderTargetSize.h);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, l_DepthBufferId);
+
+		// Set the texture as our colour attachment #0...
+		glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, l_TextureId, 0);
+
+		// Set the list of draw buffers...
+		GLenum l_GLDrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
+		glDrawBuffers(1, l_GLDrawBuffers); // "1" is the size of DrawBuffers
+
+		// Check if everything is OK...
+		GLenum l_Check = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+		if (l_Check != GL_FRAMEBUFFER_COMPLETE)
+		{
+			printf("There is a problem with the FBO.\n");
+			exit(EXIT_FAILURE);
 		}
 
+		// Unbind...
+		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		ovrGLConfig cfg;
-		memset(&cfg, 0, sizeof(cfg));
-		cfg.OGL.Header.API = ovrRenderAPI_OpenGL;
-		ovrSizei result;
-		result.w = windowSize.x;
-		result.h = windowSize.y;
-		cfg.OGL.Header.RTSize = result;
-		cfg.OGL.Header.Multisample = 0;
-		cfg.OGL.Window = glfwGetWin32Window(window);
+		// Setup textures for each eye...
 
-		int distortionCaps = 0
-			| ovrDistortionCap_Vignette
-			| ovrDistortionCap_Chromatic
-			| ovrDistortionCap_Overdrive
-			| ovrDistortionCap_TimeWarp
-			;
+		// Left eye...
+		g_EyeTextures[ovrEye_Left].Header.API = ovrRenderAPI_OpenGL;
+		g_EyeTextures[ovrEye_Left].Header.TextureSize = g_RenderTargetSize;
+		g_EyeTextures[ovrEye_Left].Header.RenderViewport.Pos.x = 0;
+		g_EyeTextures[ovrEye_Left].Header.RenderViewport.Pos.y = 0;
+		g_EyeTextures[ovrEye_Left].Header.RenderViewport.Size = l_EyeTextureSizes[ovrEye_Left];
+		((ovrGLTexture&)(g_EyeTextures[ovrEye_Left])).OGL.TexId = l_TextureId;
 
-		printf("SDK Version : %s \n", ovr_GetVersionString());
+		// Right eye (mostly the same as left but with the viewport on the right side of the texture)...
+		g_EyeTextures[ovrEye_Right] = g_EyeTextures[ovrEye_Left];
+		g_EyeTextures[ovrEye_Right].Header.RenderViewport.Pos.x = (g_RenderTargetSize.w + 1) / 2;
+		g_EyeTextures[ovrEye_Right].Header.RenderViewport.Pos.y = 0;
 
-		int configResult = ovrHmd_ConfigureRendering(hmd, &cfg.Config,
-			distortionCaps, hmd->MaxEyeFov, eyeRenderDescs);
+		// Oculus Rift eye configurations...
+		g_Cfg.OGL.Header.API = ovrRenderAPI_OpenGL;
+		g_Cfg.OGL.Header.RTSize.w = l_ClientSize.w;
+		g_Cfg.OGL.Header.RTSize.h = l_ClientSize.h;
+		g_Cfg.OGL.Header.Multisample = (l_MultiSampling ? 1 : 0);
+#if defined(_WIN32)
+		g_Cfg.OGL.Window = glfwGetWin32Window(l_Window);
+		g_Cfg.OGL.DC = GetDC(g_Cfg.OGL.Window);
+#elif defined(__linux__)
+		l_Cfg.OGL.Win = glfwGetX11Window(l_Window);
+		l_Cfg.OGL.Disp = glfwGetX11Display();
+#endif
+
+		// Enable capabilities...
+		// ovrHmd_SetEnabledCaps(g_Hmd, ovrHmdCap_LowPersistence | ovrHmdCap_DynamicPrediction);
+
+		ovrBool l_ConfigureResult = ovrHmd_ConfigureRendering(g_Hmd, &g_Cfg.Config, g_DistortionCaps, g_Hmd->MaxEyeFov, g_EyeRenderDesc);
+		glUseProgram(0); // Avoid OpenGL state leak in ovrHmd_ConfigureRendering...
+		if (!l_ConfigureResult)
+		{
+			printf("Configure failed.\n");
+			exit(EXIT_FAILURE);
+		}
+
+		// Start the sensor which provides the Rift’s pose and motion...
+		uint32_t l_SupportedSensorCaps = ovrTrackingCap_Orientation | ovrTrackingCap_MagYawCorrection | ovrTrackingCap_Position;
+		uint32_t l_RequiredTrackingCaps = 0;
+		ovrBool l_TrackingResult = ovrHmd_ConfigureTracking(g_Hmd, l_SupportedSensorCaps, l_RequiredTrackingCaps);
+		if (!l_TrackingResult)
+		{
+			printf("Could not start tracking...");
+			exit(EXIT_FAILURE);
+		}
 
 		// Projection matrici for each eye will not change at runtime, we can set them here...
-		g_ProjectionMatrici[ovrEye_Left] = ovrMatrix4f_Projection(eyeRenderDescs[ovrEye_Left].Fov, 0.3f, 100.0f, true);
-		g_ProjectionMatrici[ovrEye_Right] = ovrMatrix4f_Projection(eyeRenderDescs[ovrEye_Right].Fov, 0.3f, 100.0f, true);
+		g_ProjectionMatrici[ovrEye_Left] = ovrMatrix4f_Projection(g_EyeRenderDesc[ovrEye_Left].Fov, 0.3f, 100.0f, true);
+		g_ProjectionMatrici[ovrEye_Right] = ovrMatrix4f_Projection(g_EyeRenderDesc[ovrEye_Right].Fov, 0.3f, 100.0f, true);
 
 		// IPD offset values will not change at runtime, we can set them here...
-		g_EyeOffsets[ovrEye_Left] = eyeRenderDescs[ovrEye_Left].HmdToEyeViewOffset;
-		g_EyeOffsets[ovrEye_Right] = eyeRenderDescs[ovrEye_Right].HmdToEyeViewOffset;
+		g_EyeOffsets[ovrEye_Left] = g_EyeRenderDesc[ovrEye_Left].HmdToEyeViewOffset;
+		g_EyeOffsets[ovrEye_Right] = g_EyeRenderDesc[ovrEye_Right].HmdToEyeViewOffset;
 
-		ovrHmd_RecenterPose(hmd);
+		ovrHmd_RecenterPose(g_Hmd);
 
 	}
 
 	return *oculusManager;
 }
 
-GLFWwindow * OculusManager::createRiftRenderingWindow(ovrHmd hmd, glm::uvec2 & outSize, glm::ivec2 & outPosition) {
-	GLFWwindow * window = nullptr;
-	bool directHmdMode = false;
-
-	outPosition = glm::ivec2(hmd->WindowsPos.x, hmd->WindowsPos.y);
-	outSize = glm::uvec2(hmd->Resolution.w, hmd->Resolution.h);
-
-	directHmdMode = (0 == (ovrHmdCap_ExtendDesktop & hmd->HmdCaps));
-
-	window = createSecondaryScreenWindow(outSize);
-
-	void * nativeWindowHandle = glfwGetWin32Window(window);
-	if (nullptr != nativeWindowHandle) {
-		ovrHmd_AttachToWindow(hmd, nativeWindowHandle, nullptr, nullptr);
-	}
-
-	return window;
-}
-
-GLFWwindow * OculusManager::createWindow(const uvec2 & size, const ivec2 & position) {
-	GLFWwindow * window = glfwCreateWindow(size.x, size.y, Constants::getConstants()->game_name(), nullptr, nullptr);
-	if (!window) {
-		fprintf(stderr, "Unable to create rendering window");
-	}
-	if ((position.x > INT_MIN) && (position.y > INT_MIN)) {
-		glfwSetWindowPos(window, position.x, position.y);
-	}
-	return window;
-}
-
-GLFWwindow * OculusManager::createWindow(int w, int h, int x, int y) {
-	return createWindow(uvec2(w, h), ivec2(x, y));
-}
-
-GLFWwindow * OculusManager::createFullscreenWindow(const uvec2 & size, GLFWmonitor * targetMonitor) {
-	return glfwCreateWindow(size.x, size.y, "glfw", targetMonitor, nullptr);
-}
-
-GLFWwindow * OculusManager::createSecondaryScreenWindow(const uvec2 & size) {
-	return createWindow(size, getSecondaryScreenPosition(size));
-}
-
-ivec2 OculusManager::getSecondaryScreenPosition(const uvec2 & size) {
-	GLFWmonitor * primary = glfwGetPrimaryMonitor();
-	int monitorCount;
-	GLFWmonitor ** monitors = glfwGetMonitors(&monitorCount);
-	GLFWmonitor * best = nullptr;
-	uvec2 bestSize;
-	for (int i = 0; i < monitorCount; ++i) {
-		GLFWmonitor * cur = monitors[i];
-		if (cur == primary) {
-			continue;
-		}
-		uvec2 curSize = getSize(cur);
-		if (best == nullptr || (bestSize.x < curSize.x && bestSize.y < curSize.y)) {
-			best = cur;
-			bestSize = curSize;
-		}
-	}
-	if (nullptr == best) {
-		best = primary;
-		bestSize = getSize(best);
-	}
-	ivec2 pos = getPosition(best);
-	if (bestSize.x > size.x) {
-		pos.x += (bestSize.x - size.x) / 2;
-	}
-
-	if (bestSize.y > size.y) {
-		pos.y += (bestSize.y - size.y) / 2;
-	}
-
-	return pos;
-}
-
-uvec2 OculusManager::getSize(GLFWmonitor * monitor) {
-	const GLFWvidmode * mode = glfwGetVideoMode(monitor);
-	return uvec2(mode->width, mode->height);
-}
-
-ivec2 OculusManager::getPosition(GLFWmonitor * monitor) {
-	ivec2 result;
-	glfwGetMonitorPos(monitor, &result.x, &result.y);
-	return result;
-}
 
 /* update_rtarg creates (and/or resizes) the render target used to draw the two stero views */
-void OculusManager::update_rtarg(int width, int height)
-{
-	if (!fbo) {
-		/* if fbo does not exist, then nothing does... create every opengl object */
-		glGenFramebuffers(1, &fbo);
-		glGenTextures(1, &fb_tex);
-		glGenRenderbuffers(1, &fb_depth);
-
-		glBindTexture(GL_TEXTURE_2D, fb_tex);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	}
-
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-
-	/* calculate the next power of two in both dimensions and use that as a texture size */
-	fb_tex_width = next_pow2(width);
-	fb_tex_height = next_pow2(height);
-
-	/* create and attach the texture that will be used as a color buffer */
-	glBindTexture(GL_TEXTURE_2D, fb_tex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, fb_tex_width, fb_tex_height, 0,
-		GL_RGBA, GL_UNSIGNED_BYTE, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb_tex, 0);
-
-	/* create and attach the renderbuffer that will serve as our z-buffer */
-	glBindRenderbuffer(GL_RENDERBUFFER, fb_depth);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, fb_tex_width, fb_tex_height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fb_depth);
-
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-		fprintf(stderr, "incomplete framebuffer!\n");
-
-	}
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	printf("created render target: %dx%d (texture size: %dx%d)\n", width, height, fb_tex_width, fb_tex_height);
-}
+//void OculusManager::update_rtarg(int width, int height)
+//{
+//	if (!fbo) {
+//		/* if fbo does not exist, then nothing does... create every opengl object */
+//		glGenFramebuffers(1, &fbo);
+//		glGenTextures(1, &fb_tex);
+//		glGenRenderbuffers(1, &fb_depth);
+//
+//		glBindTexture(GL_TEXTURE_2D, fb_tex);
+//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//
+//	}
+//
+//	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+//
+//	/* calculate the next power of two in both dimensions and use that as a texture size */
+//	fb_tex_width = next_pow2(width);
+//	fb_tex_height = next_pow2(height);
+//
+//	/* create and attach the texture that will be used as a color buffer */
+//	glBindTexture(GL_TEXTURE_2D, fb_tex);
+//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, fb_tex_width, fb_tex_height, 0,
+//		GL_RGBA, GL_UNSIGNED_BYTE, 0);
+//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb_tex, 0);
+//
+//	/* create and attach the renderbuffer that will serve as our z-buffer */
+//	glBindRenderbuffer(GL_RENDERBUFFER, fb_depth);
+//	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, fb_tex_width, fb_tex_height);
+//	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fb_depth);
+//
+//	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+//		fprintf(stderr, "incomplete framebuffer!\n");
+//
+//	}
+//
+//	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+//	printf("created render target: %dx%d (texture size: %dx%d)\n", width, height, fb_tex_width, fb_tex_height);
+//}
 
 unsigned int OculusManager::next_pow2(unsigned int x)
 {
@@ -264,41 +311,56 @@ void OculusManager::render(RenderSystem* render, Scene* scene)
 	//float rot_mat[16];
 
 	/* the drawing starts with a call to ovrHmd_BeginFrame */
-	ovrHmd_BeginFrame(hmd, 0);
+	ovrHmd_BeginFrame(g_Hmd, l_FrameIndex);
 
-	ovrHmd_GetEyePoses(hmd, 0, g_EyeOffsets, g_EyePoses, NULL);
+	ovrHmd_GetEyePoses(g_Hmd, l_FrameIndex, g_EyeOffsets, g_EyePoses, NULL);
 
 	/* start drawing onto our texture render target */
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, l_FBOId);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	/* for each eye ... */
-	for (i = 0; i < 2; i++) {
-		ovrEyeType eye = hmd->EyeRenderOrder[i];
+	for (int l_EyeIndex = 0; l_EyeIndex<ovrEye_Count; l_EyeIndex++)
+	{
+		ovrEyeType l_Eye = g_Hmd->EyeRenderOrder[l_EyeIndex];
 
 		glViewport(
-			fb_ovr_tex[eye].Header.RenderViewport.Pos.x,
-			fb_ovr_tex[eye].Header.RenderViewport.Pos.y,
-			fb_ovr_tex[eye].Header.RenderViewport.Size.w,
-			fb_ovr_tex[eye].Header.RenderViewport.Size.h
+			g_EyeTextures[l_Eye].Header.RenderViewport.Pos.x,
+			g_EyeTextures[l_Eye].Header.RenderViewport.Pos.y,
+			g_EyeTextures[l_Eye].Header.RenderViewport.Size.w,
+			g_EyeTextures[l_Eye].Header.RenderViewport.Size.h
 			);
 
+		// Pass projection matrix on to OpenGL...
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glMultMatrixf(&(g_ProjectionMatrici[eye].Transposed().M[0][0]));
+		glMultMatrixf(&(g_ProjectionMatrici[l_Eye].Transposed().M[0][0]));
 
+		// Create the model-view matrix and pass on to OpenGL...
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		OVR::Quatf l_Orientation = OVR::Quatf(g_EyePoses[eye].Orientation);
+		// Multiply with orientation retrieved from sensor...
+		OVR::Quatf l_Orientation = OVR::Quatf(g_EyePoses[l_Eye].Orientation);
 		OVR::Matrix4f l_ModelViewMatrix = OVR::Matrix4f(l_Orientation.Inverted());
 		glMultMatrixf(&(l_ModelViewMatrix.Transposed().M[0][0]));
 
-		glTranslatef(-g_EyePoses[eye].Position.x, -g_EyePoses[eye].Position.y, -g_EyePoses[eye].Position.z);
+		// Translation due to positional tracking (DK2) and IPD...
+		glTranslatef(-g_EyePoses[l_Eye].Position.x, -g_EyePoses[l_Eye].Position.y, -g_EyePoses[l_Eye].Position.z);
 
-		//glTranslatef(g_CameraPosition.x, g_CameraPosition.y, g_CameraPosition.z);
+		// Move the world forward a bit to show the scene in front of us...
+		glTranslatef(g_CameraPosition.x, g_CameraPosition.y, g_CameraPosition.z);
+
+		// (Re)set the light positions so they don't move along with the cube...
+		//SetStaticLightPositions();
+
+		//// Make the cube spin...
+		//glRotatef(l_SpinX, 1.0f, 0.0f, 0.0f);
+		//glRotatef(l_SpinY, 0.0f, 1.0f, 0.0f);
 
 
+		//Render
 		render->render(scene->getChildren(), scene->getLights());
 	}
 
@@ -308,11 +370,14 @@ void OculusManager::render(RenderSystem* render, Scene* scene)
 	*/
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	ovrHmd_EndFrame(hmd, g_EyePoses, fb_ovr_tex);
+	ovrHmd_EndFrame(g_Hmd, g_EyePoses, g_EyeTextures);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Avoid OpenGL state leak in ovrHmd_EndFrame...
+	glBindBuffer(GL_ARRAY_BUFFER, 0); // Avoid OpenGL state leak in ovrHmd_EndFrame...
 
 	glUseProgram(0);
 
-	++ l_FrameIndex;
+	++l_FrameIndex;
 }
 
 /* convert a quaternion to a rotation matrix */
