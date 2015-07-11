@@ -21,7 +21,9 @@ Planet::~Planet()
 
 void Planet::generatePlanet()
 {
-	radius = float(rand() % 21) / 10.0f + 1.0f;
+	//radius = float(rand() % 21) / 10.0f + 1.0f;
+
+	radius = float((rand() % 801)+ 430)/ 10.0f + 1.0f;
 	cout << radius;
 	temperature = rand() % 101;
 

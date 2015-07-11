@@ -31,7 +31,7 @@ void PlanetarySystem::GeneratePlanetarySystem()
 
 	nbPlanet = rand() % 8 + 5;
 	for (int i = 0; i < nbPlanet; ++i) {
-		float distance = 50.0f + i * 20.0f;
+		float distance = (50.0f + i * 20.0f)*100.0f;
 		planets.push_back(Planet());
 		planets[i].worldPosition = addVector3(startPos, makeVector3(distance, 0.0f, 0.0f));
 	}
