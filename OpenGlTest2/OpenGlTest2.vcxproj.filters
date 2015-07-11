@@ -1,94 +1,278 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="CameraSystem.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="GameManager.cpp" />
-    <ClCompile Include="Matrix3.cpp" />
-    <ClCompile Include="light.cpp" />
-    <ClCompile Include="materials.cpp" />
-    <ClCompile Include="MouvementSystem.cpp" />
-    <ClCompile Include="noiseutils.cpp" />
-    <ClCompile Include="OculusManager.cpp" />
-    <ClCompile Include="Planet.cpp" />
-    <ClCompile Include="PlayerInputSystem.cpp" />
-    <ClCompile Include="ResourcesManager.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="ShaderData.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="RenderSystem.cpp" />
-    <ClCompile Include="ShaderInterface.cpp" />
-    <ClCompile Include="ShaderLoader.cpp" />
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="Vector2.cpp" />
-    <ClCompile Include="Vector3.cpp" />
-    <ClCompile Include="Vector4.cpp" />
-    <ClCompile Include="VertexBuffer.cpp" />
-    <ClCompile Include="Star.cpp" />
-    <ClCompile Include="PlanetarySystem.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="Constants.cpp" />
+    <ClCompile Include="main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerInputSystem.cpp">
+      <Filter>src\PartieMath</Filter>
+    </ClCompile>
+    <ClCompile Include="OculusManager.cpp">
+      <Filter>src\PartieMax</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>src\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderInterface.cpp">
+      <Filter>src\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderLoader.cpp">
+      <Filter>src\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcesManager.cpp">
+      <Filter>src\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraSystem.cpp">
+      <Filter>src\PartieMath</Filter>
+    </ClCompile>
+    <ClCompile Include="MouvementSystem.cpp">
+      <Filter>src\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Planet.cpp">
+      <Filter>src\PartieFred</Filter>
+    </ClCompile>
+    <ClCompile Include="PlanetarySystem.cpp">
+      <Filter>src\PartieFred</Filter>
+    </ClCompile>
+    <ClCompile Include="Star.cpp">
+      <Filter>src\PartieFred</Filter>
+    </ClCompile>
+    <ClCompile Include="noiseutils.cpp">
+      <Filter>src\PartieFred</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>src\PureData</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>src\PureData</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector4.cpp">
+      <Filter>src\PureData</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderData.cpp">
+      <Filter>src\PureData</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix3.cpp">
+      <Filter>src\PureData</Filter>
+    </ClCompile>
+    <ClCompile Include="materials.cpp">
+      <Filter>src\PureData</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>src\PureData</Filter>
+    </ClCompile>
+    <ClCompile Include="Constants.cpp">
+      <Filter>src\PureData</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>src\PartieFred</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem.cpp">
+      <Filter>src\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>src\PureData</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>src\PureData</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>src\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraSystem.h" />
-    <ClInclude Include="CubeQuadTex.h" />
-    <ClInclude Include="CubeVertices.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="GameManager.h" />
-    <ClInclude Include="OculusManager.h" />
-    <ClInclude Include="indices.h" />
-    <ClInclude Include="glfw.h" />
-    <ClInclude Include="Matrix3.h" />
-    <ClInclude Include="light.h" />
-    <ClInclude Include="materials.h" />
-    <ClInclude Include="model.h" />
-    <ClInclude Include="MouvementSystem.h" />
-    <ClInclude Include="noiseutils.h" />
-    <ClInclude Include="Planet.h" />
     <ClInclude Include="ovr.h" />
-    <ClInclude Include="PlayerInputSystem.h" />
-    <ClInclude Include="ResourcesManager.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="ShaderData.h" />
-    <ClInclude Include="TriangleVertices.h" />
-    <ClInclude Include="Vector2.h" />
-    <ClInclude Include="Vector3.h" />
-    <ClInclude Include="RenderSystem.h" />
-    <ClInclude Include="ShaderInterface.h" />
-    <ClInclude Include="ShaderLoader.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="Vector4.h" />
-    <ClInclude Include="VertexBuffer.h" />
-    <ClInclude Include="VertexDataP.h" />
-    <ClInclude Include="verticesTiangle.h" />
-    <ClInclude Include="Star.h" />
-    <ClInclude Include="PlanetarySystem.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="OculusApp.h" />
-    <ClInclude Include="OculusManagerApp.h" />
-    <ClInclude Include="Constants.h" />
+    <ClInclude Include="CameraSystem.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeQuadTex.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeVertices.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="glfw.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="indices.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="materials.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix3.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MouvementSystem.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="noiseutils.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="OculusApp.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="OculusManager.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="OculusManagerApp.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Planet.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInputSystem.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PlanetarySystem.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcesManager.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderData.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderInterface.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderLoader.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Star.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TriangleVertices.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector4.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexDataP.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="verticesTiangle.h">
+      <Filter>headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Gas Giant-Blue.jpg" />
-    <Image Include="Gas Giant-Green.jpg" />
-    <Image Include="Gas Giant-Red.jpg" />
-    <Image Include="Gas Giant-Yellow.jpg" />
-    <Image Include="Gas Planet 1.jpg" />
-    <Image Include="Gas Planet 2.jpg" />
-    <Image Include="Gas Planet 3.jpg" />
-    <Image Include="Gas Planet 4.jpg" />
-    <Image Include="OrnamentsHeads0036_S.jpg" />
+    <Image Include="Gas Giant-Blue.jpg">
+      <Filter>ressources</Filter>
+    </Image>
+    <Image Include="Gas Giant-Green.jpg">
+      <Filter>ressources</Filter>
+    </Image>
+    <Image Include="Gas Giant-Red.jpg">
+      <Filter>ressources</Filter>
+    </Image>
+    <Image Include="Gas Giant-Yellow.jpg">
+      <Filter>ressources</Filter>
+    </Image>
+    <Image Include="Gas Planet 1.jpg">
+      <Filter>ressources</Filter>
+    </Image>
+    <Image Include="Gas Planet 2.jpg">
+      <Filter>ressources</Filter>
+    </Image>
+    <Image Include="Gas Planet 3.jpg">
+      <Filter>ressources</Filter>
+    </Image>
+    <Image Include="Gas Planet 4.jpg">
+      <Filter>ressources</Filter>
+    </Image>
+    <Image Include="OrnamentsHeads0036_S.jpg">
+      <Filter>ressources</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ColorShader.fs" />
-    <None Include="FragmentShaderTexture.fs" />
-    <None Include="SimpleLightShader.fsh" />
-    <None Include="SimpleLightShader.vsh" />
-    <None Include="VertexShader.fs" />
-    <None Include="VertexShaderTexture.vs" />
+    <None Include="ColorShader.fs">
+      <Filter>ressources</Filter>
+    </None>
+    <None Include="FragmentShaderTexture.fs">
+      <Filter>ressources</Filter>
+    </None>
+    <None Include="SimpleLightShader.fsh">
+      <Filter>ressources</Filter>
+    </None>
+    <None Include="SimpleLightShader.vsh">
+      <Filter>ressources</Filter>
+    </None>
+    <None Include="VertexShader.fs">
+      <Filter>ressources</Filter>
+    </None>
+    <None Include="VertexShaderTexture.vs">
+      <Filter>ressources</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="headers">
+      <UniqueIdentifier>{1b94427a-5406-4510-b968-ec3cfe55415e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{274616f5-d6ae-44bf-8896-3c00af362a35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ressources">
+      <UniqueIdentifier>{ca443764-1cf4-44d4-8f59-a168a228296e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Managers">
+      <UniqueIdentifier>{4703bfe5-4e19-4b3c-8cbc-386083554123}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\PartieMath">
+      <UniqueIdentifier>{5d33d7d9-a8fa-484d-8b1e-bc92b098178f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\PartieMax">
+      <UniqueIdentifier>{eb58b665-0658-4755-8985-34e234c2f35d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\PartieFred">
+      <UniqueIdentifier>{e38e3ead-4216-412b-8f99-7f5f9acd58e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\PureData">
+      <UniqueIdentifier>{8ea0add6-6001-4a51-8ae8-f3b31af1be90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
