@@ -912,11 +912,11 @@ void VertexBuffer::configureVertexAttributes()
 		glBindVertexArray(_vexterArrayID);
 	}
 
-	/*if (_cubemaptexture != -1)
+	if (_cubemaptexture != -1)
 	{
 		glActiveTexture(GL_TEXTURE0);
 		glUniform1i(glGetUniformLocation(_shader->getProgramHandle(), "skybox"), 1);
-	}*/
+	}
 
 
 	/*glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.direction"), 0.2f, 20.0f, 20.3f);

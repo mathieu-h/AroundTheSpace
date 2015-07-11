@@ -12,7 +12,7 @@ Scene::Scene()
 	
 	ResourcesManager* resources = &ResourcesManager::getResourcesManager();
 
-	for (int i = 0; i < resources->getVertexBufferArray()->size() - 1; i++)
+	for (int i = 0; i < resources->getVertexBufferArray()->size(); i++)
 	{
 		Entity* _entity;
 		{
@@ -22,16 +22,16 @@ Scene::Scene()
 		children->push_back(_entity);
 	}
 
-	//Entity* _entity = new Entity((resources->getVertexBufferArray()->at(1)), makeVector3(0.0f, 0.0f, 0.0f));
-	Entity* _entity2 = new Entity((resources->getVertexBufferArray()->at(resources->getVertexBufferArray()->size() - 1)), makeVector3(0.0f, 0.0f, 0.0f));
+	/*Entity* _entity = new Entity((resources->getVertexBufferArray()->at(1)), makeVector3(0.0f, 0.0f, 0.0f));
+	Entity* _entity2 = new Entity((resources->getVertexBufferArray()->at(0)), makeVector3(0.0f, 0.0f, 0.0f));
 	
-	//_entity->set_rotationVelocity(makeVector3(0.0f, 0.5f, 0.0f));
+	_entity->set_rotationVelocity(makeVector3(0.0f, 0.5f, 0.0f));
 	_entity2->set_scale(makeVector3(1.0f, 1.0f, 1.0f));
-	//_entity2->set_rotationVelocity(makeVector3(0.0f, 0.1f, 0.0f));
-	//_entity2->set_rotation(makeVector3(0.0f, 0.0f, 15.0f));
+	_entity2->set_rotationVelocity(makeVector3(0.0f, 0.1f, 0.0f));
+	_entity2->set_rotation(makeVector3(0.0f, 0.0f, 15.0f));
 
-	//children->push_back(_entity);
-	children->push_back(_entity2);
+	children->push_back(_entity);
+	children->push_back(_entity2);*/
 
 	Entity* camera = new Entity(NULL, makeVector3(0.0f, 125.0f, -85.0f));
 	camera->set_eyeVector(makeVector3(0.0f, 0.0f, -1.0f));
@@ -46,7 +46,7 @@ Scene::Scene()
 
 	for (int i = 0; i < resources->_star.size(); i++)
 	{
-		_lights->push_back(new light(NULL, resources->_star.at(i).worldPosition, makeVector3(0.01f, 0.01f, 0.01f), makeVector3(0.8f, 0.8f, 0.8f), makeVector3(0.8f, 0.8f, 0.8f), 1.0f, 0.045f, 0.0075f));
+		_lights->push_back(new light(NULL, resources->_star.at(i).worldPosition, makeVector3(1.00f, 1.00f, 1.00f), makeVector3(0.8f, 0.8f, 0.8f), makeVector3(1.0f, 1.0f, 1.0f), 1.0f, 0.045f, 0.0075f));
 	}
 	
 	

@@ -53,19 +53,19 @@ ResourcesManager::ResourcesManager()
 	//Star s;
 
 	PlanetarySystem pS(makeVector3(0.0f,0.f,0.0f));
-	/*PlanetarySystem pS1(makeVector3(0.0f, 300.0f, 0.0f));
-	PlanetarySystem pS2(makeVector3(-400.0f, 500.0f, -300.0f));
-	PlanetarySystem pS3(makeVector3(-140.0f, -200.0f, -500.0f));
-	PlanetarySystem pS4(makeVector3(300.0f, 250.0f, 0.0f));*/
+	//PlanetarySystem pS1(makeVector3(0.0f, 300.0f, 400.0f));
+	//PlanetarySystem pS2(makeVector3(-400.0f, 500.0f, -300.0f));
+	//PlanetarySystem pS3(makeVector3(-140.0f, -200.0f, -500.0f));
+	//PlanetarySystem pS4(makeVector3(300.0f, 250.0f, 0.0f));
 
 
 	//_nbPlanet = pS.nbPlanet + pS1.nbPlanet + pS2.nbPlanet + pS3.nbPlanet + pS4.nbPlanet;
-	//_nbPlanet = pS.nbPlanet;
+	_nbPlanet = pS.nbPlanet;
 	_star.push_back(pS.star);
-	/*_star.push_back(pS1.star);
-	_star.push_back(pS2.star);
-	_star.push_back(pS3.star);
-	_star.push_back(pS4.star);*/
+	//_star.push_back(pS1.star);
+	//_star.push_back(pS2.star);
+	//_star.push_back(pS3.star);
+	//_star.push_back(pS4.star);
 
 	/*for (int i = 0; i < pS.planets.size(); i++)
 	{
@@ -189,8 +189,6 @@ ResourcesManager::ResourcesManager()
 		_vertexBufferArray->push_back(_planetVertexBuffer);
 		_planets.push_back(g);
 	}*/
-	VertexBuffer* _vertexBufftext3 = new VertexBuffer(skyboxVertices, sizeof(skyboxVertices), GL_TRIANGLES, 36, sizeof(VertexDataP), _shaderArray->at(4), _shaderData, (GLvoid*)(offsetof(VertexDataP, positionCoordinates)));
-	_vertexBufferArray->push_back(_vertexBufftext3);
 
 	std::vector<materials*> *_materials2 = new std::vector<materials*>();
 
