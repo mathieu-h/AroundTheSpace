@@ -82,6 +82,9 @@
     <ClCompile Include="Scene.cpp">
       <Filter>src\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="EsgiShader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ovr.h" />
@@ -195,6 +198,9 @@
     </ClInclude>
     <ClInclude Include="ShaderData.h">
       <Filter>headers\PureData</Filter>
+    </ClInclude>
+    <ClInclude Include="ESGIShader.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

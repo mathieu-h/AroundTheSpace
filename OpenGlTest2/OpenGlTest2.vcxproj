@@ -96,6 +96,7 @@
     <ClInclude Include="CubeQuadTex.h" />
     <ClInclude Include="CubeVertices.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="ESGIShader.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="OculusManager.h" />
     <ClInclude Include="GameObject.h" />
@@ -134,6 +135,7 @@
     <ClCompile Include="CameraSystem.cpp" />
     <ClCompile Include="Constants.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EsgiShader.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Matrix3.cpp" />

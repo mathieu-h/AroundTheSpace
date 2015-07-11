@@ -3,8 +3,17 @@
 #include "GLFW\glfw3.h"
 #include <GLFW/glfw3native.h>
 #include "Constants.h"
+#include "ESGIShader.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 static GLuint l_FBOId;
+static GLuint l_DepthBufferId;
+static GLuint l_TextureId;
+
+static GLFWwindow* l_Window;
+
 static ovrHmd g_Hmd;
 static ovrGLConfig g_Cfg;
 static ovrEyeRenderDesc g_EyeRenderDesc[2];
@@ -24,6 +33,18 @@ static int g_DistortionCaps = 0
 | ovrDistortionCap_Overdrive
 // | ovrDistortionCap_TimeWarp // Turning this on gives ghosting???
 ;
+
+static std::vector<GLfloat> vertices2 = std::vector<GLfloat>();
+static std::vector<GLuint> indices2 = std::vector<GLuint>();
+
+static float incrementW = 0.3f;
+static float incrementH = 0.3f;
+
+const GLuint GRID_W = 10, GRID_H = 10;
+
+static GLuint VBO, VAO, EBO;
+
+EsgiShader basicShader;
 
 OculusManager& OculusManager::getOculusManager()
 {
@@ -46,8 +67,6 @@ OculusManager& OculusManager::getOculusManager()
 			g_Hmd = ovrHmd_CreateDebug(ovrHmd_DK2);
 		}
 		printf("initialized HMD: %s - %s\n", g_Hmd->Manufacturer, g_Hmd->ProductName);
-
-		GLFWwindow* l_Window;
 
 		if (!glfwInit()) exit(EXIT_FAILURE);
 
@@ -148,7 +167,6 @@ OculusManager& OculusManager::getOculusManager()
 		glBindFramebuffer(GL_FRAMEBUFFER, l_FBOId);
 
 		// The texture we're going to render to...
-		GLuint l_TextureId;
 		glGenTextures(1, &l_TextureId);
 		// "Bind" the newly created texture : all future texture functions will modify this texture...
 		glBindTexture(GL_TEXTURE_2D, l_TextureId);
@@ -159,7 +177,6 @@ OculusManager& OculusManager::getOculusManager()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 		// Create Depth Buffer...
-		GLuint l_DepthBufferId;
 		glGenRenderbuffers(1, &l_DepthBufferId);
 		glBindRenderbuffer(GL_RENDERBUFFER, l_DepthBufferId);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, g_RenderTargetSize.w, g_RenderTargetSize.h);
@@ -244,63 +261,76 @@ OculusManager& OculusManager::getOculusManager()
 
 		ovrHmd_RecenterPose(g_Hmd);
 
+
+
+
+		basicShader.LoadVertexShader("basic.vs"); // vs or vert
+		basicShader.LoadFragmentShader("basic.fs");
+		basicShader.Create();
+
+		for (float i = 0.f; i <= GRID_W; i += 1.f)
+		{
+			for (float j = 0.f; j <= GRID_H; j += 1.f)
+			{
+				vertices2.push_back(j * incrementW);
+				vertices2.push_back(i * incrementH);
+				vertices2.push_back(0.f);
+			}
+		}
+
+		for (float i = 0.f; i < GRID_W; i += 1.f)
+		{
+			for (float j = 0.f; j < GRID_H; j += 1.f)
+			{
+				if (j == 0.f)
+				{
+					//x2 cause Degenerate triangle
+					indices2.push_back((GRID_H + 1) * i);
+					indices2.push_back((GRID_H + 1) * i);
+
+					indices2.push_back((GRID_H + 1) * (i + 1));
+					indices2.push_back((GRID_H + 1) * i + 1);
+				}
+				else
+				{
+					indices2.push_back((GRID_H + 1) * (i + 1) + j);
+					indices2.push_back((GRID_H + 1) * i + j + 1);
+
+				}
+				//End of the line
+				if (j == GRID_H - 1)
+				{
+					//x2 cause Degenerate triangle
+					indices2.push_back((GRID_H + 1) * (i + 1) + j + 1);
+					indices2.push_back((GRID_H + 1) * (i + 1) + j + 1);
+				}
+			}
+		}
 	}
+
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
+
+	glBindVertexArray(VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, vertices2.size() * sizeof(float), &vertices2.front(), GL_STATIC_DRAW);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices2.size() * sizeof(float), &indices2.front(), GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(0);
+
+	glBindVertexArray(0); // Unbind VAO
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	return *oculusManager;
 }
 
-
-/* update_rtarg creates (and/or resizes) the render target used to draw the two stero views */
-//void OculusManager::update_rtarg(int width, int height)
-//{
-//	if (!fbo) {
-//		/* if fbo does not exist, then nothing does... create every opengl object */
-//		glGenFramebuffers(1, &fbo);
-//		glGenTextures(1, &fb_tex);
-//		glGenRenderbuffers(1, &fb_depth);
-//
-//		glBindTexture(GL_TEXTURE_2D, fb_tex);
-//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//
-//	}
-//
-//	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-//
-//	/* calculate the next power of two in both dimensions and use that as a texture size */
-//	fb_tex_width = next_pow2(width);
-//	fb_tex_height = next_pow2(height);
-//
-//	/* create and attach the texture that will be used as a color buffer */
-//	glBindTexture(GL_TEXTURE_2D, fb_tex);
-//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, fb_tex_width, fb_tex_height, 0,
-//		GL_RGBA, GL_UNSIGNED_BYTE, 0);
-//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb_tex, 0);
-//
-//	/* create and attach the renderbuffer that will serve as our z-buffer */
-//	glBindRenderbuffer(GL_RENDERBUFFER, fb_depth);
-//	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, fb_tex_width, fb_tex_height);
-//	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fb_depth);
-//
-//	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-//		fprintf(stderr, "incomplete framebuffer!\n");
-//
-//	}
-//
-//	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-//	printf("created render target: %dx%d (texture size: %dx%d)\n", width, height, fb_tex_width, fb_tex_height);
-//}
-
-unsigned int OculusManager::next_pow2(unsigned int x)
-{
-	x -= 1;
-	x |= x >> 1;
-	x |= x >> 2;
-	x |= x >> 4;
-	x |= x >> 8;
-	x |= x >> 16;
-	return x + 1;
-}
 
 void OculusManager::render(RenderSystem* render, Scene* scene)
 {
@@ -319,9 +349,10 @@ void OculusManager::render(RenderSystem* render, Scene* scene)
 	glBindFramebuffer(GL_FRAMEBUFFER, l_FBOId);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	basicShader.Bind();
 
 	/* for each eye ... */
-	for (int l_EyeIndex = 0; l_EyeIndex<ovrEye_Count; l_EyeIndex++)
+	for (int l_EyeIndex = 0; l_EyeIndex < ovrEye_Count; l_EyeIndex++)
 	{
 		ovrEyeType l_Eye = g_Hmd->EyeRenderOrder[l_EyeIndex];
 
@@ -352,16 +383,32 @@ void OculusManager::render(RenderSystem* render, Scene* scene)
 		// Move the world forward a bit to show the scene in front of us...
 		glTranslatef(g_CameraPosition.x, g_CameraPosition.y, g_CameraPosition.z);
 
-		// (Re)set the light positions so they don't move along with the cube...
-		//SetStaticLightPositions();
-
-		//// Make the cube spin...
-		//glRotatef(l_SpinX, 1.0f, 0.0f, 0.0f);
-		//glRotatef(l_SpinY, 0.0f, 1.0f, 0.0f);
-
 
 		//Render
-		render->render(scene->getChildren(), scene->getLights());
+		//render->render(scene->getChildren(), scene->getLights());
+		// Create transformations
+		glm::mat4 model;
+		glm::mat4 view;
+		glm::mat4 projection;
+		model = glm::rotate(model, /*(GLfloat)glfwGetTime() **/ 1.0f, glm::vec3(0.5f, 0.0f, 0.0f));
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -6.0f));
+		projection = glm::perspective(45.0f, (GLfloat)g_Hmd->Resolution.w / (GLfloat)g_Hmd->Resolution.h, 0.1f, 100.0f);
+		// Get their uniform location
+		GLint modelLoc = glGetUniformLocation(basicShader.GetProgram(), "model");
+		GLint viewLoc = glGetUniformLocation(basicShader.GetProgram(), "view");
+		GLint projLoc = glGetUniformLocation(basicShader.GetProgram(), "projection");
+		// Pass them to the shaders
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+		// Note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+		// Draw container
+		glBindVertexArray(VAO);
+		//glDrawElements(GL_TRIANGLE_STRIP, vertices2.size(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLE_STRIP, indices2.size(), GL_UNSIGNED_INT, 0);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
 	}
 
 	/* after drawing both eyes into the texture render target, revert to drawing directly to the
@@ -380,24 +427,18 @@ void OculusManager::render(RenderSystem* render, Scene* scene)
 	++l_FrameIndex;
 }
 
-/* convert a quaternion to a rotation matrix */
-void OculusManager::quat_to_matrix(const float *quat, float *mat)
+
+void OculusManager::destroyOculusManager()
 {
-	mat[0] = 1.0 - 2.0 * quat[1] * quat[1] - 2.0 * quat[2] * quat[2];
-	mat[4] = 2.0 * quat[0] * quat[1] + 2.0 * quat[3] * quat[2];
-	mat[8] = 2.0 * quat[2] * quat[0] - 2.0 * quat[3] * quat[1];
-	mat[12] = 0.0f;
+	glDeleteRenderbuffers(1, &l_DepthBufferId);
+	glDeleteTextures(1, &l_TextureId);
+	glDeleteFramebuffers(1, &l_FBOId);
 
-	mat[1] = 2.0 * quat[0] * quat[1] - 2.0 * quat[3] * quat[2];
-	mat[5] = 1.0 - 2.0 * quat[0] * quat[0] - 2.0 * quat[2] * quat[2];
-	mat[9] = 2.0 * quat[1] * quat[2] + 2.0 * quat[3] * quat[0];
-	mat[13] = 0.0f;
+	// Clean up Oculus...
+	ovrHmd_Destroy(g_Hmd);
+	ovr_Shutdown();
 
-	mat[2] = 2.0 * quat[2] * quat[0] + 2.0 * quat[3] * quat[1];
-	mat[6] = 2.0 * quat[1] * quat[2] - 2.0 * quat[3] * quat[0];
-	mat[10] = 1.0 - 2.0 * quat[0] * quat[0] - 2.0 * quat[1] * quat[1];
-	mat[14] = 0.0f;
-
-	mat[3] = mat[7] = mat[11] = 0.0f;
-	mat[15] = 1.0f;
+	// Clean up window...
+	glfwDestroyWindow(l_Window);
+	glfwTerminate();
 }

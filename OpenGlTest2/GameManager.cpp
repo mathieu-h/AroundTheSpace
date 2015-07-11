@@ -25,6 +25,8 @@ GameManager::~GameManager()
 	RenderSystem::destroyRenderSystem();
 	RenderSystem::destroyRenderSystem();
 	PlayerInputSystem::destroyPlayerInputSystem();
+	if (Constants::getConstants()->oculus)
+		OculusManager::destroyOculusManager();
 }
 
 
