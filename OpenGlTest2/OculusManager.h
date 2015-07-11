@@ -9,6 +9,7 @@
 #include <OVR_CAPI_GL.h>
 #include "RenderSystem.h"
 #include "Scene.h"
+#include "OVR.h"
 
 using glm::ivec2;
 using glm::uvec2;

@@ -6,11 +6,14 @@
 
 static unsigned int fbo, fb_tex, fb_depth;
 static int fb_tex_width, fb_tex_height;
-static ovrGLTexture fb_ovr_tex[2];
+static ovrTexture fb_ovr_tex[2];
 static ovrHmd hmd;
 static ovrSizei eyeres[2];
 static int fb_width, fb_height;
 static ovrEyeRenderDesc eyeRenderDescs[2];
+static OVR::Matrix4f g_ProjectionMatrici[2];
+static ovrVector3f g_EyeOffsets[2];
+static ovrPosef g_EyePoses[2];
 
 OculusManager& OculusManager::getOculusManager()
 {
@@ -65,15 +68,15 @@ OculusManager& OculusManager::getOculusManager()
 
 		/* fill in the ovrGLTexture structures that describe our render target texture */
 		for (int i = 0; i < 2; i++) {
-			fb_ovr_tex[i].OGL.Header.API = ovrRenderAPI_OpenGL;
-			fb_ovr_tex[i].OGL.Header.TextureSize.w = fb_tex_width;
-			fb_ovr_tex[i].OGL.Header.TextureSize.h = fb_tex_height;
+			fb_ovr_tex[i].Header.API = ovrRenderAPI_OpenGL;
+			fb_ovr_tex[i].Header.TextureSize.w = fb_tex_width;
+			fb_ovr_tex[i].Header.TextureSize.h = fb_tex_height;
 			/* this next field is the only one that differs between the two eyes */
-			fb_ovr_tex[i].OGL.Header.RenderViewport.Pos.x = i == 0 ? 0 : fb_width / 2.0;
-			fb_ovr_tex[i].OGL.Header.RenderViewport.Pos.y = 0;
-			fb_ovr_tex[i].OGL.Header.RenderViewport.Size.w = fb_width / 2.0;
-			fb_ovr_tex[i].OGL.Header.RenderViewport.Size.h = fb_height;
-			fb_ovr_tex[i].OGL.TexId = fb_tex;	/* both eyes will use the same texture id */
+			fb_ovr_tex[i].Header.RenderViewport.Pos.x = i == 0 ? 0 : fb_width / 2.0;
+			fb_ovr_tex[i].Header.RenderViewport.Pos.y = 0;
+			fb_ovr_tex[i].Header.RenderViewport.Size.w = fb_width / 2.0;
+			fb_ovr_tex[i].Header.RenderViewport.Size.h = fb_height;
+			((ovrGLTexture&)(fb_ovr_tex[i])).OGL.TexId = fb_tex;
 		}
 
 
@@ -99,17 +102,15 @@ OculusManager& OculusManager::getOculusManager()
 		int configResult = ovrHmd_ConfigureRendering(hmd, &cfg.Config,
 			distortionCaps, hmd->MaxEyeFov, eyeRenderDescs);
 
-		//if (hmd->HmdCaps & ovrHmdCap_ExtendDesktop) {
-		//	printf("running in \"extended desktop\" mode\n");
-		//}
-		//else
-		//{
-		//	/* to sucessfully draw to the HMD display in "direct-hmd" mode, we have to
-		//	* call ovrHmd_AttachToWindow
-		//	* XXX: this doesn't work properly yet due to bugs in the oculus 0.4.1 sdk/driver
-		//	*/
-		//	ovrHmd_AttachToWindow(hmd, cfg.OGL.Window, 0, 0);
-		//}
+		// Projection matrici for each eye will not change at runtime, we can set them here...
+		g_ProjectionMatrici[ovrEye_Left] = ovrMatrix4f_Projection(eyeRenderDescs[ovrEye_Left].Fov, 0.3f, 100.0f, true);
+		g_ProjectionMatrici[ovrEye_Right] = ovrMatrix4f_Projection(eyeRenderDescs[ovrEye_Right].Fov, 0.3f, 100.0f, true);
+
+		// IPD offset values will not change at runtime, we can set them here...
+		g_EyeOffsets[ovrEye_Left] = eyeRenderDescs[ovrEye_Left].HmdToEyeViewOffset;
+		g_EyeOffsets[ovrEye_Right] = eyeRenderDescs[ovrEye_Right].HmdToEyeViewOffset;
+
+		ovrHmd_RecenterPose(hmd);
 
 	}
 
@@ -256,13 +257,16 @@ unsigned int OculusManager::next_pow2(unsigned int x)
 
 void OculusManager::render(RenderSystem* render, Scene* scene)
 {
+	unsigned int l_FrameIndex = 0;
 	int i;
-	ovrMatrix4f proj;
-	ovrPosef pose[2];
-	float rot_mat[16];
+	//ovrMatrix4f proj;
+	//ovrPosef pose[2];
+	//float rot_mat[16];
 
 	/* the drawing starts with a call to ovrHmd_BeginFrame */
 	ovrHmd_BeginFrame(hmd, 0);
+
+	ovrHmd_GetEyePoses(hmd, 0, g_EyeOffsets, g_EyePoses, NULL);
 
 	/* start drawing onto our texture render target */
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
@@ -272,45 +276,28 @@ void OculusManager::render(RenderSystem* render, Scene* scene)
 	for (i = 0; i < 2; i++) {
 		ovrEyeType eye = hmd->EyeRenderOrder[i];
 
-		/* -- viewport transformation --
-		* setup the viewport to draw in the left half of the framebuffer when we're
-		* rendering the left eye's view (0, 0, width/2, height), and in the right half
-		* of the framebuffer for the right eye's view (width/2, 0, width/2, height)
-		*/
-		glViewport(eye == ovrEye_Left ? 0 : fb_width / 2, 0, fb_width / 2, fb_height);
-		//glViewport(fb_width / 2, 0, fb_width / 2, fb_height);
-		/*if (eye != ovrEye_Left)
-			glViewport(0, 0, fb_width / 2, fb_height);
-		else
-			glViewport(fb_width / 2, 0, fb_width / 2, fb_height);*/
+		glViewport(
+			fb_ovr_tex[eye].Header.RenderViewport.Pos.x,
+			fb_ovr_tex[eye].Header.RenderViewport.Pos.y,
+			fb_ovr_tex[eye].Header.RenderViewport.Size.w,
+			fb_ovr_tex[eye].Header.RenderViewport.Size.h
+			);
 
-		/* -- projection transformation --
-		* we'll just have to use the projection matrix supplied by the oculus SDK for this eye
-		* note that libovr matrices are the transpose of what OpenGL expects, so we have to
-		* use glLoadTransposeMatrixf instead of glLoadMatrixf to load it.
-		*/
-		proj = ovrMatrix4f_Projection(hmd->DefaultEyeFov[eye], 0.5, 500.0, 1);
 		glMatrixMode(GL_PROJECTION);
-		glLoadTransposeMatrixf(proj.M[0]);
+		glLoadIdentity();
+		glMultMatrixf(&(g_ProjectionMatrici[eye].Transposed().M[0][0]));
 
-		/* -- view/camera transformation --
-		* we need to construct a view matrix by combining all the information provided by the oculus
-		* SDK, about the position and orientation of the user's head in the world.
-		*/
-		/* TODO: use ovrHmd_GetEyePoses out of the loop instead */
-		pose[eye] = ovrHmd_GetHmdPosePerEye(hmd, eye);
 		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();	
-		glTranslatef(eyeRenderDescs[eye].HmdToEyeViewOffset.x,
-			eyeRenderDescs[eye].HmdToEyeViewOffset.y,
-			eyeRenderDescs[eye].HmdToEyeViewOffset.z);
-		/* retrieve the orientation quaternion and convert it to a rotation matrix */
-		quat_to_matrix(&pose[eye].Orientation.x, rot_mat);
-		glMultMatrixf(rot_mat);
-		/* translate the view matrix with the positional tracking */
-		glTranslatef(-pose[eye].Position.x, -pose[eye].Position.y, -pose[eye].Position.z);
-		/* move the camera to the eye level of the user */
-		glTranslatef(0, -ovrHmd_GetFloat(hmd, OVR_KEY_EYE_HEIGHT, 1.65), 0);
+		glLoadIdentity();
+
+		OVR::Quatf l_Orientation = OVR::Quatf(g_EyePoses[eye].Orientation);
+		OVR::Matrix4f l_ModelViewMatrix = OVR::Matrix4f(l_Orientation.Inverted());
+		glMultMatrixf(&(l_ModelViewMatrix.Transposed().M[0][0]));
+
+		glTranslatef(-g_EyePoses[eye].Position.x, -g_EyePoses[eye].Position.y, -g_EyePoses[eye].Position.z);
+
+		//glTranslatef(g_CameraPosition.x, g_CameraPosition.y, g_CameraPosition.z);
+
 
 		render->render(scene->getChildren(), scene->getLights());
 	}
@@ -321,9 +308,11 @@ void OculusManager::render(RenderSystem* render, Scene* scene)
 	*/
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	ovrHmd_EndFrame(hmd, pose, &fb_ovr_tex[0].Texture);
+	ovrHmd_EndFrame(hmd, g_EyePoses, fb_ovr_tex);
 
 	glUseProgram(0);
+
+	++ l_FrameIndex;
 }
 
 /* convert a quaternion to a rotation matrix */
