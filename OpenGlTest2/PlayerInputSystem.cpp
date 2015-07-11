@@ -53,7 +53,12 @@ void PlayerInputSystem::do_movement(){
 	glm::vec3 cameraFront = glm::vec3(_currentPlayer->get_eyeVector().x, _currentPlayer->get_eyeVector().y, _currentPlayer->get_eyeVector().z);
 	glm::vec3 cameraUp = glm::vec3(_currentPlayer->get_upVector().x, _currentPlayer->get_upVector().y, _currentPlayer->get_upVector().z);
 
+	// rajouter un vecteur shuttleFront pour pouvoir gérer indépendamment le déplacement du vaisseau par rapport a la camera pour que ca soit compatible avec l'oculus
 	GLfloat cameraSpeed = 5.0f * deltaTime;
+	if (keys[GLFW_KEY_LEFT_CONTROL])
+		cameraSpeed = 60.0f * deltaTime;
+	if (keys[GLFW_KEY_LEFT_SHIFT])
+		cameraSpeed = 20.0f * deltaTime;
 	if (keys[GLFW_KEY_Z])
 		cameraPos += cameraSpeed * cameraFront;
 	if (keys[GLFW_KEY_S])
@@ -62,6 +67,7 @@ void PlayerInputSystem::do_movement(){
 		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 	if (keys[GLFW_KEY_D])
 		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+
 
 	_currentPlayer->set_position(makeVector3(cameraPos.x, cameraPos.y, cameraPos.z));
 }
@@ -91,6 +97,7 @@ void PlayerInputSystem::mouse_callback(GLFWwindow* window, double xpos, double y
 	yaw += xoffset;
 	pitch += yoffset;
 
+	//On pourrait faire un cas particulier ou le up et le forward sont alignés (produit scalaire = 1), alors qu'on inverserait le up et le forward
 	if (pitch > 89.0f)
 		pitch = 89.0f;
 	if (pitch < -89.0f)
