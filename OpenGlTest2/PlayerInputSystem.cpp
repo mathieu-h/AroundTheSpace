@@ -53,7 +53,11 @@ void PlayerInputSystem::do_movement(){
 	glm::vec3 cameraFront = glm::vec3(_currentPlayer->get_eyeVector().x, _currentPlayer->get_eyeVector().y, _currentPlayer->get_eyeVector().z);
 	glm::vec3 cameraUp = glm::vec3(_currentPlayer->get_upVector().x, _currentPlayer->get_upVector().y, _currentPlayer->get_upVector().z);
 
-	GLfloat cameraSpeed = 50.0f * deltaTime;
+	// rajouter un vecteur shuttleFront pour pouvoir gérer indépendamment le déplacement du vaisseau par rapport a la camera pour que ca soit compatible avec l'oculus
+	GLfloat cameraSpeed = 5.0f * deltaTime;	if (keys[GLFW_KEY_LEFT_CONTROL])
+		cameraSpeed = 60.0f * deltaTime;
+	if (keys[GLFW_KEY_LEFT_SHIFT])
+		cameraSpeed = 20.0f * deltaTime;
 	if (keys[GLFW_KEY_Z])
 		cameraPos += cameraSpeed * cameraFront;
 	if (keys[GLFW_KEY_S])
@@ -63,9 +67,8 @@ void PlayerInputSystem::do_movement(){
 	if (keys[GLFW_KEY_D])
 		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 
+
 	_currentPlayer->set_position(makeVector3(cameraPos.x, cameraPos.y, cameraPos.z));
-	//_currentPlayer->set_eyeVector(makeVector3(cameraFront.x, cameraFront.y, cameraFront.z));
-	//_currentPlayer->set_upVector(makeVector3(cameraPos.x, cameraPos.y, cameraPos.z));
 }
 
 void PlayerInputSystem::update()
@@ -77,64 +80,9 @@ void PlayerInputSystem::update()
 	lastFrame = currentFrame;
 	do_movement();
 
-	/*
-	float moveSpeed = 0.27f;
-	double xPos, yPos;
-	glfwGetCursorPos(_window, &xPos, &yPos);
-	Vector3 currentEyeVector = _currentPlayer->get_eyeVector();
-	Vector3 currentPosition = _currentPlayer->get_position();
-
-	if (_currentPlayer != NULL && glfwGetInputMode(_window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED) {
-
-		if (glfwGetKey(_window, GLFW_KEY_Z)) {
-			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, moveSpeed)));
-		}
-
-		if (glfwGetKey(_window, GLFW_KEY_S)) {
-			_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(_eyeVector, moveSpeed)));
-		}
-
-		if (glfwGetKey(_window, GLFW_KEY_Q)) {
-			_currentPlayer->set_position(subtractVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), moveSpeed)));
-		}
-
-		if (glfwGetKey(_window, GLFW_KEY_D)) {
-			_currentPlayer->set_position(addVector3(_currentPlayer->get_position(), scalerMultiplyVector3(crossProductVector3(_eyeVector, makeVector3(0.0f, 1.0f, 0.0f)), moveSpeed)));
-		}
-		*/
-			/*
-		//Gestion de la souris dans le déplacement
-		_currentPlayer->set_eyeVector(makeVector3(-xPos, -yPos, 0.0f));*/
-		
-		// Mouse Valentin
-		/*
-		Vector2 currentMousePosition;
-		double x;
-		double y;
-		glfwGetCursorPos(_window, &x, &y);
-		GLfloat x3 = x;
-		GLfloat y3 = y;
-		currentMousePosition.x = x3;
-		currentMousePosition.y = y3;
-
-		_eyeVector = transformVector3(_eyeVector, makeRotationMatrix3((3.14f / (4.0f*45.0f))*(-(currentMousePosition.x - _lastMousePosition.x)), 0.0f, 1.0f, 0.0f));
-		_eyeVector = transformVector3(_eyeVector, makeRotationMatrix3((3.14f / (4.0f*45.0f))*((currentMousePosition.y - _lastMousePosition.y)), 1.0f, 0.0f, 0.0f));
-		
-		double x2; //= _lastMousePosition.x;
-		double y2; //= _lastMousePosition.y;
-		glfwGetCursorPos(_window, &x2, &y2);
-		_lastMousePosition.x = x2;
-		_lastMousePosition.y = y2;
-		_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_position(), _eyeVector));
-		*/
-
-	//	_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_position(), _eyeVector));
-	//}
 }
 
 void PlayerInputSystem::mouse_callback(GLFWwindow* window, double xpos, double ypos){
-	
-	//glm::vec3 cameraFront = glm::vec3(_currentPlayer->get_eyeVector().x, _currentPlayer->get_eyeVector().y, _currentPlayer->get_eyeVector().z);
 
 	GLfloat xoffset = xpos - lastX;
 	GLfloat yoffset = lastY - ypos; // Reversed since y-coordinates range from bottom to top
@@ -148,6 +96,7 @@ void PlayerInputSystem::mouse_callback(GLFWwindow* window, double xpos, double y
 	yaw += xoffset;
 	pitch += yoffset;
 
+	//On pourrait faire un cas particulier ou le up et le forward sont alignés (produit scalaire = 1), alors qu'on inverserait le up et le forward
 	if (pitch > 89.0f)
 		pitch = 89.0f;
 	if (pitch < -89.0f)
@@ -160,27 +109,6 @@ void PlayerInputSystem::mouse_callback(GLFWwindow* window, double xpos, double y
 	front = glm::normalize(front);
 
 	_currentPlayer->set_eyeVector(makeVector3(front.x, front.y, front.z));
-
-	/*
-	Vector2 currentMousePosition;
-	double x;
-	double y;
-	glfwGetCursorPos(_window, &x, &y);
-	GLfloat x3 = x;
-	GLfloat y3 = y;
-	currentMousePosition.x = x3;
-	currentMousePosition.y = y3;
-
-	_eyeVector = transformVector3(_eyeVector, makeRotationMatrix3((3.14f / (4.0f*45.0f))*(-(currentMousePosition.x - _lastMousePosition.x)), 0.0f, 1.0f, 0.0f));
-	_eyeVector = transformVector3(_eyeVector, makeRotationMatrix3((3.14f / (4.0f*45.0f))*((currentMousePosition.y - _lastMousePosition.y)), 1.0f, 0.0f, 0.0f));
-
-	double x2; //= _lastMousePosition.x;
-	double y2; //= _lastMousePosition.y;
-	glfwGetCursorPos(_window, &x2, &y2);
-	_lastMousePosition.x = x2;
-	_lastMousePosition.y = y2;
-	_currentPlayer->set_eyeVector(addVector3(_currentPlayer->get_position(), _eyeVector));
-	*/
 }
 
 void PlayerInputSystem::mouse_callbackFun(GLFWwindow* window, double xpos, double ypos){
