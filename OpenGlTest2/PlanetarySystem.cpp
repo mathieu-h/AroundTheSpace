@@ -28,16 +28,26 @@ void PlanetarySystem::GeneratePlanetarySystem()
 {
 	star = Star();
 	star.worldPosition = startPos;
+
 	star.speed = chooseSpeed();
 
-	nbPlanet = rand() % 5 + 3;
-	for (int i = 0; i < nbPlanet; ++i) {
-		//float distance = 50.0f + i * 20.0f + (rand()%60);
-		float distance = 10.0f + i * 10.0f;
+	nbPlanet = 0;
+	int _nbPlanet = rand() % 5 + 3;
+	float distance = 100 + rand() % 100;
+	
+	
+	for (int i = 0; i < _nbPlanet; ++i) {
+		++nbPlanet;
 		planets.push_back(Planet());
 		planets[i].worldPosition = addVector3(startPos, makeVector3(distance, 0.0f, 0.0f));
 		planets[i].speed = chooseSpeed();
 		planets[i].timeOffset = rand() % 360;
+		distance += 25 + rand() % 75;
+		if (distance > 650)
+			break;
+
+	
+		
 	}
 }
 
