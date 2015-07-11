@@ -22,20 +22,20 @@ Planet::~Planet()
 void Planet::generatePlanet()
 {
 	radius = float(rand() % 21) / 10.0f + 1.0f;
-	float mountainHeight = float(rand() % 5) * 0.01f + 0.01f;
+	float mountainHeight = float(rand() % 4) * 0.01f + 0.02f;
 	
 	temperature = rand() % 101;
 
 	compositionColor1 = utils::Color(
 		rand() % 125 + 50,
 		rand() % 100 + 25,
-		rand() % 50 + 25,
+		rand() % 75 + 25,
 		255);
 
 	compositionColor2 = utils::Color(
 		rand() % 125 + 50,
 		rand() % 100 + 25,
-		rand() % 50 + 25,
+		rand() % 75 + 25,
 		255);
 
 	water = (temperature < 65) && (rand() % 5 == 0);
@@ -166,6 +166,7 @@ utils::NoiseMap Planet::generateHeightMap()
 
 	module::Billow baseFlatTerrain;
 	baseFlatTerrain.SetFrequency(2.0);
+	baseFlatTerrain.SetSeed(rand());
 
 	module::ScaleBias flatTerrain;
 	flatTerrain.SetSourceModule(0, baseFlatTerrain);
@@ -189,6 +190,7 @@ utils::NoiseMap Planet::generateHeightMap()
 	finalTerrain.SetSourceModule(0, terrainSelector);
 	finalTerrain.SetFrequency(4.0);
 	finalTerrain.SetPower(0.125);
+	finalTerrain.SetSeed(rand());
 
 	utils::NoiseMap heightMap;
 	utils::NoiseMapBuilderSphere heightMapBuilder;
