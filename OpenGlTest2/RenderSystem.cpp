@@ -24,12 +24,12 @@ RenderSystem::RenderSystem() : _window(glfwGetCurrentContext()), _cameraSystem(&
 
 	vector<const GLchar*> faces;
 	
-	faces.push_back("Green Nebula Left TEX.png");
-	faces.push_back("Green Nebula Right TEX.png");
-	faces.push_back("Green Nebula Top TEX.png");
-	faces.push_back("Green Nebula Bottom TEX.png");
-	faces.push_back("Green Nebula Front TEX.png");
-	faces.push_back("Green Nebula Back TEX.png");
+	faces.push_back("Images/Green Nebula Left TEX.png");
+	faces.push_back("Images/Green Nebula Right TEX.png");
+	faces.push_back("Images/Green Nebula Top TEX.png");
+	faces.push_back("Images/Green Nebula Bottom TEX.png");
+	faces.push_back("Images/Green Nebula Front TEX.png");
+	faces.push_back("Images/Green Nebula Back TEX.png");
 	
 	
 	/*faces.push_back("Green Nebula Back TEX.png");
