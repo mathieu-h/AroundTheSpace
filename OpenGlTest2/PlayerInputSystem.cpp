@@ -54,8 +54,7 @@ void PlayerInputSystem::do_movement(){
 	glm::vec3 cameraUp = glm::vec3(_currentPlayer->get_upVector().x, _currentPlayer->get_upVector().y, _currentPlayer->get_upVector().z);
 
 	// rajouter un vecteur shuttleFront pour pouvoir gérer indépendamment le déplacement du vaisseau par rapport a la camera pour que ca soit compatible avec l'oculus
-	GLfloat cameraSpeed = 5.0f * deltaTime;
-	if (keys[GLFW_KEY_LEFT_CONTROL])
+	GLfloat cameraSpeed = 5.0f * deltaTime;	if (keys[GLFW_KEY_LEFT_CONTROL])
 		cameraSpeed = 60.0f * deltaTime;
 	if (keys[GLFW_KEY_LEFT_SHIFT])
 		cameraSpeed = 20.0f * deltaTime;

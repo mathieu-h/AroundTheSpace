@@ -23,7 +23,7 @@ public:
 
 	int _nbPlanet;
 	vector<GameObject> _planets;
-
+	vector<Star> _star;
 private:
 	std::vector<ShaderInterface*> *_shaderArray;
 	std::vector<VertexBuffer*> *_vertexBufferArray;

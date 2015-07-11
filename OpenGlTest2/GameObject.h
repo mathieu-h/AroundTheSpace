@@ -17,5 +17,8 @@ public:
 	std::vector<GLuint> triangles;
 	materials* mat;
 	Vector3 worldPosition;
+
+	float timeOffset;
+	float speed;
 };
 

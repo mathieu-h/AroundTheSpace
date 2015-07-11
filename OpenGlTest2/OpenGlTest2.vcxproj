@@ -55,7 +55,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\Libs\LibsAssimp\include;..\Libs\glfw-3.1.1.bin.WIN32\include;..\Libs\freeglut\include;..\Libs\OculusSDK\LibOVR\Src;..\Libs\glm;..\Libs\SOIL\src;E:\2nd semestre\AroundTheSpace\Libs\libnoiseheaders-1.0.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libs\LibsAssimp\include;..\Libs\glfw-3.1.1.bin.WIN32\include;..\Libs\freeglut\include;..\Libs\OculusSDK\LibOVR\Src;..\Libs\glm;..\Libs\SOIL\src;..\Libs\libnoiseheaders-1.0.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

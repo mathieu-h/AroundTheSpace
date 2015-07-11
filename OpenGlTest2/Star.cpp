@@ -16,18 +16,18 @@ Star::~Star()
 
 void Star::generateStar()
 {
-	radius = 10.0f;
+	radius = 15.0f + rand() % 15;
 
 	int c = rand() % 3;
 
-	compositionColor1.red = c == 0 ? 255 : rand() % 75 + 150;
-	compositionColor1.green = c == 1 ? 255 : rand() % 75 + 150;
-	compositionColor1.blue = c == 2 ? 255 : rand() % 75 + 150;
+	compositionColor1.red = c == 0 ? 255 : rand() % 75 + 175;
+	compositionColor1.green = c == 1 ? 255 : rand() % 75 + 175;
+	compositionColor1.blue = c == 2 ? 255 : rand() % 75 + 175;
 	compositionColor1.alpha = 255;
 
-	compositionColor2.red = c == 0 ? 255 : rand() % 75 + 150;
-	compositionColor2.green = c == 1 ? 255 : rand() % 75 + 150;
-	compositionColor2.blue = c == 2 ? 255 : rand() % 75 + 150;
+	compositionColor2.red = c == 0 ? 255 : rand() % 75 + 175;
+	compositionColor2.green = c == 1 ? 255 : rand() % 75 + 175;
+	compositionColor2.blue = c == 2 ? 255 : rand() % 75 + 175;
 	compositionColor2.alpha = 255;
 
 	utils::NoiseMap heightMap = generateHeightMap();
@@ -157,9 +157,9 @@ utils::NoiseMap Star::generateHeightMap()
 	flatTerrain.SetBias(-0.75);
 
 	module::Perlin terrainType;
-	terrainType.SetFrequency(0.5);
-	terrainType.SetPersistence(0.25);
-	terrainType.SetOctaveCount(10);
+	terrainType.SetFrequency(4);
+	//terrainType.SetPersistence(0.25);
+	terrainType.SetOctaveCount(6);
 	terrainType.SetSeed(rand());
 
 	module::Select terrainSelector;
@@ -167,18 +167,19 @@ utils::NoiseMap Star::generateHeightMap()
 	terrainSelector.SetSourceModule(1, mountainTerrain);
 	terrainSelector.SetControlModule(terrainType);
 	terrainSelector.SetBounds(0.0, 1000.0);
-	terrainSelector.SetEdgeFalloff(0.125);
+	terrainSelector.SetEdgeFalloff(2);
 
 	module::Turbulence finalTerrain;
 	finalTerrain.SetSourceModule(0, terrainSelector);
-	finalTerrain.SetFrequency(4.0);
+	finalTerrain.SetFrequency(8.0);
 	finalTerrain.SetPower(0.125);
 
 	utils::NoiseMap heightMap;
 	utils::NoiseMapBuilderSphere heightMapBuilder;
 	heightMapBuilder.SetSourceModule(finalTerrain);
 	heightMapBuilder.SetDestNoiseMap(heightMap);
-	heightMapBuilder.SetDestSize(512, 256);
+	heightMapBuilder.SetDestSize(2048, 1024);
+	//heightMapBuilder.SetDestSize(1024, 512);
 	heightMapBuilder.SetBounds(-90.0, 90.0, -180.0, 180.0);
 	heightMapBuilder.Build();
 
@@ -199,14 +200,13 @@ void Star::generateTexture(utils::NoiseMap heightMap)
 	renderer.AddGradientPoint(1, compositionColor2);
 
 	renderer.EnableLight();
-	renderer.SetLightContrast(3.0);
+	renderer.SetLightContrast(1.0);
 	renderer.SetLightBrightness(2.0);
 	renderer.Render();
 
 	int heigth = heightMap.GetHeight();
 	int width = heightMap.GetWidth();
-	//unsigned char texture[heigth * width * 3];
-	unsigned char texture[393216];
+	unsigned char* texture = new unsigned char[heigth * width * 3];
 	int i = 0;
 	for (int y = 0; y < heigth; ++y) {
 		for (int x = 0; x < width; ++x) {
@@ -217,5 +217,5 @@ void Star::generateTexture(utils::NoiseMap heightMap)
 		}
 	}
 
-	mat = new materials(texture, 512, 256);
+	mat = new materials(texture, width, heigth);
 }

@@ -482,7 +482,7 @@ VertexBuffer::VertexBuffer(const GLvoid *data, GLsizei size, GLenum mode, GLsize
 
 }
 
-VertexBuffer::VertexBuffer(std::vector<VertexDataPNT> data, GLsizei size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid* positionOffset, GLvoid* normalOffset, GLvoid* textureCoordOffset, std::vector<GLuint> indices, Vector3 _originPos) : _mode(mode), _count(count), _stride(stride), _shader(shader), _shaderData(shaderData), _positionOffset(positionOffset), _normalOffset(normalOffset), _textureCoordOffset(textureCoordOffset), originPos(_originPos)
+VertexBuffer::VertexBuffer(std::vector<VertexDataPNT> data, GLsizei size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid* positionOffset, GLvoid* normalOffset, GLvoid* textureCoordOffset, std::vector<GLuint> indices, Vector3 _originPos, float _timeOffset, float _speed, bool _isStar) : _mode(mode), _count(count), _stride(stride), _shader(shader), _shaderData(shaderData), _positionOffset(positionOffset), _normalOffset(normalOffset), _textureCoordOffset(textureCoordOffset), originPos(_originPos), speed(_speed), timeOffset(_timeOffset)
 {
 	_vexterArrayID = -1;
 
@@ -912,17 +912,17 @@ void VertexBuffer::configureVertexAttributes()
 		glBindVertexArray(_vexterArrayID);
 	}
 
-	if (_cubemaptexture != -1)
+	/*if (_cubemaptexture != -1)
 	{
 		glActiveTexture(GL_TEXTURE0);
 		glUniform1i(glGetUniformLocation(_shader->getProgramHandle(), "skybox"), 1);
-	}
+	}*/
 
 
-	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.direction"), 0.2f, 20.0f, 20.3f);
+	/*glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.direction"), 0.2f, 20.0f, 20.3f);
 	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.ambient"), 0.8f, 0.8f, 0.8f);
 	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.diffuse"), 1.0f, 1.0f, 1.0f);
-	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.specular"), 1.0f, 1.0f, 1.0f);
+	glUniform3f(glGetUniformLocation(_shader->getProgramHandle(), "dirLight.specular"), 1.0f, 1.0f, 1.0f);*/
 }
 
 ShaderInterface* VertexBuffer::get_Shader()
