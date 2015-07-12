@@ -16,7 +16,7 @@ Star::~Star()
 
 void Star::generateStar()
 {
-	radius = 15.0f + rand() % 15;
+	radius = 900.0f + rand() % 150;
 
 	int c = rand() % 3;
 
