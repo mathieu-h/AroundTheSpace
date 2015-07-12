@@ -35,5 +35,5 @@ void main()
 	gl_Position = finalPos;
 	TexCoord = vec2(aTextCoords);
 	PositionNormal = mat3(transpose(inverse(modelMatrix))) * aPositionNormal;
-	FragPos = vec3(vec4(aPositionVertex.x + camX + originPos.x,, aPositionVertex.y + originPos.y,aPositionVertex.z+camZ+ originPos.z, 1.0f));
+	FragPos = vec3(vec4(aPositionVertex.x + camX + originPos.x, aPositionVertex.y + originPos.y,aPositionVertex.z+camZ+ originPos.z, 1.0f));
 }
