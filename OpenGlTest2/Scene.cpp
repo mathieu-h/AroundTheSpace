@@ -46,7 +46,7 @@ Scene::Scene()
 
 	for (int i = 0; i < resources->_star.size(); i++)
 	{
-		_lights->push_back(new light(NULL, resources->_star.at(i).worldPosition, makeVector3(0.01f, 0.01f, 0.01f), makeVector3(0.8f, 0.8f, 0.8f), makeVector3(0.8f, 0.8f, 0.8f), 1.0f, 0.045f, 0.0075f));
+		_lights->push_back(new light(NULL, resources->_star.at(i).worldPosition, makeVector3(0.1f, 0.1f, 0.1f), makeVector3(0.8f, 0.8f, 0.8f), makeVector3(0.8f, 0.8f, 0.8f), 1.0f, 0.045f, 0.0075f));
 	}
 	
 	
