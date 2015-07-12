@@ -42,10 +42,10 @@ public:
 
 	void render(std::vector<Entity*> *children);
 	void render(std::vector<Entity*> *children, std::vector<light *>* lights);
-	void renderOcculus(std::vector<Entity*> *children, std::vector<light *>* lights, GLfloat w, GLfloat h);
+	void renderOcculus(std::vector<Entity*> *children, std::vector<light *>* lights, GLfloat w, GLfloat h, const glm::mat4 & headPose);
 	void renderLights(Entity* entity,std::vector<light *>* lights);
 	void setMatrices(Entity* entity, ShaderInterface* shader);
-	void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader, GLfloat w, GLfloat h);
+	void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader, GLfloat w, GLfloat h, const glm::mat4 & headPose);
 
 	static RenderSystem& getRenderSystem();
 	static void destroyRenderSystem();

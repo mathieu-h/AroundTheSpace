@@ -124,7 +124,7 @@ void RenderSystem::render(std::vector<Entity*> *children, std::vector<light *>* 
 	glfwPollEvents();
 }
 
-void RenderSystem::renderOcculus(std::vector<Entity*> *children, std::vector<light *>* lights, GLfloat w, GLfloat h)
+void RenderSystem::renderOcculus(std::vector<Entity*> *children, std::vector<light *>* lights, GLfloat w, GLfloat h, const glm::mat4 & headPose)
 {
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -179,7 +179,7 @@ void RenderSystem::renderOcculus(std::vector<Entity*> *children, std::vector<lig
 			GLint viewPosLoc = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "viewPos");
 			glUniform3f(viewPosLoc, _currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z);*/
 
-			setMatrices(entity, entity->get_vertexBuffer()->get_Shader(), w, h);
+			setMatrices(entity, entity->get_vertexBuffer()->get_Shader(), w, h, headPose);
 			renderLights(entity, lights);
 
 
@@ -281,7 +281,7 @@ void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader)
 }
 
 
-void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader, GLfloat w, GLfloat h)
+void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader, GLfloat w, GLfloat h, const glm::mat4 & headPose)
 {
 	glm::mat4 m_projectionMatrix = glm::perspective(45.0f, (w / h), 0.1f, 10000.0f);
 	GLuint transformLoc = glGetUniformLocation(shader->getProgramHandle(), "projectionMatrix");
@@ -315,35 +315,43 @@ void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader, GLfloat 
 	GLuint transformLoc2 = glGetUniformLocation(shader->getProgramHandle(), "modelMatrix");
 	glUniformMatrix4fv(transformLoc2, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
 
-	glm::mat4 view;
+	glm::mat4 result;
+	glm::mat4 cameraInput;;
+	glm::mat4 oculusInput;
 
 	Vector3 pos = _currentCamera->get_position();
 	Vector3 front = _currentCamera->get_eyeVector();
 	Vector3 up = _currentCamera->get_upVector();
 
-	view = glm::lookAt(glm::vec3(pos.x, pos.y, pos.z),
+	oculusInput = glm::inverse(headPose);
+	
+	cameraInput = glm::lookAt(glm::vec3(pos.x, pos.y, pos.z),
 		glm::vec3(front.x + pos.x, front.y + pos.y, front.z + pos.z),
 		glm::vec3(up.x, up.y, up.z));
+
+	result = oculusInput * cameraInput;
+
 	if (entity->get_vertexBuffer()->_cube) {
 
 		/*view = glm::mat4(glm::mat3(glm::lookAt(glm::vec3(_currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z),
 		glm::vec3(_currentCamera->get_eyeVector().x, _currentCamera->get_eyeVector().y, _currentCamera->get_eyeVector().z),
 		glm::vec3(_currentCamera->get_upVector().x, _currentCamera->get_upVector().y, _currentCamera->get_upVector().z))));*/
 
-		view = glm::mat4(glm::mat3(glm::lookAt(glm::vec3(pos.x, pos.y, pos.z),
-			glm::vec3(front.x + pos.x, front.y + pos.y, front.z + pos.z),
-			glm::vec3(up.x, up.y, up.z))));
+		//view = glm::mat4(glm::mat3(glm::lookAt(glm::vec3(pos.x, pos.y, pos.z),
+		//	glm::vec3(front.x + pos.x, front.y + pos.y, front.z + pos.z),
+		//	glm::vec3(up.x, up.y, up.z))));
 
 		GLuint transformLoc3 = glGetUniformLocation(shader->getProgramHandle(), "viewMatrix");
-		glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(result));
 		glBindTexture(GL_TEXTURE_CUBE_MAP, _cubemaptexture);
 		glDepthFunc(GL_LEQUAL);
 	}
-	else {
+	else 
+	{
 		glDepthFunc(GL_LESS);
 
 		GLuint transformLoc3 = glGetUniformLocation(shader->getProgramHandle(), "viewMatrix");
-		glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(result));
 		glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "cameraPos"), _currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z);
 
 
