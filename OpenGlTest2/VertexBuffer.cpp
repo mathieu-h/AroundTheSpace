@@ -517,6 +517,93 @@ VertexBuffer::VertexBuffer(std::vector<VertexDataPNT> data, GLsizei size, GLenum
 	glBindVertexArray(0);
 }
 
+VertexBuffer::VertexBuffer(std::vector<VertexDataPNT> data, GLsizei size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid* positionOffset, GLvoid* normalOffset, GLvoid* textureCoordOffset, std::vector<GLuint> indices, Vector3 _originPos, float _timeOffset, float _speed, bool _isStar, GLuint amount, vector<Vector3> arrayPos) : 
+
+_mode(mode), _count(count), _stride(stride), _shader(shader), 
+
+_shaderData(shaderData), _positionOffset(positionOffset), _normalOffset(normalOffset), _textureCoordOffset(textureCoordOffset), 
+
+originPos(_originPos), speed(_speed), timeOffset(_timeOffset), _amount(amount)
+{
+	_vexterArrayID = -1;
+
+	glm::mat4* modelMatrices;
+	modelMatrices = new glm::mat4[amount];
+
+	//rand(glfwGetTime());
+	//srand(glfwGetTime()); // initialize random seed	
+
+	for (GLuint i = 0; i < amount; i++)
+	{
+		glm::mat4 model;
+		// 1. Translation: displace along circle with 'radius' in range [-offset, offset]
+		GLfloat x = arrayPos.at(i).x;
+		
+		GLfloat y = arrayPos.at(i).y; // Keep height of asteroid field smaller compared to width of x and z
+
+		GLfloat z = arrayPos.at(i).z;
+
+		model = glm::translate(model, glm::vec3(x, y, z));
+
+		// 4. Now add to list of matrices
+		modelMatrices[i] = model;
+	}
+
+	glGenVertexArrays(1, &_vexterArrayID);
+	glGenBuffers(1, &_vertexBufferID);
+	glGenBuffers(1, &_elementBufferObjectID);
+
+	glBindVertexArray(_vexterArrayID);
+
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
+	glBufferData(GL_ARRAY_BUFFER, size, &data.front(), GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBufferObjectID);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
+
+	if (_shader->get_aPositionVertex() != -1) {
+		glEnableVertexAttribArray(_shader->get_aPositionVertex());
+		glVertexAttribPointer(_shader->get_aPositionVertex(), 3, GL_FLOAT, GL_FALSE, _stride, _positionOffset);
+	}
+
+	if (_shader->get_aPositionNormals() != -1) {
+		glEnableVertexAttribArray(_shader->get_aPositionNormals());
+		glVertexAttribPointer(_shader->get_aPositionNormals(), 3, GL_FLOAT, GL_FALSE, _stride, _normalOffset);
+	}
+
+	if (_shader->get_aTextCoords() != -1) {
+		glEnableVertexAttribArray(_shader->get_aTextCoords());
+		glVertexAttribPointer(_shader->get_aTextCoords(), 2, GL_FLOAT, GL_FALSE, _stride, _textureCoordOffset);
+	}
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+	GLuint VAO = _vexterArrayID;
+	GLuint buffer;
+	glBindVertexArray(VAO);
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+	// Set attribute pointers for matrix (4 times vec4)
+	GLsizei vec4Size = sizeof(glm::vec4);
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (GLvoid*)0);
+	glEnableVertexAttribArray(4);
+	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (GLvoid*)(vec4Size));
+	glEnableVertexAttribArray(5);
+	glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (GLvoid*)(2 * vec4Size));
+	glEnableVertexAttribArray(6);
+	glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (GLvoid*)(3 * vec4Size));
+
+	glVertexAttribDivisor(3, 1);
+	glVertexAttribDivisor(4, 1);
+	glVertexAttribDivisor(5, 1);
+	glVertexAttribDivisor(6, 1);
+
+	glBindVertexArray(0);
+}
+
 VertexBuffer::VertexBuffer(std::vector<VertexDataPNT> data, GLsizei size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid* positionOffset, GLvoid* normalOffset, GLvoid* textureCoordOffset, std::vector<GLuint> indices, boolean instancing, GLuint amount) : _mode(mode), _count(count), _stride(stride), _shader(shader), _shaderData(shaderData), _positionOffset(positionOffset), _normalOffset(normalOffset), _textureCoordOffset(textureCoordOffset), _amount(amount)
 {
 	_vexterArrayID = -1;

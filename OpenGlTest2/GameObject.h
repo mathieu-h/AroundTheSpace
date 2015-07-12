@@ -20,5 +20,6 @@ public:
 
 	float timeOffset;
 	float speed;
+	float distance;
 };
 

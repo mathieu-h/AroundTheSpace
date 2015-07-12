@@ -7,6 +7,10 @@ PlanetarySystem::PlanetarySystem(Vector3 _startPos) : startPos(_startPos)
 	GeneratePlanetarySystem();
 }
 
+PlanetarySystem::PlanetarySystem(int starNumber, int numberplanets)
+{
+	GenerateGalaxy(starNumber, numberplanets);
+}
 
 PlanetarySystem::~PlanetarySystem()
 {
@@ -74,4 +78,20 @@ float PlanetarySystem::chooseSpeed()
 			break;
 	}
 	return speed;
+}
+
+void PlanetarySystem::GenerateGalaxy(int starNumber, int numberplanets)
+{
+	for (int i = 0; i < starNumber; i++)
+	{
+		star = Star();
+		star.worldPosition = makeVector3(0.0f,0.0f,0.0f);
+		_starSystem.push_back(star);
+	}
+	
+	for (int i = 0; i < numberplanets; ++i) {
+		planets.push_back(Planet());
+		planets[i].speed = chooseSpeed();
+		planets[i].timeOffset = rand() % 360;		
+	}
 }
