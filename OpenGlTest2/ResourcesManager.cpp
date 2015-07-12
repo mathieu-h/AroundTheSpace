@@ -56,7 +56,7 @@ ResourcesManager::ResourcesManager()
 	//Star s;
 
 	PlanetarySystem pS(makeVector3(0.0f,0.f,0.0f));
-	PlanetarySystem pS1(makeVector3(0.0f, 30000.0f, 0.0f));
+	/*PlanetarySystem pS1(makeVector3(0.0f, 30000.0f, 0.0f));
 	PlanetarySystem pS2(makeVector3(-40000.0f, 50000.0f, -30000.0f));
 	PlanetarySystem pS3(makeVector3(-14000.0f, -20000.0f, -50000.0f));
 	PlanetarySystem pS4(makeVector3(30000.0f, 25000.0f, 0.0f));
@@ -64,30 +64,30 @@ ResourcesManager::ResourcesManager()
 	PlanetarySystem pS5(makeVector3(60000.0f, 30000.0f, 0.0f));
 	PlanetarySystem pS6(makeVector3(-70000.0f, 50000.0f, -30000.0f));
 	PlanetarySystem pS7(makeVector3(-140000.0f, -20000.0f, -50000.0f));
-	PlanetarySystem pS8(makeVector3(30000.0f, 25000.0f, -56000.0f));
+	PlanetarySystem pS8(makeVector3(30000.0f, 25000.0f, -56000.0f));*/
 
 
 	//_nbPlanet = pS.nbPlanet + pS1.nbPlanet + pS2.nbPlanet + pS3.nbPlanet + pS4.nbPlanet;
 	//_nbPlanet = pS.nbPlanet;
 	_star.push_back(pS.star);
-	_star.push_back(pS1.star);
+	/*_star.push_back(pS1.star);
 	_star.push_back(pS2.star);
 	_star.push_back(pS3.star);
 	_star.push_back(pS4.star);
 	_star.push_back(pS5.star);
 	_star.push_back(pS6.star);
 	_star.push_back(pS7.star);
-	_star.push_back(pS8.star);
+	_star.push_back(pS8.star);*/
 
 	std::vector<GameObject> _arrayGameObjects = pS.GetGameObject();
-	std::vector<GameObject> _arrayGameObjects1 = pS1.GetGameObject();
+	/*std::vector<GameObject> _arrayGameObjects1 = pS1.GetGameObject();
 	std::vector<GameObject> _arrayGameObjects2 = pS2.GetGameObject();
 	std::vector<GameObject> _arrayGameObjects3 = pS3.GetGameObject();
 	std::vector<GameObject> _arrayGameObjects4 = pS4.GetGameObject();
 	std::vector<GameObject> _arrayGameObjects5 = pS5.GetGameObject();
 	std::vector<GameObject> _arrayGameObjects6 = pS6.GetGameObject();
 	std::vector<GameObject> _arrayGameObjects7 = pS7.GetGameObject();
-	std::vector<GameObject> _arrayGameObjects8 = pS8.GetGameObject();
+	std::vector<GameObject> _arrayGameObjects8 = pS8.GetGameObject();*/
 
 	std::vector<std::vector<materials*>*> _arrayMaterials = std::vector<std::vector<materials*>*>();
 
@@ -107,7 +107,7 @@ ResourcesManager::ResourcesManager()
 		_vertexBufferArray->push_back(_planetVertexBuffer);
 		_planets.push_back(g);
 	}
-	std::vector<std::vector<materials*>*> _arrayMaterials1 = std::vector<std::vector<materials*>*>();
+	/*std::vector<std::vector<materials*>*> _arrayMaterials1 = std::vector<std::vector<materials*>*>();
 	for (int i = 0; i < _arrayGameObjects1.size(); i++)
 	{
 		GameObject g = _arrayGameObjects1.at(i);
@@ -258,7 +258,7 @@ ResourcesManager::ResourcesManager()
 		_planetVertexBuffer->set_materials(_arrayMaterials8.at(i));
 		_vertexBufferArray->push_back(_planetVertexBuffer);
 		_planets.push_back(g);
-	}
+	}*/
 
 	VertexBuffer* _vertexBufftext3 = new VertexBuffer(skyboxVertices, sizeof(skyboxVertices), GL_TRIANGLES, 36, sizeof(VertexDataP), _shaderArray->at(4), _shaderData, (GLvoid*)(offsetof(VertexDataP, positionCoordinates)));
 	_vertexBufferArray->push_back(_vertexBufftext3);
