@@ -37,15 +37,6 @@ static int g_DistortionCaps = 0
 static std::vector<GLfloat> vertices2 = std::vector<GLfloat>();
 static std::vector<GLuint> indices2 = std::vector<GLuint>();
 
-static float incrementW = 0.3f;
-static float incrementH = 0.3f;
-
-const GLuint GRID_W = 10, GRID_H = 10;
-
-static GLuint VBO, VAO, EBO;
-
-EsgiShader basicShader;
-
 OculusManager& OculusManager::getOculusManager()
 {
 
@@ -262,83 +253,14 @@ OculusManager& OculusManager::getOculusManager()
 		ovrHmd_RecenterPose(g_Hmd);
 
 
-
-
-		basicShader.LoadVertexShader("basic.vs"); // vs or vert
-		basicShader.LoadFragmentShader("basic.fs");
-		basicShader.Create();
-
-		for (float i = 0.f; i <= GRID_W; i += 1.f)
-		{
-			for (float j = 0.f; j <= GRID_H; j += 1.f)
-			{
-				vertices2.push_back(j * incrementW);
-				vertices2.push_back(i * incrementH);
-				vertices2.push_back(0.f);
-			}
-		}
-
-		for (float i = 0.f; i < GRID_W; i += 1.f)
-		{
-			for (float j = 0.f; j < GRID_H; j += 1.f)
-			{
-				if (j == 0.f)
-				{
-					//x2 cause Degenerate triangle
-					indices2.push_back((GRID_H + 1) * i);
-					indices2.push_back((GRID_H + 1) * i);
-
-					indices2.push_back((GRID_H + 1) * (i + 1));
-					indices2.push_back((GRID_H + 1) * i + 1);
-				}
-				else
-				{
-					indices2.push_back((GRID_H + 1) * (i + 1) + j);
-					indices2.push_back((GRID_H + 1) * i + j + 1);
-
-				}
-				//End of the line
-				if (j == GRID_H - 1)
-				{
-					//x2 cause Degenerate triangle
-					indices2.push_back((GRID_H + 1) * (i + 1) + j + 1);
-					indices2.push_back((GRID_H + 1) * (i + 1) + j + 1);
-				}
-			}
-		}
+		return *oculusManager;
 	}
-
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices2.size() * sizeof(float), &vertices2.front(), GL_STATIC_DRAW);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices2.size() * sizeof(float), &indices2.front(), GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
-
-	glBindVertexArray(0); // Unbind VAO
-
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-	return *oculusManager;
 }
-
 
 void OculusManager::render(RenderSystem* render, Scene* scene)
 {
 	unsigned int l_FrameIndex = 0;
 	int i;
-	//ovrMatrix4f proj;
-	//ovrPosef pose[2];
-	//float rot_mat[16];
 
 	/* the drawing starts with a call to ovrHmd_BeginFrame */
 	ovrHmd_BeginFrame(g_Hmd, l_FrameIndex);
@@ -349,7 +271,6 @@ void OculusManager::render(RenderSystem* render, Scene* scene)
 	glBindFramebuffer(GL_FRAMEBUFFER, l_FBOId);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	basicShader.Bind();
 
 	/* for each eye ... */
 	for (int l_EyeIndex = 0; l_EyeIndex < ovrEye_Count; l_EyeIndex++)
@@ -385,30 +306,7 @@ void OculusManager::render(RenderSystem* render, Scene* scene)
 
 
 		//Render
-		//render->render(scene->getChildren(), scene->getLights());
-		// Create transformations
-		glm::mat4 model;
-		glm::mat4 view;
-		glm::mat4 projection;
-		model = glm::rotate(model, /*(GLfloat)glfwGetTime() **/ 1.0f, glm::vec3(0.5f, 0.0f, 0.0f));
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -6.0f));
-		projection = glm::perspective(45.0f, (GLfloat)g_Hmd->Resolution.w / (GLfloat)g_Hmd->Resolution.h, 0.1f, 100.0f);
-		// Get their uniform location
-		GLint modelLoc = glGetUniformLocation(basicShader.GetProgram(), "model");
-		GLint viewLoc = glGetUniformLocation(basicShader.GetProgram(), "view");
-		GLint projLoc = glGetUniformLocation(basicShader.GetProgram(), "projection");
-		// Pass them to the shaders
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-		// Note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-
-		// Draw container
-		glBindVertexArray(VAO);
-		//glDrawElements(GL_TRIANGLE_STRIP, vertices2.size(), GL_UNSIGNED_INT, 0);
-		glDrawElements(GL_TRIANGLE_STRIP, indices2.size(), GL_UNSIGNED_INT, 0);
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
-		glBindVertexArray(0);
+		render->renderOcculus(scene->getChildren(), scene->getLights(), (GLfloat)g_EyeTextures[l_Eye].Header.RenderViewport.Size.w, (GLfloat)g_EyeTextures[l_Eye].Header.RenderViewport.Size.h);
 	}
 
 	/* after drawing both eyes into the texture render target, revert to drawing directly to the

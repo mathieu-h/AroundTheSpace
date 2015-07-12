@@ -124,6 +124,75 @@ void RenderSystem::render(std::vector<Entity*> *children, std::vector<light *>* 
 	glfwPollEvents();
 }
 
+void RenderSystem::renderOcculus(std::vector<Entity*> *children, std::vector<light *>* lights, GLfloat w, GLfloat h)
+{
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	for (std::vector<Entity*>::iterator iterator = children->begin(); iterator != children->end(); iterator++)
+	{
+		Entity* entity = *iterator;
+
+		if (entity->get_vertexBuffer() != NULL) {
+
+			glUseProgram(entity->get_vertexBuffer()->get_Shader()->getProgramHandle());
+
+
+
+			/*glm::mat4 m_projectionMatrix = glm::perspective(45.0f, (1280.0f / 720.0f), 0.1f, 1000.0f);
+			GLuint transformLoc = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "projectionMatrix");
+			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(m_projectionMatrix));
+
+			glm::mat4 m_modelMatrix;
+
+			m_modelMatrix = glm::translate(m_modelMatrix, glm::vec3(entity->get_position().x, entity->get_position().y, entity->get_position().z));
+
+			m_modelMatrix = glm::rotate(m_modelMatrix, entity->get_rotation().z, glm::vec3(0.0f, 0.0f, 1.0f));
+			m_modelMatrix = glm::rotate(m_modelMatrix, entity->get_rotation().x, glm::vec3(1.0f, 0.0f, 0.0f));
+			m_modelMatrix = glm::rotate(m_modelMatrix, entity->get_rotation().y, glm::vec3(0.0f, 1.0f, 0.0f));
+
+			glm::vec3 vec(entity->get_scale().x, entity->get_scale().y, entity->get_scale().z);
+			m_modelMatrix = glm::scale(m_modelMatrix, vec);
+
+			GLuint transformLoc2 = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "modelMatrix");
+			glUniformMatrix4fv(transformLoc2, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
+
+			GLfloat radius = 2.0f;
+			GLfloat camX = sin(glfwGetTime()) * radiusr
+			GLfloat camZ = cos(glfwGetTime()) * radius;
+
+			glm::mat4 view;
+
+			Vector3 pos = _currentCamera->get_position();
+			Vector3 front = _currentCamera->get_eyeVector();
+			Vector3 up = _currentCamera->get_upVector();
+
+			view = glm::lookAt(glm::vec3(pos.x, pos.y, pos.z),
+			glm::vec3(front.x + pos.x, front.y + pos.y, front.z + pos.z),
+			glm::vec3(up.x, up.y, up.z));
+
+			GLuint transformLoc3 = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "viewMatrix");
+			glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(view));
+
+			entity->get_vertexBuffer()->renderMaterials();
+
+
+			GLint viewPosLoc = glGetUniformLocation(entity->get_vertexBuffer()->get_Shader()->getProgramHandle(), "viewPos");
+			glUniform3f(viewPosLoc, _currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z);*/
+
+			setMatrices(entity, entity->get_vertexBuffer()->get_Shader(), w, h);
+			renderLights(entity, lights);
+
+
+			entity->get_vertexBuffer()->configureVertexAttributes();
+			entity->get_vertexBuffer()->renderVertexBuffer();
+		}
+	}
+	if (!Constants::getConstants()->oculus)
+	{
+		glfwSwapBuffers(_window);
+	}
+	glfwPollEvents();
+}
 
 void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader)
 {
@@ -209,6 +278,93 @@ void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader)
 		glUniform3f(viewPosLoc, _currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z);
 	}
 	
+}
+
+
+void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader, GLfloat w, GLfloat h)
+{
+	glm::mat4 m_projectionMatrix = glm::perspective(45.0f, (w / h), 0.1f, 10000.0f);
+	GLuint transformLoc = glGetUniformLocation(shader->getProgramHandle(), "projectionMatrix");
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(m_projectionMatrix));
+
+	glm::mat4 m_modelMatrix;
+
+	m_modelMatrix = glm::translate(m_modelMatrix, glm::vec3(entity->get_position().x, entity->get_position().y, entity->get_position().z));
+
+	m_modelMatrix = glm::rotate(m_modelMatrix, entity->get_rotation().x, glm::vec3(1.0f, 0.0f, 0.0f));
+	m_modelMatrix = glm::rotate(m_modelMatrix, entity->get_rotation().y, glm::vec3(0.0f, 1.0f, 0.0f));
+	m_modelMatrix = glm::rotate(m_modelMatrix, entity->get_rotation().z, glm::vec3(0.0f, 0.0f, 1.0f));
+
+	glm::vec3 vec(entity->get_scale().x, entity->get_scale().y, entity->get_scale().z);
+	m_modelMatrix = glm::scale(m_modelMatrix, vec);
+
+	float f = glfwGetTime();
+
+	if (up_down == true) {
+		f = next_Step + (next_Step - f);
+	}
+
+	if (f >= next_Step)
+	{
+		next_Step += 180;
+		up_down = !up_down;
+	}
+	GLuint transformLo = glGetUniformLocation(shader->getProgramHandle(), "time");
+	glUniform1f(transformLo, f);
+
+	GLuint transformLoc2 = glGetUniformLocation(shader->getProgramHandle(), "modelMatrix");
+	glUniformMatrix4fv(transformLoc2, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
+
+	glm::mat4 view;
+
+	Vector3 pos = _currentCamera->get_position();
+	Vector3 front = _currentCamera->get_eyeVector();
+	Vector3 up = _currentCamera->get_upVector();
+
+	view = glm::lookAt(glm::vec3(pos.x, pos.y, pos.z),
+		glm::vec3(front.x + pos.x, front.y + pos.y, front.z + pos.z),
+		glm::vec3(up.x, up.y, up.z));
+	if (entity->get_vertexBuffer()->_cube) {
+
+		/*view = glm::mat4(glm::mat3(glm::lookAt(glm::vec3(_currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z),
+		glm::vec3(_currentCamera->get_eyeVector().x, _currentCamera->get_eyeVector().y, _currentCamera->get_eyeVector().z),
+		glm::vec3(_currentCamera->get_upVector().x, _currentCamera->get_upVector().y, _currentCamera->get_upVector().z))));*/
+
+		view = glm::mat4(glm::mat3(glm::lookAt(glm::vec3(pos.x, pos.y, pos.z),
+			glm::vec3(front.x + pos.x, front.y + pos.y, front.z + pos.z),
+			glm::vec3(up.x, up.y, up.z))));
+
+		GLuint transformLoc3 = glGetUniformLocation(shader->getProgramHandle(), "viewMatrix");
+		glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(view));
+		glBindTexture(GL_TEXTURE_CUBE_MAP, _cubemaptexture);
+		glDepthFunc(GL_LEQUAL);
+	}
+	else {
+		glDepthFunc(GL_LESS);
+
+		GLuint transformLoc3 = glGetUniformLocation(shader->getProgramHandle(), "viewMatrix");
+		glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(view));
+		glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "cameraPos"), _currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z);
+
+
+		glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "originPos"), entity->get_vertexBuffer()->originPos.x, entity->get_vertexBuffer()->originPos.y, entity->get_vertexBuffer()->originPos.z);
+		glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "startPos"), entity->get_position().x, entity->get_position().y, entity->get_position().z);
+		glUniform1f(glGetUniformLocation(shader->getProgramHandle(), "planetSpeed"), entity->get_vertexBuffer()->speed);
+		glUniform1f(glGetUniformLocation(shader->getProgramHandle(), "timeOffset"), entity->get_vertexBuffer()->timeOffset);
+
+		if (entity->get_vertexBuffer()->isStart)
+		{
+			glUniform3f(glGetUniformLocation(shader->getProgramHandle(), "starPos"), entity->get_position().x, entity->get_position().y, entity->get_position().z);
+
+		}
+
+
+		entity->get_vertexBuffer()->renderMaterials();
+
+		GLint viewPosLoc = glGetUniformLocation(shader->getProgramHandle(), "viewPos");
+		glUniform3f(viewPosLoc, _currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z);
+	}
+
 }
 
 GLuint RenderSystem::loadCubemap(vector<const GLchar*> faces)
