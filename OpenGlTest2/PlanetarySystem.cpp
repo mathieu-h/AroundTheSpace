@@ -29,49 +29,21 @@ void PlanetarySystem::GeneratePlanetarySystem()
 	star = Star();
 	star.worldPosition = startPos;
 
-	star.speed = chooseSpeed();
+	star.speed = 0;
 
 	nbPlanet = 0;
-	int _nbPlanet = rand() % 5 + 5;
-	float distance = 2000 + rand() % 100;
-	
-	
-	for (int i = 0; i < _nbPlanet; ++i) {
+	float distance = 2000 + rand() % 500;
+	while (distance < 12000) {
+		planets.push_back(Planet(distance));
+		planets[nbPlanet].worldPosition = addVector3(startPos, makeVector3(distance, 0.0f, 0.0f));
+		planets[nbPlanet].speed = chooseSpeed(distance);
+		planets[nbPlanet].timeOffset = rand() % 360;
 		++nbPlanet;
-		planets.push_back(Planet());
-		planets[i].worldPosition = addVector3(startPos, makeVector3(distance, 0.0f, 0.0f));
-		planets[i].speed = chooseSpeed();
-		planets[i].timeOffset = rand() % 360;
-		distance += 1000 + rand() % 100;
-		//if (distance > 650)
-		//	break;				
+		distance += 750 + rand() % 500;		
 	}
 }
 
-float PlanetarySystem::chooseSpeed()
+float PlanetarySystem::chooseSpeed(float distance)
 {
-	int choice = rand() % 6;
-	float speed;
-	switch (choice)
-	{
-		case 0 :
-			speed = 0.001;
-			break;
-		case 1:
-			speed = 0.005;
-			break;
-		case 2:
-			speed = 0.025;
-			break;
-		case 3:
-			speed = 0.01;
-			break;
-		case 4:
-			speed = 0.05;
-			break;
-		case 5:
-			speed = 0.0075;
-			break;
-	}
-	return speed;
+	return (100 - (distance - 2000) / 100 + 25) * 0.0001;
 }

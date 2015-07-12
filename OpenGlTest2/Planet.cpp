@@ -7,10 +7,17 @@ using namespace noise;
 
 Planet::Planet()
 {
-	this->generatePlanet();
+	float distance = rand() % 10000 + 2000;
+	this->generatePlanet(distance);
 	worldPosition = makeVector3(0.0f, 0.0f, 0.0f);
 }
 
+
+Planet::Planet(float distance)
+{
+	this->generatePlanet(distance);
+	worldPosition = makeVector3(0.0f, 0.0f, 0.0f);
+}
 
 
 Planet::~Planet()
@@ -19,13 +26,13 @@ Planet::~Planet()
 
 
 
-void Planet::generatePlanet()
+void Planet::generatePlanet(float distance)
 {
-	radius = float(rand() % 410) / 3.0f + 50.0f;
+	temperature = 100 - (distance - 2000) / 100;
+
+	radius = rand() % 150 + 50.0f;
 	float mountainHeight = float(rand() % 4) * 0.01f + 0.03f;
 	
-	temperature = rand() % 101;
-
 	compositionColor1 = utils::Color(
 		rand() % 125 + 50,
 		rand() % 100 + 25,
@@ -38,10 +45,10 @@ void Planet::generatePlanet()
 		rand() % 75 + 25,
 		255);
 
-	water = (temperature < 65) && (rand() % 5 == 0);
-	liquidWater = water && temperature > 35;
-	solidWater = water && temperature < 50;
-	life = liquidWater && (rand() % 10 == 0);
+	water = rand() % 3 == 0;
+	liquidWater = water && temperature > 30 && temperature < 75;
+	solidWater = water && temperature < 55;
+	life = liquidWater && (rand() % 3 == 0);
 
 	utils::NoiseMap heightMap = generateHeightMap();
 	int heightMapHeight = heightMap.GetHeight();
@@ -198,6 +205,7 @@ utils::NoiseMap Planet::generateHeightMap()
 	heightMapBuilder.SetDestNoiseMap(heightMap);
 	//heightMapBuilder.SetDestSize(2048, 1024);
 	heightMapBuilder.SetDestSize(1024, 512);
+	//heightMapBuilder.SetDestSize(256, 128);
 	heightMapBuilder.SetBounds(-90.0, 90.0, -180.0, 180.0);
 	heightMapBuilder.Build();
 
@@ -214,30 +222,28 @@ void Planet::generateTexture(utils::NoiseMap heightMap)
 	renderer.SetDestImage(image);
 	renderer.ClearGradient();
 
-	if (water) {
-		if (liquidWater && solidWater) {
-			renderer.AddGradientPoint(-1.0000, utils::Color(0, 0, 128, 255)); // deeps
-			renderer.AddGradientPoint(-0.2500, utils::Color(0, 0, 255, 255)); // shallow
-			renderer.AddGradientPoint(0.0000, utils::Color(0, 128, 255, 255)); // shore
-			renderer.AddGradientPoint(0.0625, compositionColor1);
-			if (life) renderer.AddGradientPoint(0.3500, utils::Color(32, 160, 0, 255)); // grass
-			renderer.AddGradientPoint(0.7500, compositionColor2);
-			renderer.AddGradientPoint(1.0000, utils::Color(255, 255, 255, 255)); // snow
+	if (liquidWater && solidWater) {
+		renderer.AddGradientPoint(-1.0000, utils::Color(0, 0, 128, 255)); // deeps
+		renderer.AddGradientPoint(-0.2500, utils::Color(0, 0, 255, 255)); // shallow
+		renderer.AddGradientPoint(0.0000, utils::Color(0, 128, 255, 255)); // shore
+		renderer.AddGradientPoint(0.0625, compositionColor1);
+		if (life) renderer.AddGradientPoint(0.3500, utils::Color(32, 160, 0, 255)); // grass
+		renderer.AddGradientPoint(0.7500, compositionColor2);
+		renderer.AddGradientPoint(1.0000, utils::Color(255, 255, 255, 255)); // snow
 
-		}
-		if (liquidWater && !solidWater) {
-			renderer.AddGradientPoint(-1.0000, utils::Color(0, 0, 128, 255)); // deeps
-			renderer.AddGradientPoint(-0.2500, utils::Color(0, 0, 255, 255)); // shallow
-			renderer.AddGradientPoint(0.0000, utils::Color(0, 128, 255, 255)); // shore
-			renderer.AddGradientPoint(0.0625, compositionColor1);
-			if (life) renderer.AddGradientPoint(0.5000, utils::Color(32, 160, 0, 255)); // grass
-			renderer.AddGradientPoint(1.000, compositionColor2);
-		}
-		if (!liquidWater && solidWater) {
-			renderer.AddGradientPoint(-1.000, compositionColor1); 
-			renderer.AddGradientPoint(0.3500, compositionColor2);
-			renderer.AddGradientPoint(1.0000, utils::Color(255, 255, 255, 255)); // snow
-		}
+	}
+	else if(liquidWater && !solidWater) {
+		renderer.AddGradientPoint(-1.0000, utils::Color(0, 0, 128, 255)); // deeps
+		renderer.AddGradientPoint(-0.2500, utils::Color(0, 0, 255, 255)); // shallow
+		renderer.AddGradientPoint(0.0000, utils::Color(0, 128, 255, 255)); // shore
+		renderer.AddGradientPoint(0.0625, compositionColor1);
+		if (life) renderer.AddGradientPoint(0.5000, utils::Color(32, 160, 0, 255)); // grass
+		renderer.AddGradientPoint(1.000, compositionColor2);
+	}
+	else if(!liquidWater && solidWater) {
+		renderer.AddGradientPoint(-1.000, compositionColor1); 
+		renderer.AddGradientPoint(0.3500, compositionColor2);
+		renderer.AddGradientPoint(1.0000, utils::Color(255, 255, 255, 255)); // snow
 	}
 	else {
 		renderer.AddGradientPoint(-1, compositionColor1);

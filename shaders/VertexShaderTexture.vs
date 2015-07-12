@@ -33,7 +33,7 @@ void main()
 	//vec2 offset = offsets[gl_InstanceID];
 	//vec3 aOffset = aPositionVertex.xyz + offset;
 	gl_Position = finalPos;
-	TexCoord = vec2(aTextCoords);
+	TexCoord = vec2(aTextCoords.x, 1.0 - aTextCoords.y);
 	PositionNormal = mat3(transpose(inverse(modelMatrix))) * aPositionNormal;
 	FragPos = vec3(vec4(aPositionVertex.x + camX + originPos.x, aPositionVertex.y + originPos.y,aPositionVertex.z+camZ+ originPos.z, 1.0f));
 }

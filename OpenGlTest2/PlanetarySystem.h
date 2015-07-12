@@ -22,7 +22,7 @@ public:
 	Vector3 startPos;
 private:
 	void GeneratePlanetarySystem();
-	float chooseSpeed();
+	float chooseSpeed(float distance);
 	
 };
 

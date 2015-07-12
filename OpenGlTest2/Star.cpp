@@ -16,7 +16,7 @@ Star::~Star()
 
 void Star::generateStar()
 {
-	radius = 900.0f + rand() % 150;
+	radius = 1000;
 
 	int c = rand() % 3;
 
@@ -40,8 +40,8 @@ void Star::generateStar()
 	vector<Vector3> normales;
 	vector<Vector2> uvs;
 
-	const int nbLong = 240;
-	const int nbLat = 160;
+	const int nbLong = 300;
+	const int nbLat = 200;
 	const int nbVertices = (nbLong + 1) * nbLat + 2;
 	Vector3 vector3Up = makeVector3(0.0f, 1.0f, 0.0f);
 
@@ -180,6 +180,7 @@ utils::NoiseMap Star::generateHeightMap()
 	heightMapBuilder.SetDestNoiseMap(heightMap);
 	heightMapBuilder.SetDestSize(2048, 1024);
 	//heightMapBuilder.SetDestSize(1024, 512);
+	//heightMapBuilder.SetDestSize(256, 128);
 	heightMapBuilder.SetBounds(-90.0, 90.0, -180.0, 180.0);
 	heightMapBuilder.Build();
 

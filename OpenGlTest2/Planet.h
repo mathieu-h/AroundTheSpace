@@ -12,10 +12,11 @@ class Planet: public GameObject
 {
 public:
 	Planet();
+	Planet(float distance);
 	~Planet();
 
 private:
-	void generatePlanet();
+	void generatePlanet(float distance);
 	utils::NoiseMap generateHeightMap();
 	void generateTexture(utils::NoiseMap heightMap);
 
