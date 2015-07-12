@@ -293,19 +293,20 @@ void OculusManager::render(RenderSystem* render, Scene* scene)
 		glLoadIdentity();
 
 		// Multiply with orientation retrieved from sensor...
-		OVR::Quatf l_Orientation = OVR::Quatf(g_EyePoses[l_Eye].Orientation);
-		OVR::Matrix4f l_ModelViewMatrix = OVR::Matrix4f(l_Orientation.Inverted());
-		glMultMatrixf(&(l_ModelViewMatrix.Transposed().M[0][0]));
+		//OVR::Quatf l_Orientation = OVR::Quatf(g_EyePoses[l_Eye].Orientation);
+		//OVR::Matrix4f l_ModelViewMatrix = OVR::Matrix4f(l_Orientation.Inverted());
+		//glMultMatrixf(&(l_ModelViewMatrix.Transposed().M[0][0]));
+
 
 		// Translation due to positional tracking (DK2) and IPD...
-		glTranslatef(-g_EyePoses[l_Eye].Position.x, -g_EyePoses[l_Eye].Position.y, -g_EyePoses[l_Eye].Position.z);
+		//glTranslatef(-g_EyePoses[l_Eye].Position.x, -g_EyePoses[l_Eye].Position.y, -g_EyePoses[l_Eye].Position.z);
 
 		// Move the world forward a bit to show the scene in front of us...
-		glTranslatef(g_CameraPosition.x, g_CameraPosition.y, g_CameraPosition.z);
+		//glTranslatef(g_CameraPosition.x, g_CameraPosition.y, g_CameraPosition.z);
 
 
 		//Render
-		render->renderOcculus(scene->getChildren(), scene->getLights(), (GLfloat)g_EyeTextures[l_Eye].Header.RenderViewport.Size.w, (GLfloat)g_EyeTextures[l_Eye].Header.RenderViewport.Size.h);
+		render->renderOcculus(scene->getChildren(), scene->getLights(), (GLfloat)g_EyeTextures[l_Eye].Header.RenderViewport.Size.w, (GLfloat)g_EyeTextures[l_Eye].Header.RenderViewport.Size.h, toGlm(g_EyePoses[l_Eye]));
 	}
 
 	/* after drawing both eyes into the texture render target, revert to drawing directly to the

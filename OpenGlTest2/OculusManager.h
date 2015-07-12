@@ -24,4 +24,18 @@ public:
 	static void destroyOculusManager();
 
 	void render(RenderSystem* render, Scene* scene);
+
+	inline glm::vec3 toGlm(const ovrVector3f & ov) {
+		return glm::make_vec3(&ov.x);
+	}
+
+	inline glm::quat toGlm(const ovrQuatf & oq) {
+		return glm::make_quat(&oq.x);
+	}
+
+	inline glm::mat4 toGlm(const ovrPosef & op) {
+		glm::mat4 orientation = glm::mat4_cast(toGlm(op.Orientation));
+		glm::mat4 translation = glm::translate(glm::mat4(), toGlm(op.Position));
+		return translation * orientation;
+	}
 };
