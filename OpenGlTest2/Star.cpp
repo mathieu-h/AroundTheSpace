@@ -66,8 +66,8 @@ void Star::generateStar()
 			int heightY = int(float(lat) / (nbLat)* heightMapHeight);
 			if (lon == nbLong)
 				heightX = 0;
-
-			vertices[lon + lat * (nbLong + 1) + 1] = scalerMultiplyVector3(makeVector3(sin1 * cos2, cos1, sin1 * sin2), radius);
+			//float height = heightMap.GetValue(heightX, heightY) * radius * 0.05f;
+			vertices[lon + lat * (nbLong + 1) + 1] = scalerMultiplyVector3(makeVector3(sin1 * cos2, cos1, sin1 * sin2), radius + height);
 		}
 	}
 	vertices[nbVertices - 1] = scalerMultiplyVector3(vector3Up, -radius);
