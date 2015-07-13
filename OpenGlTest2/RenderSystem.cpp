@@ -283,7 +283,7 @@ void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader)
 
 void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader, GLfloat w, GLfloat h, const glm::mat4 & headPose)
 {
-	glm::mat4 m_projectionMatrix = glm::perspective(45.0f, (w / h), 0.1f, 10000.0f);
+	glm::mat4 m_projectionMatrix = glm::perspective(45.0f, (w / h), 0.1f, 1000000.0f);
 	GLuint transformLoc = glGetUniformLocation(shader->getProgramHandle(), "projectionMatrix");
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(m_projectionMatrix));
 
@@ -323,13 +323,17 @@ void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader, GLfloat 
 	Vector3 front = _currentCamera->get_eyeVector();
 	Vector3 up = _currentCamera->get_upVector();
 
-	oculusInput = glm::inverse(headPose);
+	if (Constants::getConstants()->oculus)
+		oculusInput = glm::inverse(headPose);
 	
 	cameraInput = glm::lookAt(glm::vec3(pos.x, pos.y, pos.z),
 		glm::vec3(front.x + pos.x, front.y + pos.y, front.z + pos.z),
 		glm::vec3(up.x, up.y, up.z));
 
-	result = oculusInput * cameraInput;
+	if (Constants::getConstants()->oculus)
+		result = oculusInput * cameraInput;
+	else
+		result = cameraInput;
 
 	if (entity->get_vertexBuffer()->_cube) {
 
@@ -337,12 +341,10 @@ void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader, GLfloat 
 		glm::vec3(_currentCamera->get_eyeVector().x, _currentCamera->get_eyeVector().y, _currentCamera->get_eyeVector().z),
 		glm::vec3(_currentCamera->get_upVector().x, _currentCamera->get_upVector().y, _currentCamera->get_upVector().z))));*/
 
-		//view = glm::mat4(glm::mat3(glm::lookAt(glm::vec3(pos.x, pos.y, pos.z),
-		//	glm::vec3(front.x + pos.x, front.y + pos.y, front.z + pos.z),
-		//	glm::vec3(up.x, up.y, up.z))));
+		glm::mat4 view = glm::mat4(glm::mat3(result));
 
 		GLuint transformLoc3 = glGetUniformLocation(shader->getProgramHandle(), "viewMatrix");
-		glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(result));
+		glUniformMatrix4fv(transformLoc3, 1, GL_FALSE, glm::value_ptr(view));
 		glBindTexture(GL_TEXTURE_CUBE_MAP, _cubemaptexture);
 		glDepthFunc(GL_LEQUAL);
 	}
