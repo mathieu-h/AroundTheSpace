@@ -16,7 +16,7 @@ Star::~Star()
 
 void Star::generateStar()
 {
-	radius = 900.0f + rand() % 150;
+	radius = 90.0f + rand() % 15;
 
 	int c = rand() % 3;
 
@@ -40,8 +40,8 @@ void Star::generateStar()
 	vector<Vector3> normales;
 	vector<Vector2> uvs;
 
-	const int nbLong = 240;
-	const int nbLat = 160;
+	const int nbLong = 24;
+	const int nbLat = 16;
 	const int nbVertices = (nbLong + 1) * nbLat + 2;
 	Vector3 vector3Up = makeVector3(0.0f, 1.0f, 0.0f);
 

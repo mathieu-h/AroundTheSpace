@@ -21,7 +21,7 @@ Planet::~Planet()
 
 void Planet::generatePlanet()
 {
-	radius = float(rand() % 410) / 3.0f + 50.0f;
+	radius = float(rand() % 41) / 3.0f + 5.0f;
 	float mountainHeight = float(rand() % 4) * 0.01f + 0.03f;
 	
 	temperature = rand() % 101;
@@ -53,8 +53,8 @@ void Planet::generatePlanet()
 	vector<Vector3> normales;
 	vector<Vector2> uvs;
 
-	const int nbLong = 600;
-	const int nbLat = 400;
+	const int nbLong = 60;
+	const int nbLat = 40;
 	const int nbVertices = (nbLong + 1) * nbLat + 2;
 	Vector3 vector3Up = makeVector3(0.0f, 1.0f, 0.0f);
 

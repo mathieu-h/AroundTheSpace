@@ -97,12 +97,16 @@ private:
 		vector<GLuint> indices;
 		vector<Texture> textures;
 
+		Vector3 middle = makeVector3(0.0f, 0.0f, 0.0f);
+
 		// Walk through each of the mesh's vertices
 		for (GLuint i = 0; i < mesh->mNumVertices; i++)
 		{
 			VertexDataPNT pnt;
 			//Vertex vertex;
 			Vector3 vertex = makeVector3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z); // We declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
+			middle = addVector3(middle, vertex);
+			
 			// Positions
 			pnt.positionCoordinates = vertex;
 			// Normals
@@ -121,6 +125,10 @@ private:
 				pnt.textureCoordinates = makeVector2(0.0f,0.0f);
 			Vnu.push_back(pnt);
 		}
+
+		middle.x = middle.x / mesh->mNumVertices;
+		middle.y = middle.y / mesh->mNumVertices;
+		middle.z = middle.z / mesh->mNumVertices;
 		// Now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
 		for (GLuint i = 0; i < mesh->mNumFaces; i++)
 		{
@@ -155,7 +163,8 @@ private:
 			
 		}
 		//_materials->push_back(new materials("Rock-Texture-Surface.jpg", "Rock-Texture-Surface.jpg", 32.0f));
-		VertexBuffer* vertexBuff = new VertexBuffer(Vnu, Vnu.size() * sizeof(Vnu) * 2, GL_TRIANGLES, indices.size(), sizeof(VertexDataPNT), shader, NULL, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), indices, true, 2500);
+		VertexBuffer* vertexBuff = new VertexBuffer(Vnu, Vnu.size() * sizeof(Vnu) * 2, GL_TRIANGLES, indices.size(), sizeof(VertexDataPNT), shader, NULL, (GLvoid*)(offsetof(VertexDataPNT, positionCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, normalCoordinates)), (GLvoid*)(offsetof(VertexDataPNT, textureCoordinates)), indices);
+		vertexBuff->middle = middle;
 		//vertexBuff->set_materials(_materials);
 		// Return a mesh object created from the extracted mesh data
 		return vertexBuff;

@@ -77,6 +77,9 @@ public:
 	bool isLight;
 	float lightLifetime;
 
+	boolean isarrow = false;
+
+
 };
 
 #endif

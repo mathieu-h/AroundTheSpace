@@ -6,7 +6,51 @@
 #include "Constants.h"
 #include "OculusManager.h"
 
+#include <glm/gtx/euler_angles.inl>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/vector_angle.hpp>
+
 using namespace std;
+using namespace glm;
+
+quat RotationBetweenVectors(vec3 start, vec3 dest){
+	start = normalize(start);
+	dest = normalize(dest);
+
+	float cosTheta = dot(start, dest);
+	vec3 rotationAxis;
+
+	if (cosTheta < -1 + 0.001f){
+		// special case when vectors in opposite directions:
+		// there is no "ideal" rotation axis
+		// So guess one; any will do as long as it's perpendicular to start
+		rotationAxis = cross(vec3(0.0f, 0.0f, 1.0f), start);
+		if (length2(rotationAxis) < 0.01) // bad luck, they were parallel, try again!
+		{
+			rotationAxis = cross(vec3(1.0f, 0.0f, 0.0f), start);
+			if (length2(rotationAxis) < 0.01)
+				rotationAxis = cross(vec3(0.0f, 1.0f, 0.0f), start);
+		}
+			
+
+		rotationAxis = normalize(rotationAxis);
+		return angleAxis(360.0f, rotationAxis);
+	}
+
+	rotationAxis = cross(start, dest);
+
+	float s = glm::sqrt((1 + cosTheta) * 2);
+	float invs = 1 / s;
+
+	return quat(
+		s * 0.5f,
+		rotationAxis.x * invs,
+		rotationAxis.y * invs,
+		rotationAxis.z * invs
+		);
+
+}
 
 Entity* RenderSystem::getCurrentCamera()
 {
@@ -201,15 +245,80 @@ void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader)
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(m_projectionMatrix));
 
 	glm::mat4 m_modelMatrix;
+	Vector3 up = _currentCamera->get_upVector();
+	Vector3 pos = _currentCamera->get_position();
+	Vector3 front = _currentCamera->get_eyeVector();
 
-	m_modelMatrix = glm::translate(m_modelMatrix, glm::vec3(entity->get_position().x, entity->get_position().y, entity->get_position().z));
+	glm::mat4 view;
 
-	m_modelMatrix = glm::rotate(m_modelMatrix, entity->get_rotation().x, glm::vec3(1.0f, 0.0f, 0.0f));
-	m_modelMatrix = glm::rotate(m_modelMatrix, entity->get_rotation().y, glm::vec3(0.0f, 1.0f, 0.0f));
-	m_modelMatrix = glm::rotate(m_modelMatrix, entity->get_rotation().z, glm::vec3(0.0f, 0.0f, 1.0f));
+	view = glm::lookAt(glm::vec3(pos.x, pos.y, pos.z),
+		glm::vec3(front.x + pos.x, front.y + pos.y, front.z + pos.z),
+		glm::vec3(up.x, up.y, up.z));
 
-	glm::vec3 vec(entity->get_scale().x, entity->get_scale().y, entity->get_scale().z);
-	m_modelMatrix = glm::scale(m_modelMatrix, vec);
+
+	if (entity->isarrow)
+	{
+		Vector3 northPos = makeVector3(0.0f, 0.0f, -1000.0f);
+		
+		glm::fvec3 v; glm::fvec3 v2;
+		v2.x = 0.0f;
+		v2.x = 0.0f;
+		v2.x = -1.0f;
+
+		v.x = _currentCamera->get_eyeVector().x;
+		v.y = _currentCamera->get_eyeVector().y;
+		v.z = _currentCamera->get_eyeVector().z;
+
+		quat q = RotationBetweenVectors(v, v2);
+		
+		//glm::mat4 RotationMatrix = glm::transpose(glm::lookAt(v2, v2, glm::vec3(0.0f, 1.0f, 0.0f)));
+		//Now convert to quaternion if you use quaternion and not matrix for the representation of the rotation :
+		//quat Rotation = toQuat(RotationMatrix);
+
+		vec3 newUp = q * vec3(0.0f, 1.0f, 0.0f);
+		quat rot2 = RotationBetweenVectors(newUp, vec3(0.0f, 1.0f, 0.0f));
+		// Because of the 1rst rotation, the up is probably completely screwed up. 
+		// Find the rotation between the "up" of the rotated object, and the desired up
+
+		newUp = q * vec3(0.0f, 0.0f, 1.0f);
+		quat rot3 = RotationBetweenVectors(newUp, vec3(0.0f, 0.0f, 1.0f));
+
+		newUp = q * vec3(1.0f, 0.0f, 0.0f);
+		quat rot4 = RotationBetweenVectors(newUp, vec3(1.0f, 0.0f, 0.0f));
+
+		quat targetOrientation = rot2 * q;
+		targetOrientation = rot3 * targetOrientation;
+		targetOrientation = rot4 * targetOrientation;
+
+		vec3 rotated_point = eulerAngles(targetOrientation);
+		//mat4 RotationMatrix = t(q);
+
+		m_modelMatrix = glm::translate(m_modelMatrix, glm::vec3(entity->get_position().x, entity->get_position().y, entity->get_position().z));
+
+		m_modelMatrix = glm::translate(m_modelMatrix, glm::vec3(entity->get_vertexBuffer()->middle.x, entity->get_vertexBuffer()->middle.y, entity->get_vertexBuffer()->middle.z));
+
+		m_modelMatrix = glm::rotate(m_modelMatrix, rotated_point.x, glm::vec3(1.0f, 0.0f, 0.0f));
+		m_modelMatrix = glm::rotate(m_modelMatrix, rotated_point.y, glm::vec3(0.0f, 1.0f, 0.0f));
+		m_modelMatrix = glm::rotate(m_modelMatrix, rotated_point.z, glm::vec3(0.0f, 0.0f, 1.0f));
+
+		glm::vec3 vec(entity->get_scale().x, entity->get_scale().y, entity->get_scale().z);
+		m_modelMatrix = glm::scale(m_modelMatrix, vec);
+
+		m_modelMatrix = glm::translate(m_modelMatrix, glm::vec3(-entity->get_vertexBuffer()->middle.x, -entity->get_vertexBuffer()->middle.y, -entity->get_vertexBuffer()->middle.z));
+	}
+	else {
+		m_modelMatrix = glm::translate(m_modelMatrix, glm::vec3(entity->get_position().x, entity->get_position().y, entity->get_position().z));
+
+		m_modelMatrix = glm::rotate(m_modelMatrix, entity->get_rotation().x, glm::vec3(1.0f, 0.0f, 0.0f));
+		m_modelMatrix = glm::rotate(m_modelMatrix, entity->get_rotation().y, glm::vec3(0.0f, 1.0f, 0.0f));
+		m_modelMatrix = glm::rotate(m_modelMatrix, entity->get_rotation().z, glm::vec3(0.0f, 0.0f, 1.0f));
+
+		glm::vec3 vec(entity->get_scale().x, entity->get_scale().y, entity->get_scale().z);
+		m_modelMatrix = glm::scale(m_modelMatrix, vec);
+
+		
+	}
+	
 
 	float f = glfwGetTime();
 
@@ -222,21 +331,18 @@ void RenderSystem::setMatrices(Entity* entity, ShaderInterface* shader)
 		next_Step += 180;
 		up_down = !up_down;
 	}
+
 	GLuint transformLo = glGetUniformLocation(shader->getProgramHandle(), "time");
 	glUniform1f(transformLo, f);
 
 	GLuint transformLoc2 = glGetUniformLocation(shader->getProgramHandle(), "modelMatrix");
 	glUniformMatrix4fv(transformLoc2, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
 
-	glm::mat4 view;
+	/*GLuint transformNorth = glGetUniformLocation(shader->getProgramHandle(), "northPoint");
+	glUniform3f(transformNorth, 0.0f,0.0f,-100000.0f);*/
 
-	Vector3 pos = _currentCamera->get_position();
-	Vector3 front = _currentCamera->get_eyeVector();
-	Vector3 up = _currentCamera->get_upVector();
+	
 
-	view = glm::lookAt(glm::vec3(pos.x, pos.y, pos.z),
-		glm::vec3(front.x + pos.x, front.y + pos.y, front.z + pos.z),
-		glm::vec3(up.x, up.y, up.z));
 	if (entity->get_vertexBuffer()->_cube) {
 
 		/*view = glm::mat4(glm::mat3(glm::lookAt(glm::vec3(_currentCamera->get_position().x, _currentCamera->get_position().y, _currentCamera->get_position().z),
@@ -411,7 +517,7 @@ RenderSystem& RenderSystem::getRenderSystem()
 	{
 		renderSystem = new RenderSystem();
 
-		glClearColor(0.0f,0.0f,0.0f,0.1f);
+		glClearColor(1.0f,1.0f,1.0f,0.1f);
 
 		glMatrixMode(GL_PROJECTION);
 		gluPerspective(45.0f, 1600.0f / 900.0f, 0.1, 10000);
@@ -454,3 +560,4 @@ void RenderSystem::destroyRenderSystem()
 		RenderSystem* renderSystem = &getRenderSystem();
 	delete renderSystem;
 }
+

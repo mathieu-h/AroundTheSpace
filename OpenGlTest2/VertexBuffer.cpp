@@ -701,6 +701,44 @@ VertexBuffer::VertexBuffer(std::vector<VertexDataPNT> data, GLsizei size, GLenum
 
 }
 
+
+VertexBuffer::VertexBuffer(std::vector<VertexDataPNT> data, GLsizei size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid* positionOffset, GLvoid* normalOffset, GLvoid* textureCoordOffset, std::vector<GLuint> indices) : _mode(mode), _count(count), _stride(stride), _shader(shader), _shaderData(shaderData), _positionOffset(positionOffset), _normalOffset(normalOffset), _textureCoordOffset(textureCoordOffset)
+{
+	_vexterArrayID = -1;
+
+	glGenVertexArrays(1, &_vexterArrayID);
+	glGenBuffers(1, &_vertexBufferID);
+	glGenBuffers(1, &_elementBufferObjectID);
+
+	glBindVertexArray(_vexterArrayID);
+
+
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
+	glBufferData(GL_ARRAY_BUFFER, size, &data.front(), GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBufferObjectID);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
+
+	if (_shader->get_aPositionVertex() != -1) {
+		glEnableVertexAttribArray(_shader->get_aPositionVertex());
+		glVertexAttribPointer(_shader->get_aPositionVertex(), 3, GL_FLOAT, GL_FALSE, _stride, _positionOffset);
+	}
+
+	if (_shader->get_aPositionNormals() != -1) {
+		glEnableVertexAttribArray(_shader->get_aPositionNormals());
+		glVertexAttribPointer(_shader->get_aPositionNormals(), 3, GL_FLOAT, GL_FALSE, _stride, _normalOffset);
+	}
+
+	if (_shader->get_aTextCoords() != -1) {
+		glEnableVertexAttribArray(_shader->get_aTextCoords());
+		glVertexAttribPointer(_shader->get_aTextCoords(), 2, GL_FLOAT, GL_FALSE, _stride, _textureCoordOffset);
+	}
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+}
+
 VertexBuffer::VertexBuffer(const GLvoid *data, GLsizei size, GLenum mode, GLsizei count, GLsizei stride, ShaderInterface* shader, ShaderData* shaderData, GLvoid* positionOffset, GLvoid* normalOffset, GLvoid* textureCoordOffset, int amount) : _mode(mode), _count(count), _stride(stride), _shader(shader), _shaderData(shaderData), _positionOffset(positionOffset), _normalOffset(normalOffset), _textureCoordOffset(textureCoordOffset), _amount(amount)
 {
 	_vexterArrayID = -1;
